@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: shared-pv
+spec:
+  capacity:
+    storage: $STORAGE_SIZE
+  accessModes:
+    - ReadWriteMany  # Ensure RWX
+  nfs:
+    path: $NFS_STORAGE_PATH  # Placeholder for NFS storage path
+    server: $NFS_SERVER  # Placeholder for NFS server IP
+  storageClassName: jhub-storage-class  # Reference the new StorageClass
+  persistentVolumeReclaimPolicy: Retain

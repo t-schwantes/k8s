@@ -1,0 +1,8 @@
+# Passwordless ssh 
+ssh-keygen -t rsa -b 4096
+ssh-copy-id default@192.168.0.101
+
+
+sudo visudo # probe need a better way, this just makes no password for sudo
+# %sudo   ALL=(ALL:ALL) ALL
+%sudo   ALL=(ALL:ALL) NOPASSWD: ALL
