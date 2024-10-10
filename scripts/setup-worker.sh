@@ -35,9 +35,6 @@ setup_worker_node() {
         echo "Running kubernetes.sh on worker node..."
         bash $REMOTE_SCRIPT_DIR/kubernetes.sh
         
-        echo "Running cni.sh on worker node..."
-        bash $REMOTE_SCRIPT_DIR/cni.sh
-        
 	echo "Running nvidia-container.sh on worker node..."
         bash $REMOTE_SCRIPT_DIR/nvidia-container.sh
         

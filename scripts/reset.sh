@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# Exit immediately if a command exits with a non-zero status
-set -e
 
 # Reset kubeadm (force to bypass the confirmation prompt)
 echo "Resetting Kubernetes cluster..."
@@ -10,6 +8,7 @@ sudo kubeadm reset --force
 # Remove CNI configurations
 echo "Removing CNI configurations..."
 sudo rm -rf /etc/cni/net.d
+sudo rm -rf /var/lib/cni
 
 # Remove Kubernetes directories
 echo "Removing Kubernetes directories..."
