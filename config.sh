@@ -1,0 +1,9 @@
+POD_NETWORK_CIDR="10.244.0.0/16"
+API_SERVER_ADDRESS="192.168.0.125"
+NFS_STORAGE_PATH="/home/default/tmp_pv"
+STORAGE_SIZE="100Gi"
+JHUB_IP="192.168.0.127"
+
+# List of worker node IP addresses
+WORKER_NODES=("192.168.0.101")
+WORKER_USER="default"

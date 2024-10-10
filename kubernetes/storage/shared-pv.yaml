@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: shared-pv
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteMany  # Ensure RWX
+  nfs:
+    path: /home/default/tmp_pv  # Placeholder for NFS storage path
+    server: 192.168.0.125  # Placeholder for NFS server IP
+  storageClassName: jhub-storage-class  # Reference the new StorageClass
+  persistentVolumeReclaimPolicy: Retain
