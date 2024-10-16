@@ -1,0 +1,39 @@
+Adding NVIDIA container toolkit repository to apt sources...
+deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://nvidia.github.io/libnvidia-container/stable/deb/$(ARCH) /
+#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://nvidia.github.io/libnvidia-container/experimental/deb/$(ARCH) /
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Hit:1 https://nvidia.github.io/libnvidia-container/stable/deb/amd64  InRelease
+Hit:3 http://us.archive.ubuntu.com/ubuntu jammy InRelease
+Hit:4 http://us.archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:5 http://us.archive.ubuntu.com/ubuntu jammy-backports InRelease
+Ign:2 https://packages.cloud.google.com/apt kubernetes-xenial InRelease
+Err:6 https://packages.cloud.google.com/apt kubernetes-xenial Release
+  404  Not Found [IP: 142.250.69.238 443]
+Ign:7 https://download.docker.com/linux/ubuntu jammy InRelease
+Ign:8 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Ign:9 http://archive.lambdalabs.com/ubuntu jammy InRelease
+Hit:7 https://download.docker.com/linux/ubuntu jammy InRelease
+Ign:9 http://archive.lambdalabs.com/ubuntu jammy InRelease
+Hit:8 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Ign:9 http://archive.lambdalabs.com/ubuntu jammy InRelease
+Err:9 http://archive.lambdalabs.com/ubuntu jammy InRelease
+  Temporary failure resolving 'archive.lambdalabs.com'
+Reading package lists...
+E: The repository 'https://apt.kubernetes.io kubernetes-xenial Release' does not have a Release file.
+Installing NVIDIA container toolkit...
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Reading package lists...
+Building dependency tree...
+Reading state information...
+nvidia-container-toolkit is already the newest version (1.16.2-0lambda0.22.04.1).
+0 upgraded, 0 newly installed, 0 to remove and 18 not upgraded.
+Configuring containerd to use NVIDIA as the default runtime...
+time="2024-10-11T12:02:31-06:00" level=info msg="Loading config from /etc/containerd/config.toml"
+time="2024-10-11T12:02:31-06:00" level=info msg="Wrote updated config to /etc/containerd/config.toml"
+time="2024-10-11T12:02:31-06:00" level=info msg="It is recommended that containerd daemon be restarted."
+Restarting containerd service...
+NVIDIA container toolkit installation complete.

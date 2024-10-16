@@ -1,4 +1,6 @@
-source ../config.sh
+source config.sh
+
+echo "JHUB_IP is set to: $JHUB_IP"
 
 echo "Installing Helm..."
 
@@ -40,7 +42,7 @@ echo "Helm repositories added and updated."
 echo "Installing JupyterHub with Helm using config.yaml..."
 helm upgrade --install jupyterhub jupyterhub/jupyterhub \
   --namespace jupyterhub \
-  --values config.yaml
+  --values jupyterhub/config.yaml
 
 # Patch the JupyterHub proxy to use a LoadBalancer with an external IP
 # Replace the IP address below with the desired external IP address

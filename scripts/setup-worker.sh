@@ -1,11 +1,10 @@
 #!/bin/bash
-set -e
 
 # Source the configuration file to get the worker node IPs and user
-source ./config.sh
+source config.sh
 
 # Directory on worker nodes to store the scripts
-REMOTE_SCRIPT_DIR="/home/default/scripts"
+REMOTE_SCRIPT_DIR="/home/default/tmp"
 
 # Generate the kubeadm join command on the control plane (master node)
 JOIN_COMMAND=$(kubeadm token create --print-join-command)
@@ -17,26 +16,39 @@ setup_worker_node() {
 
     echo "Setting up worker node: $node_ip"
 
+    # Create the scripts directory on the worker node if it doesn't exist
+    echo "Creating remote script directory on worker node $node_ip..."
+    ssh "$WORKER_USER@$node_ip" "mkdir -p $REMOTE_SCRIPT_DIR"
+
+
     # Copy the scripts to the worker node
     echo "Copying scripts to worker node $node_ip..."
-    scp -r ./scripts "$WORKER_USER@$node_ip:$REMOTE_SCRIPT_DIR"
+    scp -r ./scripts config.sh "$WORKER_USER@$node_ip:$REMOTE_SCRIPT_DIR"
 
     # SSH into the worker node and run the setup scripts
     ssh "$WORKER_USER@$node_ip" bash -s <<EOF
+    	export REMOTE_SCRIPT_DIR="$REMOTE_SCRIPT_DIR"
+    
         echo "Making scripts executable on worker node..."
         chmod +x $REMOTE_SCRIPT_DIR/*.sh
         
+	echo "Running docker.sh on worker node..."
+        bash $REMOTE_SCRIPT_DIR/scripts/docker.sh
+        
         echo "Running config-system.sh on worker node..."
-        bash $REMOTE_SCRIPT_DIR/config-system.sh
+        bash $REMOTE_SCRIPT_DIR/scripts/config-system.sh
         
         echo "Running containerd.sh on worker node..."
-        bash $REMOTE_SCRIPT_DIR/containerd.sh
+        bash $REMOTE_SCRIPT_DIR/scripts/containerd.sh
         
         echo "Running kubernetes.sh on worker node..."
-        bash $REMOTE_SCRIPT_DIR/kubernetes.sh
+        bash $REMOTE_SCRIPT_DIR/scripts/kubernetes.sh
         
 	echo "Running nvidia-container.sh on worker node..."
-        bash $REMOTE_SCRIPT_DIR/nvidia-container.sh
+        bash $REMOTE_SCRIPT_DIR/scripts/nvidia-container.sh
+        
+	echo "Running docker-registry-worker.sh on worker node ..."
+        bash $REMOTE_SCRIPT_DIR/scripts/docker-registry-worker.sh        
         
         echo "Joining the worker node to the Kubernetes cluster..."
         sudo $JOIN_COMMAND

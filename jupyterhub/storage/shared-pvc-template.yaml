@@ -8,6 +8,6 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: $STORAGE_SIZE  # Must match the size of the PV
+      storage: $NFS_STORAGE_SIZE  # Must match the size of the PV
   volumeName: shared-pv  # Bind directly to the PV
 

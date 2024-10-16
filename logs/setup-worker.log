@@ -1,0 +1,423 @@
+Kubeadm join command for workers: kubeadm join 192.168.0.125:6443 --token ymxrcu.19oy5zgc3jynx07j --discovery-token-ca-cert-hash sha256:6bbc7460d1fc17fd3562e0740f738c01d68946f02a5a10f8b1ea3db36288cf28 
+Setting up worker node: 192.168.0.101
+Creating remote script directory on worker node 192.168.0.101...
+Copying scripts to worker node 192.168.0.101...
+Making scripts executable on worker node...
+Running docker.sh on worker node...
+Docker is already installed.
+Running config-system.sh on worker node...
+Updating package lists...
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Hit:1 https://download.docker.com/linux/ubuntu jammy InRelease
+Hit:2 https://nvidia.github.io/libnvidia-container/stable/deb/amd64  InRelease
+Ign:3 https://packages.cloud.google.com/apt kubernetes-xenial InRelease
+Err:4 https://packages.cloud.google.com/apt kubernetes-xenial Release
+  404  Not Found [IP: 142.250.69.238 443]
+Hit:5 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Hit:6 http://us.archive.ubuntu.com/ubuntu jammy InRelease
+Hit:7 http://us.archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:8 http://us.archive.ubuntu.com/ubuntu jammy-backports InRelease
+Err:9 http://archive.lambdalabs.com/ubuntu jammy InRelease
+  403  Forbidden [IP: 52.92.250.59 80]
+Reading package lists...
+E: The repository 'https://apt.kubernetes.io kubernetes-xenial Release' does not have a Release file.
+E: Failed to fetch http://archive.lambdalabs.com/ubuntu/dists/jammy/InRelease  403  Forbidden [IP: 52.92.250.59 80]
+E: The repository 'http://archive.lambdalabs.com/ubuntu jammy InRelease' is no longer signed.
+Performing a distribution upgrade...
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Reading package lists...
+Building dependency tree...
+Reading state information...
+Calculating upgrade...
+Get more security updates through Ubuntu Pro with 'esm-apps' enabled:
+  python3-jupyter-core libheif1 jupyter libjs-jquery-ui libopenexr25
+  python3-scipy libavcodec58 traceroute jupyter-core libavutil56 libswscale5
+  libswresample3 libavformat58 libde265-0 libpmix2
+Learn more about Ubuntu Pro at https://ubuntu.com/pro
+The following packages will be REMOVED:
+  libnvidia-decode-550:i386 libnvidia-encode-550:i386 libnvidia-gl-550:i386
+The following NEW packages will be installed:
+  linux-headers-6.8.0-47-generic linux-hwe-6.8-headers-6.8.0-47
+  linux-hwe-6.8-tools-6.8.0-47 linux-image-6.8.0-47-generic
+  linux-modules-6.8.0-47-generic linux-modules-extra-6.8.0-47-generic
+  linux-tools-6.8.0-47-generic
+The following packages have been kept back:
+  gjs libgjs0g libnvidia-cfg1-550 libnvidia-common-550 libnvidia-compute-550
+  libnvidia-compute-550:i386 libnvidia-decode-550 libnvidia-encode-550
+  libnvidia-extra-550 libnvidia-extra-550:i386 libnvidia-fbc1-550
+  libnvidia-fbc1-550:i386 libnvidia-gl-550 nvidia-compute-utils-550
+  nvidia-dkms-550 nvidia-driver-550 nvidia-kernel-common-550
+  nvidia-kernel-source-550 nvidia-utils-550 snapd
+  xserver-xorg-video-nvidia-550
+The following packages will be upgraded:
+  libnccl-dev libnccl2 libxnvctrl0 linux-generic-hwe-22.04
+  linux-headers-generic-hwe-22.04 linux-image-generic-hwe-22.04 linux-libc-dev
+  linux-tools-common nvidia-settings openvpn
+The following packages will be DOWNGRADED:
+  nvidia-firmware-550-550.107.02
+10 upgraded, 7 newly installed, 1 downgraded, 3 to remove and 21 not upgraded.
+5 standard LTS security updates
+E: Packages were downgraded and -y was used without --allow-downgrades.
+Running containerd.sh on worker node...
+Setting up containerd runtime...
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Hit:1 https://download.docker.com/linux/ubuntu jammy InRelease
+Hit:2 https://nvidia.github.io/libnvidia-container/stable/deb/amd64  InRelease
+Ign:3 https://packages.cloud.google.com/apt kubernetes-xenial InRelease
+Err:4 https://packages.cloud.google.com/apt kubernetes-xenial Release
+  404  Not Found [IP: 142.250.69.238 443]
+Hit:5 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Hit:6 http://us.archive.ubuntu.com/ubuntu jammy InRelease
+Hit:7 http://us.archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:8 http://us.archive.ubuntu.com/ubuntu jammy-backports InRelease
+Hit:9 http://archive.lambdalabs.com/ubuntu jammy InRelease
+Reading package lists...
+E: The repository 'https://apt.kubernetes.io kubernetes-xenial Release' does not have a Release file.
+Installing containerd...
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Reading package lists...
+Building dependency tree...
+Reading state information...
+containerd.io is already the newest version (1.7.22-1).
+0 upgraded, 0 newly installed, 0 to remove and 34 not upgraded.
+Stopping containerd service...
+Backing up containerd config file...
+Generating new containerd configuration...
+disabled_plugins = []
+imports = []
+oom_score = 0
+plugin_dir = ""
+required_plugins = []
+root = "/var/lib/containerd"
+state = "/run/containerd"
+temp = ""
+version = 2
+
+[cgroup]
+  path = ""
+
+[debug]
+  address = ""
+  format = ""
+  gid = 0
+  level = ""
+  uid = 0
+
+[grpc]
+  address = "/run/containerd/containerd.sock"
+  gid = 0
+  max_recv_message_size = 16777216
+  max_send_message_size = 16777216
+  tcp_address = ""
+  tcp_tls_ca = ""
+  tcp_tls_cert = ""
+  tcp_tls_key = ""
+  uid = 0
+
+[metrics]
+  address = ""
+  grpc_histogram = false
+
+[plugins]
+
+  [plugins."io.containerd.gc.v1.scheduler"]
+    deletion_threshold = 0
+    mutation_threshold = 100
+    pause_threshold = 0.02
+    schedule_delay = "0s"
+    startup_delay = "100ms"
+
+  [plugins."io.containerd.grpc.v1.cri"]
+    cdi_spec_dirs = ["/etc/cdi", "/var/run/cdi"]
+    device_ownership_from_security_context = false
+    disable_apparmor = false
+    disable_cgroup = false
+    disable_hugetlb_controller = true
+    disable_proc_mount = false
+    disable_tcp_service = true
+    drain_exec_sync_io_timeout = "0s"
+    enable_cdi = false
+    enable_selinux = false
+    enable_tls_streaming = false
+    enable_unprivileged_icmp = false
+    enable_unprivileged_ports = false
+    ignore_deprecation_warnings = []
+    ignore_image_defined_volumes = false
+    image_pull_progress_timeout = "5m0s"
+    image_pull_with_sync_fs = false
+    max_concurrent_downloads = 3
+    max_container_log_line_size = 16384
+    netns_mounts_under_state_dir = false
+    restrict_oom_score_adj = false
+    sandbox_image = "registry.k8s.io/pause:3.8"
+    selinux_category_range = 1024
+    stats_collect_period = 10
+    stream_idle_timeout = "4h0m0s"
+    stream_server_address = "127.0.0.1"
+    stream_server_port = "0"
+    systemd_cgroup = false
+    tolerate_missing_hugetlb_controller = true
+    unset_seccomp_profile = ""
+
+    [plugins."io.containerd.grpc.v1.cri".cni]
+      bin_dir = "/opt/cni/bin"
+      conf_dir = "/etc/cni/net.d"
+      conf_template = ""
+      ip_pref = ""
+      max_conf_num = 1
+      setup_serially = false
+
+    [plugins."io.containerd.grpc.v1.cri".containerd]
+      default_runtime_name = "runc"
+      disable_snapshot_annotations = true
+      discard_unpacked_layers = false
+      ignore_blockio_not_enabled_errors = false
+      ignore_rdt_not_enabled_errors = false
+      no_pivot = false
+      snapshotter = "overlayfs"
+
+      [plugins."io.containerd.grpc.v1.cri".containerd.default_runtime]
+        base_runtime_spec = ""
+        cni_conf_dir = ""
+        cni_max_conf_num = 0
+        container_annotations = []
+        pod_annotations = []
+        privileged_without_host_devices = false
+        privileged_without_host_devices_all_devices_allowed = false
+        runtime_engine = ""
+        runtime_path = ""
+        runtime_root = ""
+        runtime_type = ""
+        sandbox_mode = ""
+        snapshotter = ""
+
+        [plugins."io.containerd.grpc.v1.cri".containerd.default_runtime.options]
+
+      [plugins."io.containerd.grpc.v1.cri".containerd.runtimes]
+
+        [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+          base_runtime_spec = ""
+          cni_conf_dir = ""
+          cni_max_conf_num = 0
+          container_annotations = []
+          pod_annotations = []
+          privileged_without_host_devices = false
+          privileged_without_host_devices_all_devices_allowed = false
+          runtime_engine = ""
+          runtime_path = ""
+          runtime_root = ""
+          runtime_type = "io.containerd.runc.v2"
+          sandbox_mode = "podsandbox"
+          snapshotter = ""
+
+          [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+            BinaryName = ""
+            CriuImagePath = ""
+            CriuPath = ""
+            CriuWorkPath = ""
+            IoGid = 0
+            IoUid = 0
+            NoNewKeyring = false
+            NoPivotRoot = false
+            Root = ""
+            ShimCgroup = ""
+            SystemdCgroup = false
+
+      [plugins."io.containerd.grpc.v1.cri".containerd.untrusted_workload_runtime]
+        base_runtime_spec = ""
+        cni_conf_dir = ""
+        cni_max_conf_num = 0
+        container_annotations = []
+        pod_annotations = []
+        privileged_without_host_devices = false
+        privileged_without_host_devices_all_devices_allowed = false
+        runtime_engine = ""
+        runtime_path = ""
+        runtime_root = ""
+        runtime_type = ""
+        sandbox_mode = ""
+        snapshotter = ""
+
+        [plugins."io.containerd.grpc.v1.cri".containerd.untrusted_workload_runtime.options]
+
+    [plugins."io.containerd.grpc.v1.cri".image_decryption]
+      key_model = "node"
+
+    [plugins."io.containerd.grpc.v1.cri".registry]
+      config_path = ""
+
+      [plugins."io.containerd.grpc.v1.cri".registry.auths]
+
+      [plugins."io.containerd.grpc.v1.cri".registry.configs]
+
+      [plugins."io.containerd.grpc.v1.cri".registry.headers]
+
+      [plugins."io.containerd.grpc.v1.cri".registry.mirrors]
+
+    [plugins."io.containerd.grpc.v1.cri".x509_key_pair_streaming]
+      tls_cert_file = ""
+      tls_key_file = ""
+
+  [plugins."io.containerd.internal.v1.opt"]
+    path = "/opt/containerd"
+
+  [plugins."io.containerd.internal.v1.restart"]
+    interval = "10s"
+
+  [plugins."io.containerd.internal.v1.tracing"]
+
+  [plugins."io.containerd.metadata.v1.bolt"]
+    content_sharing_policy = "shared"
+
+  [plugins."io.containerd.monitor.v1.cgroups"]
+    no_prometheus = false
+
+  [plugins."io.containerd.nri.v1.nri"]
+    disable = true
+    disable_connections = false
+    plugin_config_path = "/etc/nri/conf.d"
+    plugin_path = "/opt/nri/plugins"
+    plugin_registration_timeout = "5s"
+    plugin_request_timeout = "2s"
+    socket_path = "/var/run/nri/nri.sock"
+
+  [plugins."io.containerd.runtime.v1.linux"]
+    no_shim = false
+    runtime = "runc"
+    runtime_root = ""
+    shim = "containerd-shim"
+    shim_debug = false
+
+  [plugins."io.containerd.runtime.v2.task"]
+    platforms = ["linux/amd64"]
+    sched_core = false
+
+  [plugins."io.containerd.service.v1.diff-service"]
+    default = ["walking"]
+
+  [plugins."io.containerd.service.v1.tasks-service"]
+    blockio_config_file = ""
+    rdt_config_file = ""
+
+  [plugins."io.containerd.snapshotter.v1.aufs"]
+    root_path = ""
+
+  [plugins."io.containerd.snapshotter.v1.blockfile"]
+    fs_type = ""
+    mount_options = []
+    root_path = ""
+    scratch_file = ""
+
+  [plugins."io.containerd.snapshotter.v1.btrfs"]
+    root_path = ""
+
+  [plugins."io.containerd.snapshotter.v1.devmapper"]
+    async_remove = false
+    base_image_size = ""
+    discard_blocks = false
+    fs_options = ""
+    fs_type = ""
+    pool_name = ""
+    root_path = ""
+
+  [plugins."io.containerd.snapshotter.v1.native"]
+    root_path = ""
+
+  [plugins."io.containerd.snapshotter.v1.overlayfs"]
+    mount_options = []
+    root_path = ""
+    sync_remove = false
+    upperdir_label = false
+
+  [plugins."io.containerd.snapshotter.v1.zfs"]
+    root_path = ""
+
+  [plugins."io.containerd.tracing.processor.v1.otlp"]
+
+  [plugins."io.containerd.transfer.v1.local"]
+    config_path = ""
+    max_concurrent_downloads = 3
+    max_concurrent_uploaded_layers = 3
+
+    [[plugins."io.containerd.transfer.v1.local".unpack_config]]
+      differ = ""
+      platform = "linux/amd64"
+      snapshotter = "overlayfs"
+
+[proxy_plugins]
+
+[stream_processors]
+
+  [stream_processors."io.containerd.ocicrypt.decoder.v1.tar"]
+    accepts = ["application/vnd.oci.image.layer.v1.tar+encrypted"]
+    args = ["--decryption-keys-path", "/etc/containerd/ocicrypt/keys"]
+    env = ["OCICRYPT_KEYPROVIDER_CONFIG=/etc/containerd/ocicrypt/ocicrypt_keyprovider.conf"]
+    path = "ctd-decoder"
+    returns = "application/vnd.oci.image.layer.v1.tar"
+
+  [stream_processors."io.containerd.ocicrypt.decoder.v1.tar.gzip"]
+    accepts = ["application/vnd.oci.image.layer.v1.tar+gzip+encrypted"]
+    args = ["--decryption-keys-path", "/etc/containerd/ocicrypt/keys"]
+    env = ["OCICRYPT_KEYPROVIDER_CONFIG=/etc/containerd/ocicrypt/ocicrypt_keyprovider.conf"]
+    path = "ctd-decoder"
+    returns = "application/vnd.oci.image.layer.v1.tar+gzip"
+
+[timeouts]
+  "io.containerd.timeout.bolt.open" = "0s"
+  "io.containerd.timeout.metrics.shimstats" = "2s"
+  "io.containerd.timeout.shim.cleanup" = "5s"
+  "io.containerd.timeout.shim.load" = "5s"
+  "io.containerd.timeout.shim.shutdown" = "3s"
+  "io.containerd.timeout.task.state" = "2s"
+
+[ttrpc]
+  address = ""
+  gid = 0
+  uid = 0
+Configuring containerd to use systemd as the cgroup driver...
+Starting containerd service...
+Running kubernetes.sh on worker node...
+Kubernetes components are already installed.
+Running nvidia-container.sh on worker node...
+NVIDIA container toolkit is already installed.
+Configuring containerd to use NVIDIA as the default runtime...
+time="2024-10-16T08:08:25-06:00" level=info msg="Loading config from /etc/containerd/config.toml"
+time="2024-10-16T08:08:25-06:00" level=info msg="Wrote updated config to /etc/containerd/config.toml"
+time="2024-10-16T08:08:25-06:00" level=info msg="It is recommended that containerd daemon be restarted."
+Restarting containerd service...
+NVIDIA container toolkit installation complete.
+Running docker-registry-worker.sh on worker node ...
+Updating containerd config on worker node to include insecure registry 192.168.0.125:30000
+Restarting containerd to apply insecure registry changes on worker node...
+Updating Docker daemon.json on worker node to include insecure registry 192.168.0.125:30000
+Insecure registry 192.168.0.125:30000 is already present in Docker daemon.json on worker node.
+Docker registry setup and configuration complete on worker node.
+Joining the worker node to the Kubernetes cluster...
+[preflight] Running pre-flight checks
+[preflight] Reading configuration from the cluster...
+[preflight] FYI: You can look at this config file with 'kubectl -n kube-system get cm kubeadm-config -o yaml'
+[kubelet-start] Writing kubelet configuration to file "/var/lib/kubelet/config.yaml"
+[kubelet-start] Writing kubelet environment file with flags to file "/var/lib/kubelet/kubeadm-flags.env"
+[kubelet-start] Starting the kubelet
+[kubelet-check] Waiting for a healthy kubelet at http://127.0.0.1:10248/healthz. This can take up to 4m0s
+[kubelet-check] The kubelet is healthy after 501.804834ms
+[kubelet-start] Waiting for the kubelet to perform the TLS Bootstrap
+
+This node has joined the cluster:
+* Certificate signing request was sent to apiserver and a response was received.
+* The Kubelet was informed of the new secure connection details.
+
+Run 'kubectl get nodes' on the control-plane to see this node join the cluster.
+
+Cleaning up: deleting the scripts folder from worker node...
+Worker node 192.168.0.101 setup and joined successfully.
+Worker node 192.168.0.101 set up and joined the cluster successfully.
+All worker nodes have been set up and joined the cluster successfully.
