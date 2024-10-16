@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 # Reset kubeadm (force to bypass the confirmation prompt)
 echo "Resetting Kubernetes cluster..."
 sudo kubeadm reset --force
@@ -37,5 +36,10 @@ sudo iptables -X
 sudo iptables -t nat -X
 sudo iptables -t mangle -X
 sudo iptables -Z
+
+# Remove the Docker registry path
+echo "Removing Docker registry path: $DOCKER_REGISTRY_PATH"
+sudo rm -rf "$DOCKER_REGISTRY_PATH"
+echo "Docker registry path removed."
 
 echo "Kubernetes reset complete."

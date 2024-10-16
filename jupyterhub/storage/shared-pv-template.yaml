@@ -4,7 +4,7 @@ metadata:
   name: shared-pv
 spec:
   capacity:
-    storage: $STORAGE_SIZE
+    storage: $NFS_STORAGE_SIZE
   accessModes:
     - ReadWriteMany  # Ensure RWX
   nfs:

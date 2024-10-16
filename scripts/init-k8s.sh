@@ -76,12 +76,13 @@ export NFS_SERVER=$API_SERVER_ADDRESS
 export NFS_STORAGE_PATH=$NFS_STORAGE_PATH
 export STORAGE_SIZE=$STORAGE_SIZE
 
-envsubst < kubernetes/storage/shared-pv-template.yaml > kubernetes/storage/shared-pv.yaml
-envsubst < kubernetes/storage/shared-pvc-template.yaml > kubernetes/storage/shared-pvc.yaml
+envsubst < jupyterhub/storage/shared-pv-template.yaml > jupyterhub/storage/shared-pv.yaml
+envsubst < jupyterhub/storage/shared-pvc-template.yaml > jupyterhub/storage/shared-pvc.yaml
 
-
-kubectl apply -f kubernetes/storage/storageclass.yaml
-kubectl apply -f kubernetes/storage/shared-pv.yaml
-kubectl apply -f kubernetes/storage/shared-pvc.yaml
+kubectl apply -f jupyterhub/storage/storageclass.yaml
+kubectl apply -f jupyterhub/storage/shared-pv.yaml
+kubectl apply -f jupyterhub/storage/shared-pvc.yaml
+kubectl apply -f jupyterhub/pod-manager-role/pod-manager-role.yaml
+kubectl apply -f jupyterhub/pod-manager-role/pod-manager-rolebinding.yaml
 
 echo "Kubernetes storage configuration applied successfully."

@@ -1,4 +1,3 @@
-# Install containerd runtime
 echo "Setting up containerd runtime..."
 
 # Download and store Docker GPG key without asking for confirmation
