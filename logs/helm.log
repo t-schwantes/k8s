@@ -6,16 +6,16 @@ Adding Helm repositories for JupyterHub and NVIDIA device plugin...
 JupyterHub Helm repository already exists, skipping...
 NVIDIA device plugin Helm repository already exists, skipping...
 Hang tight while we grab the latest from your chart repositories...
-...Successfully got an update from the "metallb" chart repository
 ...Successfully got an update from the "nvdp" chart repository
-...Successfully got an update from the "nvidia" chart repository
+...Successfully got an update from the "metallb" chart repository
 ...Successfully got an update from the "jupyterhub" chart repository
+...Successfully got an update from the "nvidia" chart repository
 Update Complete. ⎈Happy Helming!⎈
 Helm repositories added and updated.
 Installing JupyterHub with Helm using config.yaml...
 Release "jupyterhub" does not exist. Installing it now.
 NAME: jupyterhub
-LAST DEPLOYED: Wed Oct 16 08:08:27 2024
+LAST DEPLOYED: Thu Oct 17 11:33:49 2024
 NAMESPACE: jupyterhub
 STATUS: deployed
 REVISION: 1
@@ -86,14 +86,14 @@ Adding NVIDIA Helm repository for GPU Operator...
 Hang tight while we grab the latest from your chart repositories...
 ...Successfully got an update from the "metallb" chart repository
 ...Successfully got an update from the "nvdp" chart repository
-...Successfully got an update from the "nvidia" chart repository
 ...Successfully got an update from the "jupyterhub" chart repository
+...Successfully got an update from the "nvidia" chart repository
 Update Complete. ⎈Happy Helming!⎈
 Installing NVIDIA GPU Operator with custom configuration...
-W1016 08:08:40.502444 2063028 warnings.go:70] spec.template.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].preference.matchExpressions[0].key: node-role.kubernetes.io/master is use "node-role.kubernetes.io/control-plane" instead
-W1016 08:08:40.502482 2063028 warnings.go:70] spec.template.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].preference.matchExpressions[0].key: node-role.kubernetes.io/master is use "node-role.kubernetes.io/control-plane" instead
+W1017 11:34:02.452095 2606225 warnings.go:70] spec.template.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].preference.matchExpressions[0].key: node-role.kubernetes.io/master is use "node-role.kubernetes.io/control-plane" instead
+W1017 11:34:02.452096 2606225 warnings.go:70] spec.template.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].preference.matchExpressions[0].key: node-role.kubernetes.io/master is use "node-role.kubernetes.io/control-plane" instead
 NAME: gpu-operator
-LAST DEPLOYED: Wed Oct 16 08:08:40 2024
+LAST DEPLOYED: Thu Oct 17 11:34:02 2024
 NAMESPACE: gpu-operator
 STATUS: deployed
 REVISION: 1

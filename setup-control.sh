@@ -24,4 +24,4 @@ run_script "init-k8s.sh" "$LOG_DIR/init-k8s.log"
 run_script "docker-registry.sh" $LOG_DIR/"docker-registry.log"
 run_script "setup-worker.sh" $LOG_DIR/"setup-worker.log"
 run_script "helm.sh" "$LOG_DIR/helm.log"
-
+run_script "dashboard-server.sh" "$LOG_DIR/dashboard-server.log"
