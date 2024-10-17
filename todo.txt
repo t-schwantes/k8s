@@ -2,4 +2,5 @@ setup dashboard webserver
 set up auto generate user
 set up dockerimage select jupyterhub
 security: k8s container creating from jupyterhub, jupyterhub sudo, ufw
-copy bashrc and bash_profile from k8s/jupyterhub to jupyterhub_home_path
+copy bashrc, bash_profile, condarc from k8s/jupyterhub to jupyterhub_home_path
+tensorboard

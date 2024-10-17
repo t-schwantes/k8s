@@ -28,6 +28,8 @@ hub:
     JupyterHub:
       authenticator_class: dummy
   authenticatePrometheus: false
+  allowNamedServers: true
+  namedServerLimitPerUser: 5
 
 proxy:
   chp:

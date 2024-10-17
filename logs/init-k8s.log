@@ -4,7 +4,7 @@ Initializing Kubernetes control plane...
 [preflight] Pulling images required for setting up a Kubernetes cluster
 [preflight] This might take a minute or two, depending on the speed of your internet connection
 [preflight] You can also perform this action beforehand using 'kubeadm config images pull'
-W1016 08:07:43.140450 2057060 checks.go:846] detected that the sandbox image "registry.k8s.io/pause:3.8" of the container runtime is inconsistent with that used by kubeadm.It is recommended to use "registry.k8s.io/pause:3.10" as the CRI sandbox image.
+W1017 11:33:23.549720 2600482 checks.go:846] detected that the sandbox image "registry.k8s.io/pause:3.8" of the container runtime is inconsistent with that used by kubeadm.It is recommended to use "registry.k8s.io/pause:3.10" as the CRI sandbox image.
 [certs] Using certificateDir folder "/etc/kubernetes/pki"
 [certs] Generating "ca" certificate and key
 [certs] Generating "apiserver" certificate and key
@@ -36,15 +36,15 @@ W1016 08:07:43.140450 2057060 checks.go:846] detected that the sandbox image "re
 [kubelet-start] Starting the kubelet
 [wait-control-plane] Waiting for the kubelet to boot up the control plane as static Pods from directory "/etc/kubernetes/manifests"
 [kubelet-check] Waiting for a healthy kubelet at http://127.0.0.1:10248/healthz. This can take up to 4m0s
-[kubelet-check] The kubelet is healthy after 501.861855ms
+[kubelet-check] The kubelet is healthy after 501.435983ms
 [api-check] Waiting for a healthy API server. This can take up to 4m0s
-[api-check] The API server is healthy after 2.501611451s
+[api-check] The API server is healthy after 2.501943553s
 [upload-config] Storing the configuration used in ConfigMap "kubeadm-config" in the "kube-system" Namespace
 [kubelet] Creating a ConfigMap "kubelet-config" in namespace kube-system with the configuration for the kubelets in the cluster
 [upload-certs] Skipping phase. Please see --upload-certs
 [mark-control-plane] Marking the node beast5 as control-plane by adding the labels: [node-role.kubernetes.io/control-plane node.kubernetes.io/exclude-from-external-load-balancers]
 [mark-control-plane] Marking the node beast5 as control-plane by adding the taints [node-role.kubernetes.io/control-plane:NoSchedule]
-[bootstrap-token] Using token: nrgc7r.8oqy628ng66vjl40
+[bootstrap-token] Using token: fvz5nm.z2zlnh31ob38k6c8
 [bootstrap-token] Configuring bootstrap tokens, cluster-info ConfigMap, RBAC Roles
 [bootstrap-token] Configured RBAC rules to allow Node Bootstrap tokens to get nodes
 [bootstrap-token] Configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order for nodes to get long term certificate credentials
@@ -73,8 +73,8 @@ Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
 
 Then you can join any number of worker nodes by running the following on each as root:
 
-kubeadm join 192.168.0.125:6443 --token nrgc7r.8oqy628ng66vjl40 \
-	--discovery-token-ca-cert-hash sha256:6bbc7460d1fc17fd3562e0740f738c01d68946f02a5a10f8b1ea3db36288cf28 
+kubeadm join 192.168.0.125:6443 --token fvz5nm.z2zlnh31ob38k6c8 \
+	--discovery-token-ca-cert-hash sha256:1468514324554e2c0274b5692f664ab2c0eed5ab6e9e0deb247c0c1e4c558b80 
 Setting up kubeconfig for kubectl...
 Kubernetes control plane initialized and credentials set.
 Removing NoSchedule taints from the control-plane node (beast5)...
@@ -96,15 +96,15 @@ Installing NFS server...
 WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
 
 Hit:1 https://download.docker.com/linux/ubuntu jammy InRelease
-Hit:2 https://nvidia.github.io/libnvidia-container/stable/deb/amd64  InRelease
-Ign:3 https://packages.cloud.google.com/apt kubernetes-xenial InRelease
-Err:4 https://packages.cloud.google.com/apt kubernetes-xenial Release
-  404  Not Found [IP: 142.250.69.238 443]
-Hit:5 http://us.archive.ubuntu.com/ubuntu jammy InRelease
-Hit:6 http://us.archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:2 http://us.archive.ubuntu.com/ubuntu jammy InRelease
+Hit:3 https://nvidia.github.io/libnvidia-container/stable/deb/amd64  InRelease
+Hit:5 http://us.archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:6 http://archive.lambdalabs.com/ubuntu jammy InRelease
 Hit:7 http://us.archive.ubuntu.com/ubuntu jammy-backports InRelease
 Hit:8 http://security.ubuntu.com/ubuntu jammy-security InRelease
-Hit:9 http://archive.lambdalabs.com/ubuntu jammy InRelease
+Ign:4 https://packages.cloud.google.com/apt kubernetes-xenial InRelease
+Err:9 https://packages.cloud.google.com/apt kubernetes-xenial Release
+  404  Not Found [IP: 142.250.69.238 443]
 Reading package lists...
 E: The repository 'https://apt.kubernetes.io kubernetes-xenial Release' does not have a Release file.
 
@@ -114,7 +114,7 @@ Reading package lists...
 Building dependency tree...
 Reading state information...
 nfs-kernel-server is already the newest version (1:2.6.1-1ubuntu1.2).
-0 upgraded, 0 newly installed, 0 to remove and 17 not upgraded.
+0 upgraded, 0 newly installed, 0 to remove and 15 not upgraded.
 Creating NFS export directory at /home/default/tmp_pv...
 Configuring NFS exports...
 NFS export already exists in /etc/exports, skipping...

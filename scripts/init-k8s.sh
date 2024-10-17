@@ -50,6 +50,9 @@ sudo apt install -y nfs-kernel-server
 # Create the NFS export directory and set permissions
 echo "Creating NFS export directory at $NFS_STORAGE_PATH..."
 sudo mkdir -p $NFS_STORAGE_PATH
+sudo cp jupyterhub/default-config/bash_profile $NFS_STORAGE_PATH/.bash_profile
+sudo cp jupyterhub/default-config/bashrc $NFS_STORAGE_PATH/.bashrc
+sudo cp jupyterhub/default-config/condarc $NFS_STORAGE_PATH/.condarc
 sudo chmod 777 $NFS_STORAGE_PATH
 
 # Configure the NFS export

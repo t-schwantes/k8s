@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JupyterHub Pod Resource Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>JupyterHub Pod Resource Dashboard</h1>
+    <div class="table">
+        <table>
+            <tr>
+                <th>Pod Name</th>
+                <th>Status</th>
+                <th>Node</th>
+                <th>GPUs Used</th>
+            </tr>
+            {% for pod in data %}
+            <tr>
+                <td>{{ pod.name }}</td>
+                <td>{{ pod.status }}</td>
+                <td>{{ pod.node }}</td>
+                <td>{{ pod.gpus }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>
