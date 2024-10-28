@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: tensorboard-routing
+  name: routing
   namespace: jupyterhub
   labels:
-    app: tensorboard-routing
+    app: routing
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: tensorboard-routing
+      app: routing
   template:
     metadata:
       labels:
-        app: tensorboard-routing
+        app: routing
     spec:
-      serviceAccountName: tensorboard-routing-sa
+      serviceAccountName: routing-sa
       containers:
-      - name: tensorboard-routing
-        image: "${API_SERVER_ADDRESS}:30000/tensorboard:latest"
+      - name: routing
+        image: "${API_SERVER_ADDRESS}:30000/jupyterhub-routing:latest"
         ports:
         - containerPort: 8001
         env:

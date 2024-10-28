@@ -4,14 +4,14 @@
 source config.sh
 
 # Variables
-DOCKER_IMAGE_NAME="tensorboard"
+DOCKER_IMAGE_NAME="jupyterhub-routing"
 DOCKER_REGISTRY="${API_SERVER_ADDRESS}:30000"
 DOCKER_IMAGE_TAG="latest"
-IMAGE_PATH="jupyterhub/tensorboard"
-YAML_FILE="tensorboard-service.yaml"
-DEPLOYMENT_YAML_FILE="tensorboard-deployment.yaml"
+IMAGE_PATH="jupyterhub/routing"
+YAML_FILE="routing-service.yaml"
+DEPLOYMENT_YAML_FILE="routing-deployment.yaml"
 
-# Change to the tensorboard image directory
+# Change to the routing image directory
 cd ${IMAGE_PATH}
 
 # Build the Docker image without cache
@@ -29,20 +29,18 @@ docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
 # Change back to the original directory
 cd -
 
-# Apply the TensorBoard service configuration to Kubernetes
-echo "Applying TensorBoard service configuration to Kubernetes..."
+# Apply the Routing service configuration to Kubernetes
+echo "Applying Routing service configuration to Kubernetes..."
 kubectl apply -f ${IMAGE_PATH}/${YAML_FILE}
 
-echo "Applying TensorBoard ServiceAccount, Role, and RoleBinding to Kubernetes..."
-kubectl apply -f ${IMAGE_PATH}/service-account/tensorboard-sa.yaml
-kubectl apply -f ${IMAGE_PATH}/service-account/tensorboard-role.yaml
-kubectl apply -f ${IMAGE_PATH}/service-account/tensorboard-rolebinding.yaml
+echo "Applying Routing ServiceAccount, Role, and RoleBinding to Kubernetes..."
+kubectl apply -f ${IMAGE_PATH}/service-account/routing-sa.yaml
+kubectl apply -f ${IMAGE_PATH}/service-account/routing-role.yaml
+kubectl apply -f ${IMAGE_PATH}/service-account/routing-rolebinding.yaml
 
-
-# Apply the TensorBoard deployment configuration to Kubernetes
-echo "Applying TensorBoard deployment configuration to Kubernetes..."
-envsubst < jupyterhub/tensorboard/tensorboard-deployment-template.yaml > jupyterhub/tensorboard/tensorboard-deployment.yaml
+# Apply the Routing deployment configuration to Kubernetes
+echo "Applying Routing deployment configuration to Kubernetes..."
+envsubst < jupyterhub/routing/routing-deployment-template.yaml > jupyterhub/routing/routing-deployment.yaml
 kubectl apply -f ${IMAGE_PATH}/${DEPLOYMENT_YAML_FILE}
 
-echo "TensorBoard image, service, and deployment setup completed successfully."
-
+echo "Routing image, service, and deployment setup completed successfully."
