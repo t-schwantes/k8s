@@ -6,7 +6,7 @@ source config.sh
 # Variables
 DOCKER_IMAGE_NAME="jupyterhub-dashboard"
 DOCKER_REGISTRY="${API_SERVER_ADDRESS}:30000"
-WORKING_DIR="jupyterhub/server"
+WORKING_DIR="jupyterhub/dashboard"
 K8S_DEPLOYMENT="${WORKING_DIR}/deployment.yaml"
 K8S_SERVICE="${WORKING_DIR}/service.yaml"
 

@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 from kubernetes import client, config
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/dashboard/static')
 
 def get_pod_info():
     # Load Kubernetes configuration

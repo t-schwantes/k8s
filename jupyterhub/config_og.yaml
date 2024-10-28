@@ -1,0 +1,86 @@
+#hub:
+#  db:
+#    type: sqlite-memory
+#  config:
+#    Authenticator:
+#      admin_users:
+#        - admin
+#    DummyAuthenticator:
+#      password: admin_password
+#    JupyterHub:
+#      authenticator_class: dummy
+#  authenticatePrometheus: false
+#  extraConfig:
+#    00-hostnetwork: |
+#      c.KubeSpawner.extra_pod_config = {
+#          "hostNetwork": True
+#      }
+
+hub:
+  db:
+    type: sqlite-memory
+  config:
+    Authenticator:
+      admin_users:
+        - admin
+    DummyAuthenticator:
+      password: admin_password
+#      allowed_users:  # Specific usernames and passwords
+#        admin: admin   # Admin user with password
+#        user1: user1   # Normal user with their password
+#        user2: user2   # Another user with a different password
+    JupyterHub:
+      authenticator_class: dummy
+  authenticatePrometheus: false
+  allowNamedServers: true
+  namedServerLimitPerUser: 5
+
+proxy:
+  chp:
+    networkPolicy:
+      egress:
+        - ports:
+          - port: 6116
+          - port: 6117
+          - port: 6118
+
+singleuser:
+  serviceAccountName: default
+  storage:
+    dynamic:
+      pvcNameTemplate: "shared-pvc" 
+      storageAccessModes: ["ReadWriteMany"]  
+      storageClass: "jhub-storage-class"  
+  profileList:
+    - display_name: "0 GPUs"
+      kubespawner_override:
+        image: 192.168.0.125:30000/base:latest
+        image_pull_policy: Always
+        extra_resource_limits:
+          nvidia.com/gpu: "0"
+        runtime_class_name: nvidia
+      default: true
+    - display_name: "1 GPU"
+      kubespawner_override:
+        image: 192.168.0.125:30000/base:latest
+        image_pull_policy: Always
+        extra_resource_limits:
+          nvidia.com/gpu: "1"
+        runtime_class_name: nvidia
+    - display_name: "2 GPUs"
+      kubespawner_override:
+        image: 192.168.0.125:30000/base:latest
+        image_pull_policy: Always
+        extra_resource_limits:
+          nvidia.com/gpu: "2"
+        runtime_class_name: nvidia
+
+  extraEnv:
+    CONDA_PKGS_DIRS: /home/jovyan/conda_pkgs
+    CONDA_ENVS_PATH: /home/jovyan/conda_envs
+    GRANT_SUDO: "yes"
+    NOTEBOOK_ARGS: "--allow-root"
+  uid: 0
+  cmd: start-singleuser.sh
+  allowPrivilegeEscalation: true
+

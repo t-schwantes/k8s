@@ -2,40 +2,16 @@ Updating package lists...
 
 WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
 
-Hit:1 https://nvidia.github.io/libnvidia-container/stable/deb/amd64  InRelease
-Hit:3 http://us.archive.ubuntu.com/ubuntu jammy InRelease
+Get:1 https://nvidia.github.io/libnvidia-container/stable/deb/amd64  InRelease [1,477 B]
+Hit:3 https://download.docker.com/linux/ubuntu jammy InRelease
+Hit:4 http://us.archive.ubuntu.com/ubuntu jammy InRelease
+Hit:5 http://archive.lambdalabs.com/ubuntu jammy InRelease
+Hit:6 http://us.archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:7 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Hit:8 http://us.archive.ubuntu.com/ubuntu jammy-backports InRelease
 Ign:2 https://packages.cloud.google.com/apt kubernetes-xenial InRelease
-Err:4 https://packages.cloud.google.com/apt kubernetes-xenial Release
+Err:9 https://packages.cloud.google.com/apt kubernetes-xenial Release
   404  Not Found [IP: 142.250.69.238 443]
-Get:5 http://us.archive.ubuntu.com/ubuntu jammy-updates InRelease [128 kB]
-Get:6 https://download.docker.com/linux/ubuntu jammy InRelease [48.8 kB]
-Get:7 http://us.archive.ubuntu.com/ubuntu jammy-backports InRelease [127 kB]
-Get:8 http://us.archive.ubuntu.com/ubuntu jammy-updates/main i386 Packages [712 kB]
-Hit:9 http://archive.lambdalabs.com/ubuntu jammy InRelease
-Get:10 http://security.ubuntu.com/ubuntu jammy-security InRelease [129 kB]
-Get:11 http://us.archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages [2,109 kB]
-Get:12 http://us.archive.ubuntu.com/ubuntu jammy-updates/main amd64 DEP-11 Metadata [103 kB]
-Get:13 http://us.archive.ubuntu.com/ubuntu jammy-updates/restricted amd64 DEP-11 Metadata [212 B]
-Get:14 http://security.ubuntu.com/ubuntu jammy-security/main amd64 DEP-11 Metadata [43.2 kB]
-Get:15 http://us.archive.ubuntu.com/ubuntu jammy-updates/universe i386 Packages [737 kB]
-Get:16 http://security.ubuntu.com/ubuntu jammy-security/restricted amd64 DEP-11 Metadata [208 B]
-Get:17 http://us.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 Packages [1,132 kB]
-Get:18 http://security.ubuntu.com/ubuntu jammy-security/universe amd64 DEP-11 Metadata [126 kB]
-Get:19 http://us.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 DEP-11 Metadata [356 kB]
-Get:20 http://us.archive.ubuntu.com/ubuntu jammy-updates/universe DEP-11 48x48 Icons [248 kB]
-Get:21 http://us.archive.ubuntu.com/ubuntu jammy-updates/universe DEP-11 64x64 Icons [401 kB]
-Get:22 http://security.ubuntu.com/ubuntu jammy-security/universe DEP-11 48x48 Icons [83.4 kB]
-Get:23 http://us.archive.ubuntu.com/ubuntu jammy-updates/multiverse amd64 DEP-11 Metadata [940 B]
-Get:24 http://us.archive.ubuntu.com/ubuntu jammy-backports/main amd64 DEP-11 Metadata [5,320 B]
-Get:25 http://us.archive.ubuntu.com/ubuntu jammy-backports/main DEP-11 48x48 Icons [14.6 kB]
-Get:26 http://security.ubuntu.com/ubuntu jammy-security/universe DEP-11 64x64 Icons [124 kB]
-Get:27 http://us.archive.ubuntu.com/ubuntu jammy-backports/main DEP-11 64x64 Icons [19.4 kB]
-Get:28 http://us.archive.ubuntu.com/ubuntu jammy-backports/restricted amd64 DEP-11 Metadata [212 B]
-Get:29 http://security.ubuntu.com/ubuntu jammy-security/multiverse amd64 DEP-11 Metadata [208 B]
-Get:30 http://us.archive.ubuntu.com/ubuntu jammy-backports/universe amd64 DEP-11 Metadata [23.1 kB]
-Get:31 http://us.archive.ubuntu.com/ubuntu jammy-backports/universe DEP-11 48x48 Icons [20.1 kB]
-Get:32 http://us.archive.ubuntu.com/ubuntu jammy-backports/universe DEP-11 64x64 Icons [32.0 kB]
-Get:33 http://us.archive.ubuntu.com/ubuntu jammy-backports/multiverse amd64 DEP-11 Metadata [212 B]
 Reading package lists...
 E: The repository 'https://apt.kubernetes.io kubernetes-xenial Release' does not have a Release file.
 Performing a distribution upgrade...
@@ -57,22 +33,7 @@ The following packages have been kept back:
   libnvidia-fbc1-550 libnvidia-gl-550 nvidia-compute-utils-550 nvidia-dkms-550
   nvidia-driver-550 nvidia-kernel-common-550 nvidia-kernel-source-550
   nvidia-utils-550 xserver-xorg-video-nvidia-550
-The following packages will be upgraded:
-  gjs libgjs0g
-2 upgraded, 0 newly installed, 0 to remove and 15 not upgraded.
-Need to get 508 kB of archives.
-After this operation, 5,120 B of additional disk space will be used.
-Get:1 http://us.archive.ubuntu.com/ubuntu jammy-updates/main amd64 gjs amd64 1.72.4-0ubuntu0.22.04.4 [106 kB]
-Get:2 http://us.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libgjs0g amd64 1.72.4-0ubuntu0.22.04.4 [402 kB]
-Fetched 508 kB in 3s (195 kB/s)
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 273326 files and directories currently installed.)
-Preparing to unpack .../gjs_1.72.4-0ubuntu0.22.04.4_amd64.deb ...
-Unpacking gjs (1.72.4-0ubuntu0.22.04.4) over (1.72.4-0ubuntu0.22.04.3~really.is.1.72.2.0ubuntu2) ...
-Preparing to unpack .../libgjs0g_1.72.4-0ubuntu0.22.04.4_amd64.deb ...
-Unpacking libgjs0g:amd64 (1.72.4-0ubuntu0.22.04.4) over (1.72.4-0ubuntu0.22.04.3~really.is.1.72.2.0ubuntu2) ...
-Setting up libgjs0g:amd64 (1.72.4-0ubuntu0.22.04.4) ...
-Setting up gjs (1.72.4-0ubuntu0.22.04.4) ...
-Processing triggers for libc-bin (2.35-0ubuntu3.8) ...
+0 upgraded, 0 newly installed, 0 to remove and 15 not upgraded.
 Installing net-tools...
 
 WARNING: apt does not have a stable CLI interface. Use with caution in scripts.

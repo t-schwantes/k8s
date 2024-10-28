@@ -1,5 +1,5 @@
 # Use an official Node image to extract Node.js
-FROM node:16 as node-stage
+# FROM node:16 as node-stage
 
 # Use the Jupyter PyTorch notebook as the base image
 FROM quay.io/jupyter/pytorch-notebook:latest
@@ -18,11 +18,11 @@ RUN chown ${NB_UID}:${NB_GID} /home/jovyan/.bashrc && \
 # Install Python packages and system-level dependencies, then clean up
 COPY requirements.txt /tmp/
 RUN pip install -r /tmp/requirements.txt && rm /tmp/requirements.txt && \
-    apt-get update && apt-get install -y build-essential && \
+    apt-get update && apt-get install -y build-essential npm nodejs&& \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Copy Node.js and npm from the Node image stage
-COPY --from=node-stage /usr/local /usr/local
+# COPY --from=node-stage /usr/local /usr/local
 
 # Tensorboard setup
 RUN mkdir -p /etc/tb/
@@ -38,6 +38,8 @@ WORKDIR "${HOME}"
 
 # Set back to the default Jupyter user (jovyan)
 USER ${NB_UID}
+
+ENTRYPOINT ["/bin/bash", "-c", "node /etc/tb/tensorboard-proxy.js & start-notebook.sh"]
 
 # Optional: Add environment variables or other configurations if needed
 # ENV CUSTOM_ENV_VAR=custom_value
