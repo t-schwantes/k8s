@@ -1,4 +1,4 @@
-Kubeadm join command for workers: kubeadm join 192.168.0.125:6443 --token 0t4mih.p72yucwzzvdtsvy1 --discovery-token-ca-cert-hash sha256:17781e36b6a6b857a1b97d3c644f48c2390ae4c431c5bc4f1cf93a0d3bf43e57 
+Kubeadm join command for workers: kubeadm join 192.168.0.125:6443 --token qkik25.zibvpbr15rexooly --discovery-token-ca-cert-hash sha256:d413a3e8544d5ef8b51e69c894ac569c8d9af3249fd7bc1690fb10bed168575e 
 Setting up worker node: 192.168.0.101
 Creating remote script directory on worker node 192.168.0.101...
 Copying scripts to worker node 192.168.0.101...
@@ -11,15 +11,15 @@ Updating package lists...
 WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
 
 Get:1 https://nvidia.github.io/libnvidia-container/stable/deb/amd64  InRelease [1,477 B]
-Hit:3 https://download.docker.com/linux/ubuntu jammy InRelease
-Hit:4 http://us.archive.ubuntu.com/ubuntu jammy InRelease
-Hit:5 http://us.archive.ubuntu.com/ubuntu jammy-updates InRelease
-Hit:6 http://security.ubuntu.com/ubuntu jammy-security InRelease
-Hit:7 http://us.archive.ubuntu.com/ubuntu jammy-backports InRelease
+Hit:3 http://us.archive.ubuntu.com/ubuntu jammy InRelease
+Hit:4 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Hit:5 https://download.docker.com/linux/ubuntu jammy InRelease
+Hit:6 http://us.archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:7 http://archive.lambdalabs.com/ubuntu jammy InRelease
+Hit:8 http://us.archive.ubuntu.com/ubuntu jammy-backports InRelease
 Ign:2 https://packages.cloud.google.com/apt kubernetes-xenial InRelease
-Err:8 https://packages.cloud.google.com/apt kubernetes-xenial Release
+Err:9 https://packages.cloud.google.com/apt kubernetes-xenial Release
   404  Not Found [IP: 142.250.69.238 443]
-Hit:9 http://archive.lambdalabs.com/ubuntu jammy InRelease
 Reading package lists...
 E: The repository 'https://apt.kubernetes.io kubernetes-xenial Release' does not have a Release file.
 Performing a distribution upgrade...
@@ -64,8 +64,8 @@ WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
 Hit:1 https://download.docker.com/linux/ubuntu jammy InRelease
 Get:2 https://nvidia.github.io/libnvidia-container/stable/deb/amd64  InRelease [1,477 B]
 Hit:4 http://us.archive.ubuntu.com/ubuntu jammy InRelease
-Hit:5 http://archive.lambdalabs.com/ubuntu jammy InRelease
-Hit:6 http://us.archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:5 http://us.archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:6 http://archive.lambdalabs.com/ubuntu jammy InRelease
 Hit:7 http://us.archive.ubuntu.com/ubuntu jammy-backports InRelease
 Hit:8 http://security.ubuntu.com/ubuntu jammy-security InRelease
 Ign:3 https://packages.cloud.google.com/apt kubernetes-xenial InRelease
@@ -383,9 +383,9 @@ Kubernetes components are already installed.
 Running nvidia-container.sh on worker node...
 NVIDIA container toolkit is already installed.
 Configuring containerd to use NVIDIA as the default runtime...
-time="2024-10-28T14:08:43-06:00" level=info msg="Loading config from /etc/containerd/config.toml"
-time="2024-10-28T14:08:43-06:00" level=info msg="Wrote updated config to /etc/containerd/config.toml"
-time="2024-10-28T14:08:43-06:00" level=info msg="It is recommended that containerd daemon be restarted."
+time="2024-10-28T14:35:49-06:00" level=info msg="Loading config from /etc/containerd/config.toml"
+time="2024-10-28T14:35:49-06:00" level=info msg="Wrote updated config to /etc/containerd/config.toml"
+time="2024-10-28T14:35:49-06:00" level=info msg="It is recommended that containerd daemon be restarted."
 Restarting containerd service...
 NVIDIA container toolkit installation complete.
 Running docker-registry-worker.sh on worker node ...
@@ -402,7 +402,7 @@ Joining the worker node to the Kubernetes cluster...
 [kubelet-start] Writing kubelet environment file with flags to file "/var/lib/kubelet/kubeadm-flags.env"
 [kubelet-start] Starting the kubelet
 [kubelet-check] Waiting for a healthy kubelet at http://127.0.0.1:10248/healthz. This can take up to 4m0s
-[kubelet-check] The kubelet is healthy after 501.568087ms
+[kubelet-check] The kubelet is healthy after 501.198342ms
 [kubelet-start] Waiting for the kubelet to perform the TLS Bootstrap
 
 This node has joined the cluster:

@@ -1,7 +1,7 @@
 NVIDIA container toolkit is already installed.
 Configuring containerd to use NVIDIA as the default runtime...
-time="2024-10-28T14:06:19-06:00" level=info msg="Loading config from /etc/containerd/config.toml"
-time="2024-10-28T14:06:19-06:00" level=info msg="Wrote updated config to /etc/containerd/config.toml"
-time="2024-10-28T14:06:19-06:00" level=info msg="It is recommended that containerd daemon be restarted."
+time="2024-10-28T14:34:30-06:00" level=info msg="Loading config from /etc/containerd/config.toml"
+time="2024-10-28T14:34:30-06:00" level=info msg="Wrote updated config to /etc/containerd/config.toml"
+time="2024-10-28T14:34:30-06:00" level=info msg="It is recommended that containerd daemon be restarted."
 Restarting containerd service...
 NVIDIA container toolkit installation complete.

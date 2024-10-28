@@ -15,7 +15,7 @@ Helm repositories added and updated.
 Installing JupyterHub with Helm using config.yaml...
 Release "jupyterhub" does not exist. Installing it now.
 NAME: jupyterhub
-LAST DEPLOYED: Mon Oct 28 14:08:46 2024
+LAST DEPLOYED: Mon Oct 28 14:35:52 2024
 NAMESPACE: jupyterhub
 STATUS: deployed
 REVISION: 1
@@ -84,16 +84,16 @@ service/proxy-public patched
 Adding NVIDIA Helm repository for GPU Operator...
 "nvidia" already exists with the same configuration, skipping
 Hang tight while we grab the latest from your chart repositories...
-...Successfully got an update from the "nvdp" chart repository
 ...Successfully got an update from the "metallb" chart repository
+...Successfully got an update from the "nvdp" chart repository
 ...Successfully got an update from the "nvidia" chart repository
 ...Successfully got an update from the "jupyterhub" chart repository
 Update Complete. ⎈Happy Helming!⎈
 Installing NVIDIA GPU Operator with custom configuration...
-W1028 14:09:02.380760 3229621 warnings.go:70] spec.template.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].preference.matchExpressions[0].key: node-role.kubernetes.io/master is use "node-role.kubernetes.io/control-plane" instead
-W1028 14:09:02.381760 3229621 warnings.go:70] spec.template.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].preference.matchExpressions[0].key: node-role.kubernetes.io/master is use "node-role.kubernetes.io/control-plane" instead
+W1028 14:36:07.946202 3276041 warnings.go:70] spec.template.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].preference.matchExpressions[0].key: node-role.kubernetes.io/master is use "node-role.kubernetes.io/control-plane" instead
+W1028 14:36:07.946289 3276041 warnings.go:70] spec.template.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].preference.matchExpressions[0].key: node-role.kubernetes.io/master is use "node-role.kubernetes.io/control-plane" instead
 NAME: gpu-operator
-LAST DEPLOYED: Mon Oct 28 14:09:02 2024
+LAST DEPLOYED: Mon Oct 28 14:36:07 2024
 NAMESPACE: gpu-operator
 STATUS: deployed
 REVISION: 1

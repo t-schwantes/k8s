@@ -24,7 +24,8 @@ def get_token():
 node_port = 32123
 #api_url = 'http://localhost:' + \
 #    str(node_port) + '/api/routes'
-api_url = 'http://proxy-api-nodeport.jupyterhub.svc.cluster.local:8001/api/routes'
+#api_url = 'http://proxy-api-nodeport.jupyterhub.svc.cluster.local:8001/api/routes'
+api_url = 'http://jupyterhub-routing-api.jupyterhub.svc.cluster.local:8001/api/routes'
 token_descriptor = "hub.config." + \
     "ConfigurableHTTPProxy.auth_token"
 

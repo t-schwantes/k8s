@@ -14,10 +14,10 @@ RUN curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -
 WORKDIR /app
 
 # Copy the Python script into the container
-COPY tensorboard-routing.py /app/tensorboard-routing.py
+COPY routing.py /app/routing.py
 
 # Install Python dependencies
 RUN pip install --upgrade pip && pip install requests kubernetes
 
 # Command to run the Python script
-CMD ["python", "/app/tensorboard-routing.py"]
+CMD ["python", "/app/routing.py"]

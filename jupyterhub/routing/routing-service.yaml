@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: jupyterhub
-  name: proxy-api-nodeport
+  name: jupyterhub-routing-api
 spec:
   type: NodePort
   ports:

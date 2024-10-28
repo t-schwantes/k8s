@@ -3,15 +3,15 @@ Updating package lists...
 WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
 
 Get:1 https://nvidia.github.io/libnvidia-container/stable/deb/amd64  InRelease [1,477 B]
+Hit:2 http://security.ubuntu.com/ubuntu jammy-security InRelease
 Hit:3 https://download.docker.com/linux/ubuntu jammy InRelease
-Hit:4 http://us.archive.ubuntu.com/ubuntu jammy InRelease
-Hit:5 http://archive.lambdalabs.com/ubuntu jammy InRelease
+Hit:5 http://us.archive.ubuntu.com/ubuntu jammy InRelease
 Hit:6 http://us.archive.ubuntu.com/ubuntu jammy-updates InRelease
-Hit:7 http://security.ubuntu.com/ubuntu jammy-security InRelease
-Hit:8 http://us.archive.ubuntu.com/ubuntu jammy-backports InRelease
-Ign:2 https://packages.cloud.google.com/apt kubernetes-xenial InRelease
-Err:9 https://packages.cloud.google.com/apt kubernetes-xenial Release
+Hit:7 http://us.archive.ubuntu.com/ubuntu jammy-backports InRelease
+Ign:4 https://packages.cloud.google.com/apt kubernetes-xenial InRelease
+Err:8 https://packages.cloud.google.com/apt kubernetes-xenial Release
   404  Not Found [IP: 142.250.69.238 443]
+Hit:9 http://archive.lambdalabs.com/ubuntu jammy InRelease
 Reading package lists...
 E: The repository 'https://apt.kubernetes.io kubernetes-xenial Release' does not have a Release file.
 Performing a distribution upgrade...
