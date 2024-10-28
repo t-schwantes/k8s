@@ -1,0 +1,18 @@
+#!/bin/bash
+
+LINK=/app/local-data
+
+if [ -L "$LINK" ]; then
+        echo "Unlinking."
+        unlink "$LINK"
+fi
+
+ln -s $HOME/local-data$1 $LINK
+echo "Mapped $HOME/local-data$1 to $LINK"
+
+if pgrep -af "node /etc/tb/tensorboard-proxy.js" > /dev/null; then
+        echo "Tensorboard proxy is already running."
+else
+        echo "Starting tensorboard."
+        node /etc/tb/tensorboard-proxy.js &
+fi

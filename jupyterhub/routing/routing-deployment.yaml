@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tensorboard-routing
+  namespace: jupyterhub
+  labels:
+    app: tensorboard-routing
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tensorboard-routing
+  template:
+    metadata:
+      labels:
+        app: tensorboard-routing
+    spec:
+      serviceAccountName: tensorboard-routing-sa
+      containers:
+      - name: tensorboard-routing
+        image: "192.168.0.125:30000/tensorboard:latest"
+        ports:
+        - containerPort: 8001
+        env:
+        - name: NODE_PORT
+          value: "32123"
+        - name: JUPYTERHUB_NAMESPACE
+          value: "jupyterhub"
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+      restartPolicy: Always

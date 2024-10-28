@@ -33,22 +33,22 @@ setup_worker_node() {
         chmod +x $REMOTE_SCRIPT_DIR/*.sh
         
 	echo "Running docker.sh on worker node..."
-        bash $REMOTE_SCRIPT_DIR/scripts/docker.sh
+        bash $REMOTE_SCRIPT_DIR/scripts/install/docker.sh
         
         echo "Running config-system.sh on worker node..."
         bash $REMOTE_SCRIPT_DIR/scripts/config-system.sh
         
         echo "Running containerd.sh on worker node..."
-        bash $REMOTE_SCRIPT_DIR/scripts/containerd.sh
+        bash $REMOTE_SCRIPT_DIR/scripts/install/containerd.sh
         
         echo "Running kubernetes.sh on worker node..."
-        bash $REMOTE_SCRIPT_DIR/scripts/kubernetes.sh
+        bash $REMOTE_SCRIPT_DIR/scripts/install/kubernetes.sh
         
 	echo "Running nvidia-container.sh on worker node..."
-        bash $REMOTE_SCRIPT_DIR/scripts/nvidia-container.sh
+        bash $REMOTE_SCRIPT_DIR/scripts/install/nvidia-container.sh
         
 	echo "Running docker-registry-worker.sh on worker node ..."
-        bash $REMOTE_SCRIPT_DIR/scripts/docker-registry-worker.sh        
+        bash $REMOTE_SCRIPT_DIR/scripts/worker/docker-registry-worker.sh        
         
         echo "Joining the worker node to the Kubernetes cluster..."
         sudo $JOIN_COMMAND
