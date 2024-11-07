@@ -11,13 +11,9 @@ sudo visudo # probe need a better way, this just makes no password for sudo
 
 
 
+# Also need to set up passwordless ssh onto synology and passwordless sudo
 
-
-
-
-
-nano ~/.bash_profile
-
-if [ -f ~/.bashrc ]; then
-    source ~/.bashrc
-fi
+I had to check a box, go to control panel -> user & group -> advanced at the bottom click enable user home service
+copy over ssh key 
+edit /etc/sudoers.d to have passwordless sudo
+ 
