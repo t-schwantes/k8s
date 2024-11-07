@@ -1,0 +1,54 @@
+# Persistent Volume Template
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: synology-{username}
+  namespace: jupyterhub
+  labels:
+    user: {username}
+  
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteMany
+  mountOptions:
+    - dir_mode=0777
+    - file_mode=0777
+  csi:
+    driver: smb.csi.k8s.io
+    readOnly: false
+    volumeHandle: synology-{username}
+    volumeAttributes:
+      source: "//192.168.0.102/ml-storage"
+    nodeStageSecretRef:
+      name: secret-synology-{username}
+      namespace: jupyterhub
+      
+---
+# Persistent Volume Claim Template
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: synology-{username}
+  namespace: jupyterhub
+spec:
+  storageClassName: ""
+
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+---
+# Secret Template
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secret-synology-{username}
+  namespace: jupyterhub
+  
+type: Opaque
+data:
+  username: {username_encoded}
+  password: {password_encoded}

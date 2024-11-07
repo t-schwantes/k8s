@@ -1,4 +1,4 @@
-Kubeadm join command for workers: kubeadm join 192.168.0.125:6443 --token qkik25.zibvpbr15rexooly --discovery-token-ca-cert-hash sha256:d413a3e8544d5ef8b51e69c894ac569c8d9af3249fd7bc1690fb10bed168575e 
+Kubeadm join command for workers: kubeadm join 192.168.0.125:6443 --token hk20lx.12jq5ggtdwft7n4u --discovery-token-ca-cert-hash sha256:9c6dbc153a78939472a398324621caa98224780dee6d02438bde5ab9b3963c67 
 Setting up worker node: 192.168.0.101
 Creating remote script directory on worker node 192.168.0.101...
 Copying scripts to worker node 192.168.0.101...
@@ -10,14 +10,14 @@ Updating package lists...
 
 WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
 
-Get:1 https://nvidia.github.io/libnvidia-container/stable/deb/amd64  InRelease [1,477 B]
-Hit:3 http://us.archive.ubuntu.com/ubuntu jammy InRelease
-Hit:4 http://security.ubuntu.com/ubuntu jammy-security InRelease
-Hit:5 https://download.docker.com/linux/ubuntu jammy InRelease
-Hit:6 http://us.archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:1 https://nvidia.github.io/libnvidia-container/stable/deb/amd64  InRelease
+Hit:2 http://us.archive.ubuntu.com/ubuntu jammy InRelease
+Hit:3 https://download.docker.com/linux/ubuntu jammy InRelease
+Hit:4 http://us.archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:5 http://us.archive.ubuntu.com/ubuntu jammy-backports InRelease
 Hit:7 http://archive.lambdalabs.com/ubuntu jammy InRelease
-Hit:8 http://us.archive.ubuntu.com/ubuntu jammy-backports InRelease
-Ign:2 https://packages.cloud.google.com/apt kubernetes-xenial InRelease
+Hit:8 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Ign:6 https://packages.cloud.google.com/apt kubernetes-xenial InRelease
 Err:9 https://packages.cloud.google.com/apt kubernetes-xenial Release
   404  Not Found [IP: 142.250.69.238 443]
 Reading package lists...
@@ -43,32 +43,33 @@ The following packages have been kept back:
   libnvidia-cfg1-550 libnvidia-common-550 libnvidia-compute-550
   libnvidia-compute-550:i386 libnvidia-decode-550 libnvidia-encode-550
   libnvidia-extra-550 libnvidia-extra-550:i386 libnvidia-fbc1-550
-  libnvidia-fbc1-550:i386 libnvidia-gl-550 nvidia-compute-utils-550
+  libnvidia-fbc1-550:i386 libnvidia-gl-550 libpam-sss nvidia-compute-utils-550
   nvidia-dkms-550 nvidia-driver-550 nvidia-kernel-common-550
   nvidia-kernel-source-550 nvidia-utils-550 xserver-xorg-video-nvidia-550
 The following packages will be upgraded:
   cudnn-license distro-info-data gjs gnome-shell-extension-ubuntu-dock
-  libgjs0g libnccl-dev libnccl2 libxnvctrl0 nvidia-settings openvpn
-  python3-jaxlib-cuda python3-keras python3-optree python3-tensorflow-cuda
-  python3-torch-cuda python3-torchvision-cuda python3-triton-cuda snapd
-  ubuntu-drivers-common
+  libgjs0g libnccl-dev libnccl2 libxnvctrl0 linux-firmware nvidia-settings
+  openvpn python3-jaxlib-cuda python3-keras python3-optree
+  python3-tensorflow-cuda python3-torch-cuda python3-torchvision-cuda
+  python3-triton-cuda snapd
 The following packages will be DOWNGRADED:
   nvidia-firmware-550-550.107.02
-19 upgraded, 1 newly installed, 1 downgraded, 3 to remove and 18 not upgraded.
+19 upgraded, 1 newly installed, 1 downgraded, 3 to remove and 19 not upgraded.
+1 standard LTS security update
 E: Packages were downgraded and -y was used without --allow-downgrades.
 Running containerd.sh on worker node...
 Setting up containerd runtime...
 
 WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
 
-Hit:1 https://download.docker.com/linux/ubuntu jammy InRelease
-Get:2 https://nvidia.github.io/libnvidia-container/stable/deb/amd64  InRelease [1,477 B]
-Hit:4 http://us.archive.ubuntu.com/ubuntu jammy InRelease
-Hit:5 http://us.archive.ubuntu.com/ubuntu jammy-updates InRelease
-Hit:6 http://archive.lambdalabs.com/ubuntu jammy InRelease
-Hit:7 http://us.archive.ubuntu.com/ubuntu jammy-backports InRelease
-Hit:8 http://security.ubuntu.com/ubuntu jammy-security InRelease
-Ign:3 https://packages.cloud.google.com/apt kubernetes-xenial InRelease
+Hit:1 https://nvidia.github.io/libnvidia-container/stable/deb/amd64  InRelease
+Hit:2 http://us.archive.ubuntu.com/ubuntu jammy InRelease
+Hit:3 http://us.archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:4 http://us.archive.ubuntu.com/ubuntu jammy-backports InRelease
+Hit:5 https://download.docker.com/linux/ubuntu jammy InRelease
+Hit:7 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Hit:8 http://archive.lambdalabs.com/ubuntu jammy InRelease
+Ign:6 https://packages.cloud.google.com/apt kubernetes-xenial InRelease
 Err:9 https://packages.cloud.google.com/apt kubernetes-xenial Release
   404  Not Found [IP: 142.250.69.238 443]
 Reading package lists...
@@ -81,7 +82,7 @@ Reading package lists...
 Building dependency tree...
 Reading state information...
 containerd.io is already the newest version (1.7.22-1).
-0 upgraded, 0 newly installed, 0 to remove and 40 not upgraded.
+0 upgraded, 0 newly installed, 0 to remove and 41 not upgraded.
 Stopping containerd service...
 Backing up containerd config file...
 Generating new containerd configuration...
@@ -383,9 +384,9 @@ Kubernetes components are already installed.
 Running nvidia-container.sh on worker node...
 NVIDIA container toolkit is already installed.
 Configuring containerd to use NVIDIA as the default runtime...
-time="2024-10-28T14:35:49-06:00" level=info msg="Loading config from /etc/containerd/config.toml"
-time="2024-10-28T14:35:49-06:00" level=info msg="Wrote updated config to /etc/containerd/config.toml"
-time="2024-10-28T14:35:49-06:00" level=info msg="It is recommended that containerd daemon be restarted."
+time="2024-11-07T13:45:22-07:00" level=info msg="Loading config from /etc/containerd/config.toml"
+time="2024-11-07T13:45:22-07:00" level=info msg="Wrote updated config to /etc/containerd/config.toml"
+time="2024-11-07T13:45:22-07:00" level=info msg="It is recommended that containerd daemon be restarted."
 Restarting containerd service...
 NVIDIA container toolkit installation complete.
 Running docker-registry-worker.sh on worker node ...
@@ -402,7 +403,7 @@ Joining the worker node to the Kubernetes cluster...
 [kubelet-start] Writing kubelet environment file with flags to file "/var/lib/kubelet/kubeadm-flags.env"
 [kubelet-start] Starting the kubelet
 [kubelet-check] Waiting for a healthy kubelet at http://127.0.0.1:10248/healthz. This can take up to 4m0s
-[kubelet-check] The kubelet is healthy after 501.198342ms
+[kubelet-check] The kubelet is healthy after 501.309369ms
 [kubelet-start] Waiting for the kubelet to perform the TLS Bootstrap
 
 This node has joined the cluster:

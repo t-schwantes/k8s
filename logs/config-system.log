@@ -2,16 +2,18 @@ Updating package lists...
 
 WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
 
-Get:1 https://nvidia.github.io/libnvidia-container/stable/deb/amd64  InRelease [1,477 B]
-Hit:2 http://security.ubuntu.com/ubuntu jammy-security InRelease
-Hit:3 https://download.docker.com/linux/ubuntu jammy InRelease
-Hit:5 http://us.archive.ubuntu.com/ubuntu jammy InRelease
-Hit:6 http://us.archive.ubuntu.com/ubuntu jammy-updates InRelease
-Hit:7 http://us.archive.ubuntu.com/ubuntu jammy-backports InRelease
+Hit:1 https://nvidia.github.io/libnvidia-container/stable/deb/amd64  InRelease
+Hit:2 https://download.docker.com/linux/ubuntu jammy InRelease
+Hit:3 http://archive.lambdalabs.com/ubuntu jammy InRelease
 Ign:4 https://packages.cloud.google.com/apt kubernetes-xenial InRelease
-Err:8 https://packages.cloud.google.com/apt kubernetes-xenial Release
+Err:5 https://packages.cloud.google.com/apt kubernetes-xenial Release
   404  Not Found [IP: 142.250.69.238 443]
-Hit:9 http://archive.lambdalabs.com/ubuntu jammy InRelease
+Get:6 http://security.ubuntu.com/ubuntu jammy-security InRelease [129 kB]
+Hit:7 http://us.archive.ubuntu.com/ubuntu jammy InRelease
+Get:8 http://us.archive.ubuntu.com/ubuntu jammy-updates InRelease [128 kB]
+Hit:9 http://us.archive.ubuntu.com/ubuntu jammy-backports InRelease
+Get:10 http://us.archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages [2,127 kB]
+Get:11 http://us.archive.ubuntu.com/ubuntu jammy-updates/main i386 Packages [715 kB]
 Reading package lists...
 E: The repository 'https://apt.kubernetes.io kubernetes-xenial Release' does not have a Release file.
 Performing a distribution upgrade...
@@ -33,7 +35,18 @@ The following packages have been kept back:
   libnvidia-fbc1-550 libnvidia-gl-550 nvidia-compute-utils-550 nvidia-dkms-550
   nvidia-driver-550 nvidia-kernel-common-550 nvidia-kernel-source-550
   nvidia-utils-550 xserver-xorg-video-nvidia-550
-0 upgraded, 0 newly installed, 0 to remove and 15 not upgraded.
+The following packages will be upgraded:
+  libpam-sss
+1 upgraded, 0 newly installed, 0 to remove and 15 not upgraded.
+Need to get 40.8 kB of archives.
+After this operation, 0 B of additional disk space will be used.
+Get:1 http://us.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libpam-sss amd64 2.6.3-1ubuntu3.4 [40.8 kB]
+Fetched 40.8 kB in 0s (158 kB/s)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 273352 files and directories currently installed.)
+Preparing to unpack .../libpam-sss_2.6.3-1ubuntu3.4_amd64.deb ...
+Unpacking libpam-sss:amd64 (2.6.3-1ubuntu3.4) over (2.6.3-1ubuntu3.3) ...
+Setting up libpam-sss:amd64 (2.6.3-1ubuntu3.4) ...
+Processing triggers for man-db (2.10.2-1) ...
 Installing net-tools...
 
 WARNING: apt does not have a stable CLI interface. Use with caution in scripts.

@@ -6,8 +6,9 @@ Adding Helm repositories for JupyterHub and NVIDIA device plugin...
 JupyterHub Helm repository already exists, skipping...
 NVIDIA device plugin Helm repository already exists, skipping...
 Hang tight while we grab the latest from your chart repositories...
-...Successfully got an update from the "metallb" chart repository
+...Successfully got an update from the "csi-driver-smb" chart repository
 ...Successfully got an update from the "nvdp" chart repository
+...Successfully got an update from the "metallb" chart repository
 ...Successfully got an update from the "nvidia" chart repository
 ...Successfully got an update from the "jupyterhub" chart repository
 Update Complete. ⎈Happy Helming!⎈
@@ -15,7 +16,7 @@ Helm repositories added and updated.
 Installing JupyterHub with Helm using config.yaml...
 Release "jupyterhub" does not exist. Installing it now.
 NAME: jupyterhub
-LAST DEPLOYED: Mon Oct 28 14:35:52 2024
+LAST DEPLOYED: Fri Nov  1 11:21:55 2024
 NAMESPACE: jupyterhub
 STATUS: deployed
 REVISION: 1
@@ -84,19 +85,15 @@ service/proxy-public patched
 Adding NVIDIA Helm repository for GPU Operator...
 "nvidia" already exists with the same configuration, skipping
 Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "csi-driver-smb" chart repository
 ...Successfully got an update from the "metallb" chart repository
 ...Successfully got an update from the "nvdp" chart repository
 ...Successfully got an update from the "nvidia" chart repository
 ...Successfully got an update from the "jupyterhub" chart repository
 Update Complete. ⎈Happy Helming!⎈
 Installing NVIDIA GPU Operator with custom configuration...
-W1028 14:36:07.946202 3276041 warnings.go:70] spec.template.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].preference.matchExpressions[0].key: node-role.kubernetes.io/master is use "node-role.kubernetes.io/control-plane" instead
-W1028 14:36:07.946289 3276041 warnings.go:70] spec.template.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].preference.matchExpressions[0].key: node-role.kubernetes.io/master is use "node-role.kubernetes.io/control-plane" instead
-NAME: gpu-operator
-LAST DEPLOYED: Mon Oct 28 14:36:07 2024
-NAMESPACE: gpu-operator
-STATUS: deployed
-REVISION: 1
-TEST SUITE: None
+W1101 11:22:10.918827  742469 warnings.go:70] spec.template.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].preference.matchExpressions[0].key: node-role.kubernetes.io/master is use "node-role.kubernetes.io/control-plane" instead
+W1101 11:22:10.918890  742469 warnings.go:70] spec.template.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].preference.matchExpressions[0].key: node-role.kubernetes.io/master is use "node-role.kubernetes.io/control-plane" instead
+Error: INSTALLATION FAILED: context deadline exceeded
 NVIDIA GPU Operator installation complete.
 JupyterHub setup complete.
