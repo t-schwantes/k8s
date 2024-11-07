@@ -1,0 +1,51 @@
+set up the synology folder with nfs
+add the ip addresses of the machines to it
+
+
+all machines
+#-------------------------------------
+sudo apt update
+sudo apt install nfs-common
+
+sudo mkdir -p /mnt/ml-storage
+sudo chmod 777 /mnt/ml-storage
+
+echo "192.168.0.102:/volume1/ml-storage /mnt/ml-storage nfs defaults 0 0" | sudo tee -a /etc/fstab
+
+
+sudo synouser --add default Abcd1234 "New user created via SSH" 0 "" 0
+sudo synouser --del default
+
+
+helm repo add csi-driver-smb https://raw.githubusercontent.com/kubernetes-csi/csi-driver-smb/master/charts
+helm repo update
+helm install csi-driver-smb csi-driver-smb/csi-driver-smb --namespace kube-system
+
+cd jupyterhub/synology_storage/
+kubectl apply -f smb-secret-clusterrole.yaml
+kubectl apply -f smb-secret-clusterrolebinding.yaml
+kubectl apply -f synology-storage-default.yaml
+
+
+
+
+
+
+# wait scratch that
+
+helm repo add csi-driver-smb https://raw.githubusercontent.com/kubernetes-csi/csi-driver-smb/master/charts
+helm repo update
+helm install csi-driver-smb csi-driver-smb/csi-driver-smb --namespace kube-system
+
+kubectl apply -f synology-storage-default.yaml
+
+
+
+I had to create a shared folder on synology to hold user home directories
+I had to add a symbolic link from the default location to the shared folder
+had to do some permissions stuff
+then I could copy over the ssh key
+edit /etc/sudoers.d to have passwordless sudo
+
+
+

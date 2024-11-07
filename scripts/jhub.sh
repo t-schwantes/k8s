@@ -66,6 +66,12 @@ helm install --wait gpu-operator \
 
 echo "NVIDIA GPU Operator installation complete."
 
+echo "Installing csi smb driver"
+helm repo add csi-driver-smb https://raw.githubusercontent.com/kubernetes-csi/csi-driver-smb/master/charts
+helm repo update
+helm install csi-driver-smb csi-driver-smb/csi-driver-smb --namespace kube-system
+echo "csi smb driver installation complete"
+
 echo "JupyterHub setup complete."
 
 
