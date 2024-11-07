@@ -14,9 +14,12 @@ if ! command -v kubeadm &> /dev/null; then
     # Update package lists to include Kubernetes repository
     sudo apt-get update
 
-    # Install Kubernetes components
+    # Specify the current versions for Kubernetes components
+    KUBE_VERSION="1.31.1-00"
+
+    # Install Kubernetes components with the specified version
     echo "Installing kubelet, kubeadm, and kubectl..."
-    sudo apt-get install -y kubelet kubeadm kubectl
+    sudo apt-get install -y kubelet=${KUBE_VERSION} kubeadm=${KUBE_VERSION} kubectl=${KUBE_VERSION}
 
     # Prevent kubelet, kubeadm, and kubectl from being automatically updated
     sudo apt-mark hold kubelet kubeadm kubectl

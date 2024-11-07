@@ -1,3 +1,6 @@
+# If this breaks there is a backup of the binary in the repo k8s/k8s/cni/flanneld
+
+
 # Install Flannel (Control server)
 echo "Installing Flannel network plugin..."
 

@@ -1,7 +1,9 @@
 # k8s
 kubernetes setup
+./setup_control.sh
 
-
-kubectl create secret generic jupyterhub-api-token --from-literal=token="d37a2fb36fdd4e86a60fe8c9b697570b"
-Put the jupyterhub token in there. this allows us to add users to jupyterhub with the script, unfortunatly the api token
-needs to be created manully and so we have to enter it in manually
+After setup
+Add kubernetes api token if you want to add users via the script
+go to jupyterhub, click on token, generate api token
+kubectl create secret generic jupyterhub-api-token --from-literal=token="<api-token>"
+./scripts/jupyterhub/add-user.sh <username> <password>
