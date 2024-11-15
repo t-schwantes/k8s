@@ -18,7 +18,7 @@ if ! command -v docker &> /dev/null; then
 
     sudo apt-get update
 #    sudo apt-get install -y docker-ce docker-ce-cli containerd.io
-    sudo apt-get install -y docker-ce=5:27.3.1-1~ubuntu.22.04~jammy docker-ce-cli=5:27.3.1-1~ubuntu.22.04~jammy containerd.io=1.7.22-1
+    sudo apt-get install -y docker-ce=5:27.3.1-1~ubuntu.22.04~jammy docker-ce-cli=5:27.3.1-1~ubuntu.22.04~jammy  containerd.io=1.7.22-1 --allow-downgrades
     echo "Docker installed successfully."
 else
     echo "Docker is already installed."

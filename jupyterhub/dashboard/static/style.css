@@ -1,9 +1,23 @@
+/* Dark mode styles */
+
+body {
+    background-color: #121212; /* Dark background for the entire page */
+    color: #f5f5f5; /* Light text for good contrast */
+    font-family: Arial, sans-serif; /* Optional: set a default font */
+}
+
 h1 {
     padding: 20px;
+    color: #ffffff; /* White text for headings */
 }
 
 table {
     border-collapse: collapse;
+    background-color: #1e1e1e; /* Dark background for tables */
+    color: #f5f5f5; /* Light text for table content */
+    margin: 20px 0; /* Add vertical spacing */
+    margin-left: 20px; /* Align table to the left with a small margin */
+    width: auto; /* Ensure the table only expands to fit content */
 }
 
 div.table {
@@ -14,14 +28,36 @@ td, th {
     text-align: left;
     padding: 15px 10px 15px 10px;
     border: 0px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #444; /* Darker border for table rows */
 }
 
 th {
-    background-color: #444;
-    color: white;
+    background-color: #333; /* Slightly lighter header background */
+    color: #ffffff; /* White text for headers */
 }
 
 tr:hover {
-    background-color: #eee;
+    background-color: #222; /* Darker gray for row hover effect */
+}
+
+/* Optional: Add styles for links and buttons */
+a {
+    color: #bb86fc; /* Accent color for links */
+    text-decoration: none;
+}
+
+a:hover {
+    color: #ffffff; /* Brighter text on hover */
+}
+
+button {
+    background-color: #333; /* Dark background for buttons */
+    color: #ffffff; /* White text */
+    border: 1px solid #444; /* Subtle border */
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #444; /* Slightly lighter on hover */
 }

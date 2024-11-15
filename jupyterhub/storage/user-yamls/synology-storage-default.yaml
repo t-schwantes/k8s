@@ -20,7 +20,7 @@ spec:
     readOnly: false
     volumeHandle: synology-default
     volumeAttributes:
-      source: "//192.168.0.102/ml-storage"
+      source: "//172.16.49.60/ml-storage"
     nodeStageSecretRef:
       name: secret-synology-default
       namespace: jupyterhub

@@ -19,7 +19,7 @@ if ! command -v kubeadm &> /dev/null; then
 
     # Install Kubernetes components with the specified version
     echo "Installing kubelet, kubeadm, and kubectl..."
-    sudo apt-get install -y kubelet=${KUBE_VERSION} kubeadm=${KUBE_VERSION} kubectl=${KUBE_VERSION}
+    sudo apt-get install -y kubelet=${KUBE_VERSION} kubeadm=${KUBE_VERSION} kubectl=${KUBE_VERSION} --allow-downgrades
 
     # Prevent kubelet, kubeadm, and kubectl from being automatically updated
     sudo apt-mark hold kubelet kubeadm kubectl

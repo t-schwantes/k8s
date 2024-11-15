@@ -41,6 +41,11 @@ helm repo update
 
 echo "Helm repositories added and updated."
 
+CONFIG_TEMPLATE="jupyterhub/config-template.yaml"
+CONFIG_FILE="jupyterhub/config.yaml"
+
+echo "Generating config.yaml from config-template.yaml..."
+envsubst < $CONFIG_TEMPLATE > $CONFIG_FILE
 
 # Install JupyterHub using the provided configuration file
 echo "Installing JupyterHub with Helm using config.yaml..."

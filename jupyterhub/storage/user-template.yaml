@@ -2,10 +2,10 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: synology-{username}
+  name: synology-${USERNAME}
   namespace: jupyterhub
   labels:
-    user: {username}
+    user: ${USERNAME}
   
 spec:
   capacity:
@@ -18,11 +18,11 @@ spec:
   csi:
     driver: smb.csi.k8s.io
     readOnly: false
-    volumeHandle: synology-{username}
+    volumeHandle: synology-${USERNAME}
     volumeAttributes:
-      source: "//192.168.0.102/ml-storage"
+      source: "//${SYNOLOGY_IP}/ml-storage"
     nodeStageSecretRef:
-      name: secret-synology-{username}
+      name: secret-synology-${USERNAME}
       namespace: jupyterhub
       
 ---
@@ -30,7 +30,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: synology-{username}
+  name: synology-${USERNAME}
   namespace: jupyterhub
 spec:
   storageClassName: ""
@@ -45,10 +45,10 @@ spec:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: secret-synology-{username}
+  name: secret-synology-${USERNAME}
   namespace: jupyterhub
   
 type: Opaque
 data:
-  username: {username_encoded}
-  password: {password_encoded}
+  username: ${USERNAME_ENCODED}
+  password: ${PASSWORD_ENCODED}

@@ -7,10 +7,6 @@ hub:
         - admin
       allowed_users:
         - admin
-        - default
-        - test1
-        - test2
-        - test3
     DummyAuthenticator:
       password: admin_password
     JupyterHub:
@@ -32,18 +28,29 @@ singleuser:
   uid: 1000
   serviceAccountName: default
   storage:
-    dynamic:
-#      pvcNameTemplate: "shared-pvc" 
+    type: static
+    static:
+      pvcName: "shared-pvc" 
+      subPath: "{username}"
 #      storageAccessModes: ["ReadWriteMany"]  
 #      storageClass: "jhub-storage-class"  
-      pvcNameTemplate: "synology-{username}" 
-      storageClass: ""
-      storageAccessModes: ["ReadWriteMany"]  
+      
+    extraVolumes:
+      - name: vol-synology-user
+        persistentVolumeClaim:
+          claimName: synology-{username}
+    extraVolumeMounts:
+      - name: vol-synology-user
+        mountPath: "/home/jovyan/ml-storage"  # User data volume mount
+        
+#      pvcNameTemplate: "synology-{username}" 
+#      storageClass: ""
+#      storageAccessModes: ["ReadWriteMany"]  
   profileList:
     - display_name: "0 GPUs"
       kubespawner_override:
-#        image: 192.168.0.125:30000/base:latest
-        image: quay.io/jupyter/pytorch-notebook:latest
+        image: 192.168.0.125:30000/base:latest
+#        image: quay.io/jupyter/pytorch-notebook:latest
         image_pull_policy: Always
         extra_resource_limits:
           nvidia.com/gpu: "0"
@@ -65,8 +72,8 @@ singleuser:
         runtime_class_name: nvidia
 
   extraEnv:
-#    CONDA_PKGS_DIRS: /home/jovyan/conda_pkgs
-#    CONDA_ENVS_PATH: /home/jovyan/conda_envs
+    CONDA_PKGS_DIRS: /home/jovyan/conda_pkgs
+    CONDA_ENVS_PATH: /home/jovyan/conda_envs
     GRANT_SUDO: "yes"
     NOTEBOOK_ARGS: "--allow-root"
 #  uid: 0
