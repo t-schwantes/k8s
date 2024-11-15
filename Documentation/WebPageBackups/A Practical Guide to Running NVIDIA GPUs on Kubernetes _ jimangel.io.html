@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>A Practical Guide to Running NVIDIA GPUs on Kubernetes | jimangel.io</title>
+<meta name="keywords" content="Nvidia RTX 4090 setup, Kubernetes GPU configuration, CUDA toolkit installation, Ubuntu NVIDIA drivers, Kubernetes NVIDIA GPU operator, Containerd Kubernetes integration, AI GPU computing, Machine learning Kubernetes, CUDA AI models, Ubuntu AI GPU optimization, Kubernetes GPU resource management, GPU-powered AI training, Containerd AI deployment, LLM Kubernetes implementation, AI infrastructure Kubernetes, Nvidia AI acceleration">
+<meta name="description" content="Setup an NVIDIA RTX GPU on bare-metal Kubernetes, covering driver installation on Ubuntu 22.04, configuration, and troubleshooting.">
+<meta name="author" content="Jim Angel">
+<link rel="canonical" href="https://www.jimangel.io/posts/nvidia-rtx-gpu-kubernetes-setup/">
+<link crossorigin="anonymous" href="A%20Practical%20Guide%20to%20Running%20NVIDIA%20GPUs%20on%20Kubernetes%20_%20jimangel.io_files/stylesheet.74dcb7a13f2da432dbfcd2f4419af7db382b85bcc0a1d5986.css" integrity="sha256-dNy3oT8tpDLb/NL0QZr32zgrhbzAodWYYfS9Zp6s1OM=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://www.jimangel.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.jimangel.io/img/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.jimangel.io/img/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://www.jimangel.io/img/apple-touch-icon.png">
+<link rel="mask-icon" href="https://www.jimangel.io/img/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<script async="" src="A%20Practical%20Guide%20to%20Running%20NVIDIA%20GPUs%20on%20Kubernetes%20_%20jimangel.io_files/js"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-7X0S9Y56NW', { 'anonymize_ip': false });
+}
+</script>
+<meta property="og:title" content="A Practical Guide to Running NVIDIA GPUs on Kubernetes">
+<meta property="og:description" content="Setup an NVIDIA RTX GPU on bare-metal Kubernetes, covering driver installation on Ubuntu 22.04, configuration, and troubleshooting.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.jimangel.io/posts/nvidia-rtx-gpu-kubernetes-setup/">
+<meta property="og:image" content="https://www.jimangel.io/posts/nvidia-rtx-gpu-kubernetes-setup/img/nvidia-drivers.png"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2024-02-22T00:00:00+00:00">
+<meta property="article:modified_time" content="2024-02-22T00:00:00+00:00">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.jimangel.io/posts/nvidia-rtx-gpu-kubernetes-setup/img/nvidia-drivers.png">
+<meta name="twitter:title" content="A Practical Guide to Running NVIDIA GPUs on Kubernetes">
+<meta name="twitter:description" content="Setup an NVIDIA RTX GPU on bare-metal Kubernetes, covering driver installation on Ubuntu 22.04, configuration, and troubleshooting.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://www.jimangel.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "A Practical Guide to Running NVIDIA GPUs on Kubernetes",
+      "item": "https://www.jimangel.io/posts/nvidia-rtx-gpu-kubernetes-setup/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "A Practical Guide to Running NVIDIA GPUs on Kubernetes",
+  "name": "A Practical Guide to Running NVIDIA GPUs on Kubernetes",
+  "description": "Setup an NVIDIA RTX GPU on bare-metal Kubernetes, covering driver installation on Ubuntu 22.04, configuration, and troubleshooting.",
+  "keywords": [
+    "Nvidia RTX 4090 setup", "Kubernetes GPU configuration", "CUDA toolkit installation", "Ubuntu NVIDIA drivers", "Kubernetes NVIDIA GPU operator", "Containerd Kubernetes integration", "AI GPU computing", "Machine learning Kubernetes", "CUDA AI models", "Ubuntu AI GPU optimization", "Kubernetes GPU resource management", "GPU-powered AI training", "Containerd AI deployment", "LLM Kubernetes implementation", "AI infrastructure Kubernetes", "Nvidia AI acceleration"
+  ],
+  "articleBody": "Target audience: Kubernetes Operators, ML Engineers, GPU Nerds\nExploring the power of GPUs in the cloud sparked my interest in integrating a local NVIDIA GPU with my Kubernetes homelab cluster.\nAdding a GPU to Kubernetes allows me to run Jupyter Notebooks and AI/ML workloads. The biggest benefit to this approach is portability; the same notebooks and models running locally are easily reproduced in the cloud.\nThis topic was confusing to me and I had to rely on information from various vendors, GitHub issues, and stack overflow posts.\nI aim to demystify the process, offering a clear path to harnessing GPU acceleration for AI/ML workloads right from your own setup.\nScope If you’re following along:\nYou have a node running Ubuntu 22.04 LTS You have an NVIDIA GPU connected to the node Kubernetes installed and running Unless otherwise stated, all commands should run on the above node.\nOverview of components Let’s break each step of GPU connection path into larger components (pod/workload → kubernetes → container runtime → software → hardware → GPU).\nI’ll cover each component from top to bottom, and then use the reverse order of “NEEDS” to set up and validate my GPU-accelerated Kubernetes homelab.\nThe diagram below visualizes the GPU connection path within a Kubernetes setup:\nStarting with the pod/workload, the container should include software (like CUDA) to utilize GPU hardware. We can assume the container automatically gets a GPU with drivers but you still need to supply the SDK/API “on top.” The NVIDIA container runtime hook provides the container GPU device configuration.\nHow does Kubernetes know which pods need GPU(s)? For my Kubernetes setup, I declare GPUs in the pod/workload via a combination of spec.runtimeClassName (runtime class docs), spec.containers.resources (resource quota docs), and spec.nodeSelector (nodeSelector docs). For example:\nspec: runtimeClassName: nvidia #\u003c--- USE THE NVIDIA CONTAINER RUNTIME containers: resources: limits: nvidia.com/gpu: 1 #\u003c-- ASSIGN 1 GPU, IF MULTIPLE nodeSelector: #\u003c--- RUN ON GPU ${NODE_NAME} kubernetes.io/hostname: ${NODE_NAME} It’s also common to see NoSchedule taints on GPU nodes. This is to prevent workloads that don’t explicitly need GPUs from running (taints and toleration docs). To tolerate the NoSchedule taint:\nspec: tolerations: - key: nvidia.com/gpu operator: Exists effect: NoSchedule The YAML above samples instruct Kubernetes where / how to run the workload, however, GPUs are considered “extended resources” or “non-Kubernetes-built-in resources” (docs). There must be something that tells Kubernetes that there are X nodes with X GPUs available.\nHow does Kubernetes know which nodes have GPU(s)? Many NVIDIA GPU features are auto-managed by the NVIDIA GPU Operator, including a device-plugin-daemonset deployment which informs Kubernetes about device capacity. (NVIDIA k8s-device-plugin docs)\nThe NVIDIA GPU Operator encompasses:\nThe (optional) ability to install NVIDIA drivers on the host The Kubernetes device plugin for GPUs The (optional) ability to configure NVIDIA Container Runtime on the host Automatic node labeling DCGM (Data Center GPU Manager) based monitoring and more The important part is that the operator automatically labels nodes for selectors and assesses capacity for quotas.\nThe NVIDIA device plugin is a Daemonset that allows you to automatically:\nExpose the number of GPUs on each node of your cluster Keep track of the health of your GPUs Run GPU-enabled containers in your Kubernetes cluster Up to this point, our Kubernetes cluster has scheduled the workload to a GPU-ready node and provided instructions to the container runtime requesting the GPU accelerated nvidia runtimeClass.\nHow does the nvidia runtimeClass expose GPU(s)? A package named NVIDIA Container Toolkit (docs) provides most of the configuration and binaries.\nOn the GPU node, the container runtime (containerd) is configured with a wrapper around runc called nvidia-container-runtime (docs).\nThe wrapper (nvidia-container-runtime) uses a pre-start hook into containerd to add host GPUs via mounts, environment variables, etc.\nThink of this like injecting the GPU hardware config into a container but you still need to bring the software (like CUDA)\nBelow is an example configuration for containerd to use the NVIDIA runtimeClass:\n# /etc/containerd/config.toml [plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes] [plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.nvidia] privileged_without_host_devices = false runtime_engine = \"\" runtime_root = \"\" runtime_type = \"io.containerd.runc.v2\" [plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.nvidia.options] BinaryName = \"/usr/bin/nvidia-container-runtime\" The above config is used anytime a container is using the nvidia runtimeClass.\nConfiguring /etc/containerd/config.toml is automated via nvidia-ctk (a poorly named subset utility of the nvidia-container-toolkit), covered later.\nThe nvidia-container-toolkit and utilities are responsible for configuring the container runtime, but that process assumes we already have a configured GPU on the host.\nHow does Ubuntu know it has a GPU? The short answer is drivers. A driver is the essential software needed for your operating system to communicate with the NVIDIA graphics card.\nThe NVIDIA drivers are installed on Ubuntu using package managers.\nThere are 2 parts to the NVIDIA driver, how the hardware knows how to talk to the GPU (hardware/kernel modules) and how the software knows how to talk to the GPU.\nI included “CUDA stuff” in the picture because it could be installed on the host, but it depends on the exact use case. It is not required for this walkthrough and discussed later.\nHow does the motherboard know a GPU is connected? This is a bit of a trick question. Most, if not all, consumer GPUs are connected via PCIe.\nWhen I thought more about it, PCIe supports GPUs, NVMe, NICs, and many other peripherals. It’s just a way to transmit data.\nThe motherboard doesn’t need to know it’s a GPU, but it does need to know something is plugged into it via PCIe.\nNote\nIf using a Thunderbolt external GPU (eGPU), it’s still considered PCI. “Thunderbolt combines PCIe and DisplayPort into two serial signals, and additionally provides DC power via a single cable.” (source)\nNow that we’re at the bottom of the components, we can follow the reverse order to install \u0026 validate a GPU on a local Kubernetes cluster.\nConfiguring a NVIDIA RTX GPU on Kubernetes Starting where we left off, let’s check the physical hardware connection.\nValidate hardware connection Use lspci, a utility for displaying information about PCI buses in the system and devices connected to them, to look for known NVIDIA device.\n# list all PCI devices with the text NVIDIA sudo lspci | grep NVIDIA All good! ✅ Output:\n2f:00.0 VGA compatible controller: NVIDIA Corporation GA106 [GeForce RTX 3060 Lite Hash Rate] (rev a1) NVIDIA GPU driver considerations Not only are there many competing ways to install the same GPU driver, but how do you know which version to use?\nFinding the correct driver version Use the search menu on NVIDIA’s driver download site to find the latest recommended version to install.\nFor example, searching for an RTX 3060 returns:\nField Value Version 535.154.05 Release Date 2024.1.16 Operating System Linux 64-bit Language English (US) File Size 325.86 MB That means I’m looking for the 535+ nvidia driver version.\n(a side note about CUDA versions) CUDA is additional software that helps applications run on NVIDIA GPUs. Consider it like an API for your host’s GPU.\nWhile CUDA packages aren’t required for this setup, there’s a semi-delicate relationship between CUDA and driver version used in a container. If there’s a mismatch between CUDA and your driver, things may not work as expected!\nTip\nAfter a driver is installed, nvidia-smi can be ran to check the recommended CUDA version, for example nvidia-driver-535 outputs CUDA 12.2 even though I haven’t installed CUDA.\nMost of my problems went away once I had alignment with the CUDA version in the container alongside the matching host drivers. (CUDA download)\nAlso, fair warning, CUDA adds a significant amount of resources to your container images.\nIf you are determined to reduce the size of your image, you can selectively rm -rf the parts of the Toolkit that you don’t need, but be careful about not deleting libraries and tools that may be used by applications in the container!\nInstall the NVIDIA GPU driver There are a few popular ways to install the NVIDIA GPU driver on Ubuntu 22.04 LTS:\nOfficial Ubuntu managed NVIDIA drivers via ubuntu-drivers install (docs) Official NVIDIA managed NVIDIA drivers via .run file (download) Unofficial PPA managed NVIDIA drivers via ppa:graphics-drivers/ppa (docs) For this walkthrough, I use the last option (ppa) but feel free to substitute in your preferred method. I chose PPA because it seemed to work the easiest.\nAdd the PPA repo and install the driver found above.\n# add ppa:graphics-driver repo to apt sudo add-apt-repository ppa:graphics-drivers/ppa --yes # update apt content list sudo apt update # install driver sudo apt install nvidia-driver-535 Warning\nI ran into an issue where Ubuntu’s unattended-upgrades automatically updated some of the GPU driver dependencies and broke my GPU configuration.\nFixed with sudo apt remove unattended-upgrades but there are other, less forceful, solutions.\nNow that we have the drivers installed, let’s validate they’re working. A quick test would be running nvidia-smi, a utility that provides monitoring and management capabilities for NVIDIA GPUs.\n# get the driver version nvidia-smi --query-gpu=driver_version --format=csv,noheader Validate the NVIDIA GPU driver Validate installation by listing all packages (dpkg -l) installed with “nvidia” or “535” in the name.\ndpkg -l | grep nvidia # or dpkg -l | grep 535 # expected output: non-empty list of packages All good! ✅\nTip\nTo prevent unplanned package changes, hold them to prevent auto-upgrading.\n# any package with nvidia in the name should be held dpkg-query -W --showformat='${Package} ${Status}\\n' | \\ grep -v deinstall | \\ awk '{ print $1 }' | \\ grep -E 'nvidia.*-[0-9]+$' | \\ xargs -r -L 1 sudo apt-mark hold Output:\n#... libnvidia-fbc1-535 set on hold. libnvidia-gl-535 set on hold. nvidia-compute-utils-535 set on hold. nvidia-dkms-535 set on hold. This also means sudo apt-mark unhold [package_name] must be ran before upgrading.\nAre the kernel modules installed? Is the driver working? Modules instruct the kernel how to interact with the device attached to it. Without any NVIDIA modules, the OS doesn’t know how to communicate with the hardware.\nUse lsmod, a program which lists the contents of the /proc/modules, showing what kernel modules are currently loaded.\n# Show the status of driver modules in the Linux Kernel lsmod | grep nvidia If you have modules installed it might look like ✅:\nnvidia_uvm 1511424 12 nvidia_drm 77824 0 nvidia_modeset 1306624 1 nvidia_drm nvidia 56692736 200 nvidia_uvm,nvidia_modeset drm_kms_helper 311296 1 nvidia_drm drm 622592 4 drm_kms_helper,nvidia,nvidia_drm Note\nI was testing the above output with an eGPU and the modules weren’t showing up. I thought my understanding was wrong, but it turned out I didn’t plug in the cable.\nConnecting the eGPU fixed my issue and the modules appeared.\nCheck the kernel driver version file:\ncat /proc/driver/nvidia/version All good! ✅ Output:\nNVRM version: NVIDIA UNIX x86_64 Kernel Module 535.154.05 Thu Dec 28 15:37:48 UTC 2023 GCC version: gcc version 11.4.0 (Ubuntu 11.4.0-1ubuntu1~22.04) Check the device file for a found nvidia device:\n# any device files (I/O sys calls) ls /dev/ | grep 'nvidia[0-9]\\+' All good! ✅ Output:\nnvidia0 It appears that we have a host with a working GPU setup, next let’s configure containerd to support a GPU runtime.\nInstall NVIDIA Container Toolkit My homelab is running Kubernetes v1.28.4 with containerd. As mentioned earlier, we need the NVIDIA Container Toolkit (a set of utilities) to configure containerd to leverage NVIDIA GPU(s).\nAs far as I know, this installs tools on your host but does not configure, or change, anything by default.\nFrom the “Installing the NVIDIA Container Toolkit” guide.\n# add nvidia-container-toolkit repo to apt sources curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \\ \u0026\u0026 curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \\ sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \\ sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list # update apt content sudo apt update # install container toolkit sudo apt install -y nvidia-container-toolkit Note\nAs of the v1.12.0 release the NVIDIA Container Toolkit includes support for generating Container Device Interface (CDI) specifications - an alternative approach to this blog for adding GPUs to a container runtime.\nhttps://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/cdi-support.html\nConfigure containerd Now that the tools are installed, we need to update the containerd config runtime classes. Luckily one of the tools, nvidia-ctk can automate that process.\nFrom the “Installing the NVIDIA Container Toolkit” guide.\n# options: --dry-run sudo nvidia-ctk runtime configure --runtime=containerd # restart containerd sudo systemctl restart containerd Verify that containerd is running with sudo systemctl status containerd\nNote\nYou can customize the NVIDIA runtime configuration by specifying the runtime name (--nvidia-runtime-name), the path to the NVIDIA runtime executable (--nvidia-runtime-path), and the path to the NVIDIA Container Runtime hook executable (--nvidia-runtime-hook-path).\nThere’s also an option to set the NVIDIA runtime as the default runtime using --nvidia-set-as-default. (source)\nIf you want to dig more into what nvidia-container-runtime does on the host to expose a GPU, I highly recommend reading their low level example in the docs.\nIf you’re still not tired of this topic, the blog titled “Enabling GPUs in the Container Runtime Ecosystem” from NVIDIA is excellent.\nValidate containerd Check that the nvidia runtime exists in the config.\nsudo cat /etc/containerd/config.toml | grep \"containerd.runtimes.nvidia.\" All good! ✅ Output:\n[plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.nvidia] [plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.nvidia.options] Let’s try to run a container directly on the host (skipping Kubernetes). First we need to Install nerdctl, a drop-in replacement for docker, that allows for us to use the --gpus all argument.\nInstall nerdctl using a precompiled release.\nNote the version of CUDA I’m selecting, check out the repo website for the latest tag options: docker.com/r/nvidia/cuda/tags\n# `nvidia-smi` command ran with cuda 12.3 sudo nerdctl run -it --rm --gpus all nvidia/cuda:12.3.1-base-ubuntu20.04 nvidia-smi # `nvcc -V` command ran with cuda 12.3 (the \"12.3.1-base\" image doesn't include nvcc) sudo nerdctl run -it --rm --gpus all nvidia/cuda:12.3.1-devel-ubuntu20.04 nvcc -V All good! ✅\nNote\nIf you are on a machine with multiple GPUs, you can substitute --gpus all with something like --gpus '\"device=0,1\"' to test sharing individual GPUs.\n# only use device 0 and 1 out of a possible [0,1,2,3] setup sudo nerdctl run -it --rm --gpus '\"device=0,1\"' nvidia/cuda:12.2.2-base-ubuntu22.04 nvidia-smi At this spot, we have a GPU node that works up to the container runtime.\nInstall the NVIDIA GPU Operator using helm The last piece of the puzzle, we need to let Kubernetes know that we have nodes with GPU’s on ’em.\nThe NVIIDA GPU Operator creates/configures/manages GPUs atop Kubernetes and is installed with via helm chart.\nInstall helm following the official instructions. If you’re interested in looking at the helm chart and values here’s the Github repo.\nAdd the helm repo:\nhelm repo add nvidia https://helm.ngc.nvidia.com/nvidia \\ \u0026\u0026 helm repo update Install the release on your Kubernetes cluster.\nBy default, the Operator deploys the NVIDIA Container Toolkit and NVIDIA drivers as a container on the system. We’ll set these values to false since we already installed both components.\nhelm install --wait gpu-operator \\ -n gpu-operator --create-namespace \\ nvidia/gpu-operator \\ --set driver.enabled=false \\ --set toolkit.enabled=false Ensure all the pods came up healthy:\n# ensure nothing on kubernetes is wonky kubectl get pods -n gpu-operator | grep -i nvidia All good! ✅ Output:\nnvidia-cuda-validator-4hh2v 0/1 Completed 0 3d20h nvidia-dcgm-exporter-86wcv 1/1 Running 5 (7d10h ago) 7d20h nvidia-device-plugin-daemonset-cxfnc 1/1 Running 0 26h nvidia-operator-validator-jhz6j 1/1 Running 0 3d20h Validate the GPU Operator kubectl -n gpu-operator logs deployment/gpu-operator | grep GPU This isn’t a foolproof test, but you should see Number of nodes with GPU label\",\"NodeCount\": NUMBER_OF_EXPECTED_GPU_NODES with an actual value. If it says 0, there’s probably an issue that requires debugging.\nHelpful debugging command: kubectl get events -n gpu-operator --sort-by='.lastTimestamp'\nTip\nWhen in doubt (or when the GPU operator pods are stuck in init / terminating on a single node but the underlying setup is sound): reboot the node.\nPutting it all together Finally, let’s run a Kubernetes workload to test that our integration works end to end.\n# EXPORT NODE NAME! export NODE_NAME=node3 cat \u003c",
+  "wordCount" : "3112",
+  "inLanguage": "en",
+  "image":"https://www.jimangel.io/posts/nvidia-rtx-gpu-kubernetes-setup/img/nvidia-drivers.png","datePublished": "2024-02-22T00:00:00Z",
+  "dateModified": "2024-02-22T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Jim Angel"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.jimangel.io/posts/nvidia-rtx-gpu-kubernetes-setup/"
+  },
+  "publisher": {
+    "@type": "Website",
+    "name": "Jim Angel | jimangel.io",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.jimangel.io/favicon.ico"
+    }
+  }
+}
+</script>
+<script async="" src="A%20Practical%20Guide%20to%20Running%20NVIDIA%20GPUs%20on%20Kubernetes%20_%20jimangel.io_files/embed.js" data-timestamp="1731085025904"></script></head>
+
+<body class="dark" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://www.jimangel.io/" accesskey="h" title="jimangel.io (Alt + H)">jimangel.io</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://www.jimangel.io/posts/" title="Posts">
+                    <span>Posts</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.jimangel.io/search/" title="Search (Alt + /)" accesskey="/">
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.jimangel.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://www.jimangel.io/">Home</a>&nbsp;»&nbsp;<a href="https://www.jimangel.io/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      A Practical Guide to Running NVIDIA GPUs on Kubernetes
+    </h1>
+    <div class="post-description">
+      Setup an NVIDIA RTX GPU on bare-metal Kubernetes, covering driver 
+installation on Ubuntu 22.04, configuration, and troubleshooting.
+    </div>
+    <div class="post-meta"><span title="2024-02-22 00:00:00 +0000 UTC">February 22, 2024</span>&nbsp;·&nbsp;15 min&nbsp;·&nbsp;Jim Angel
+
+</div>
+  </header> 
+<figure class="entry-cover">
+        <img loading="eager" srcset="A%20Practical%20Guide%20to%20Running%20NVIDIA%20GPUs%20on%20Kubernetes%20_%20jimangel.io_files/nvidia-drivers_hu8fd31cda6df7139075a7f495f9be0b71_730264_360.png 360w, A%20Practical%20Guide%20to%20Running%20NVIDIA%20GPUs%20on%20Kubernetes%20_%20jimangel.io_files/nvidia-drivers_hu8fd31cda6df7139075a7f495f9be0b71_730264_480.png 480w, A%20Practical%20Guide%20to%20Running%20NVIDIA%20GPUs%20on%20Kubernetes%20_%20jimangel.io_files/nvidia-drivers_hu8fd31cda6df7139075a7f495f9be0b71_730264_720.png 720w, A%20Practical%20Guide%20to%20Running%20NVIDIA%20GPUs%20on%20Kubernetes%20_%20jimangel.io_files/nvidia-drivers.png 1024w" sizes="(min-width: 768px) 720px, 100vw" src="A%20Practical%20Guide%20to%20Running%20NVIDIA%20GPUs%20on%20Kubernetes%20_%20jimangel.io_files/nvidia-drivers.png" alt="AI generated colorful artwork of a displaying a person standing in abstract containers looking towards a neon green center light" width="1024" height="418">
+        
+</figure><div class="toc">
+    <details>
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#scope">Scope</a></li>
+    <li><a href="#overview-of-components">Overview of components</a>
+      <ul>
+        <li><a href="#how-does-kubernetes-know-which-pods-need-gpus">How does Kubernetes know which pods need GPU(s)?</a></li>
+        <li><a href="#how-does-kubernetes-know-which-nodes-have-gpus">How does Kubernetes know which nodes have GPU(s)?</a></li>
+        <li><a href="#how-does-the-nvidia-runtimeclass-expose-gpus">How does the <code>nvidia</code> runtimeClass expose GPU(s)?</a></li>
+        <li><a href="#how-does-ubuntu-know-it-has-a-gpu">How does Ubuntu know it has a GPU?</a></li>
+        <li><a href="#how-does-the-motherboard-know-a-gpu-is-connected">How does the motherboard know a GPU is connected?</a></li>
+      </ul>
+    </li>
+    <li><a href="#configuring-a-nvidia-rtx-gpu-on-kubernetes">Configuring a NVIDIA RTX GPU on Kubernetes</a>
+      <ul>
+        <li><a href="#validate-hardware-connection">Validate hardware connection</a></li>
+        <li><a href="#nvidia-gpu-driver-considerations">NVIDIA GPU driver considerations</a></li>
+        <li><a href="#a-side-note-about-cuda-versions">(a side note about CUDA versions)</a></li>
+        <li><a href="#install-the-nvidia-gpu-driver">Install the NVIDIA GPU driver</a></li>
+        <li><a href="#validate-the-nvidia-gpu-driver">Validate the NVIDIA GPU driver</a></li>
+        <li><a href="#install-nvidia-container-toolkit">Install NVIDIA Container Toolkit</a></li>
+        <li><a href="#configure-containerd">Configure <code>containerd</code></a></li>
+        <li><a href="#validate-containerd">Validate <code>containerd</code></a></li>
+        <li><a href="#install-the-nvidia-gpu-operator-using-helm">Install the NVIDIA GPU Operator using <code>helm</code></a></li>
+        <li><a href="#validate-the-gpu-operator">Validate the GPU Operator</a></li>
+      </ul>
+    </li>
+    <li><a href="#putting-it-all-together">Putting it all together</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+    <li><a href="#clean-up">Clean up</a></li>
+    <li><a href="#bonus-lazy-gke-a100-exploration">Bonus: Lazy GKE A100 exploration</a></li>
+  </ul>
+</nav>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p><strong>Target audience:</strong> <em>Kubernetes Operators, ML Engineers, GPU Nerds</em></p>
+<p>Exploring the power of GPUs in the cloud sparked my interest in 
+integrating a local NVIDIA GPU with my Kubernetes homelab cluster.</p>
+<p>Adding a GPU to Kubernetes allows me to run Jupyter Notebooks and 
+AI/ML workloads. The biggest benefit to this approach is portability; 
+the same notebooks and models running locally are easily reproduced in 
+the cloud.</p>
+<p>This topic was confusing to me and I had to rely on information from various vendors, GitHub issues, and stack overflow posts.</p>
+<p>I aim to demystify the process, offering a clear path to harnessing 
+GPU acceleration for AI/ML workloads right from your own setup.</p>
+<h2 id="scope">Scope<a hidden="" class="anchor" aria-hidden="true" href="#scope">#</a></h2>
+<p>If you’re following along:</p>
+<ul>
+<li>You have a node running Ubuntu 22.04 LTS</li>
+<li>You have an NVIDIA GPU connected to the node</li>
+<li>Kubernetes installed and running</li>
+</ul>
+<p>Unless otherwise stated, all commands should run on the above node.</p>
+<h2 id="overview-of-components">Overview of components<a hidden="" class="anchor" aria-hidden="true" href="#overview-of-components">#</a></h2>
+<p>Let’s break each step of GPU connection path into larger components (<strong>pod/workload</strong> → <strong>kubernetes</strong> → <strong>container runtime</strong> → <strong>software</strong> → <strong>hardware</strong> → <strong>GPU</strong>).</p>
+<p>I’ll cover each component from top to bottom, and then use the 
+reverse order of “NEEDS” to set up and validate my GPU-accelerated 
+Kubernetes homelab.</p>
+<p>The diagram below visualizes the GPU connection path within a Kubernetes setup:</p>
+<p><img loading="lazy" src="A%20Practical%20Guide%20to%20Running%20NVIDIA%20GPUs%20on%20Kubernetes%20_%20jimangel.io_files/gpu-stack-full.jpg" alt="">
+</p>
+<p>Starting with the <strong>pod/workload</strong>, the container should include software (like <a href="https://developer.nvidia.com/cuda-toolkit">CUDA</a>)
+ to utilize GPU hardware. We can assume the container automatically gets
+ a GPU with drivers but you still need to supply the SDK/API “on top.” 
+The NVIDIA <strong>container runtime</strong> hook provides the container GPU device configuration.</p>
+<h3 id="how-does-kubernetes-know-which-pods-need-gpus">How does Kubernetes know which pods need GPU(s)?<a hidden="" class="anchor" aria-hidden="true" href="#how-does-kubernetes-know-which-pods-need-gpus">#</a></h3>
+<p>For my <strong>Kubernetes</strong> setup, I declare GPUs in the pod/workload via a combination of <code>spec.runtimeClassName</code> (<a href="https://kubernetes.io/docs/concepts/containers/runtime-class/">runtime class docs</a>), <code>spec.containers.resources</code> (<a href="https://kubernetes.io/docs/concepts/policy/resource-quotas/#resource-quota-for-extended-resources">resource quota docs</a>), and <code>spec.nodeSelector</code> (<a href="https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector">nodeSelector docs</a>). For example:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">runtimeClassName</span><span class="p">:</span><span class="w"> </span><span class="l">nvidia  </span><span class="w"> </span><span class="c">#&lt;--- USE THE NVIDIA CONTAINER RUNTIME</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">limits</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">nvidia.com/gpu</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">    </span><span class="c">#&lt;-- ASSIGN 1 GPU, IF MULTIPLE</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">nodeSelector</span><span class="p">:</span><span class="w">              </span><span class="c">#&lt;--- RUN ON GPU ${NODE_NAME}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">kubernetes.io/hostname</span><span class="p">:</span><span class="w"> </span><span class="l">${NODE_NAME}</span><span class="w">
+</span></span></span></code></pre><button class="copy-code">copy</button></div><p>It’s also common to see <code>NoSchedule</code> taints on GPU nodes. This is to prevent workloads that don’t explicitly need GPUs from running (<a href="https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/">taints and toleration docs</a>). To tolerate the <code>NoSchedule</code> taint:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">tolerations</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">nvidia.com/gpu</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l">Exists</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">effect</span><span class="p">:</span><span class="w"> </span><span class="l">NoSchedule</span><span class="w">
+</span></span></span></code></pre><button class="copy-code">copy</button></div><p>The
+ YAML above samples instruct Kubernetes where / how to run the workload,
+ however, GPUs are considered “extended resources” or 
+“non-Kubernetes-built-in resources” (<a href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#extended-resources">docs</a>). There <em>must</em> be something that tells Kubernetes that there are X nodes with X GPUs available.</p>
+<h3 id="how-does-kubernetes-know-which-nodes-have-gpus">How does Kubernetes know which nodes have GPU(s)?<a hidden="" class="anchor" aria-hidden="true" href="#how-does-kubernetes-know-which-nodes-have-gpus">#</a></h3>
+<p>Many NVIDIA GPU features are auto-managed by the <a href="https://github.com/NVIDIA/gpu-operator">NVIDIA GPU Operator</a>, including a <code>device-plugin-daemonset</code> deployment which informs Kubernetes about device capacity. (<a href="https://github.com/NVIDIA/k8s-device-plugin#quick-start">NVIDIA k8s-device-plugin docs</a>)</p>
+<p><img loading="lazy" src="A%20Practical%20Guide%20to%20Running%20NVIDIA%20GPUs%20on%20Kubernetes%20_%20jimangel.io_files/gpu-stack-k8s.jpg" alt="">
+</p>
+<p>The <a href="https://github.com/NVIDIA/gpu-operator">NVIDIA GPU Operator</a> encompasses:</p>
+<ul>
+<li>The (optional) ability to install NVIDIA drivers on the host</li>
+<li>The Kubernetes device plugin for GPUs</li>
+<li>The (optional) ability to configure NVIDIA Container Runtime on the host</li>
+<li>Automatic node labeling</li>
+<li>DCGM (Data Center GPU Manager) based monitoring and more</li>
+</ul>
+<p>The important part is that the operator automatically labels nodes for selectors and assesses capacity for quotas.</p>
+<p>The <a href="https://github.com/NVIDIA/k8s-device-plugin">NVIDIA device plugin </a> is a Daemonset that allows you to automatically:</p>
+<ul>
+<li>Expose the number of GPUs on each node of your cluster</li>
+<li>Keep track of the health of your GPUs</li>
+<li>Run GPU-enabled containers in your Kubernetes cluster</li>
+</ul>
+<p>Up to this point, our Kubernetes cluster has scheduled the workload 
+to a GPU-ready node and provided instructions to the container runtime 
+requesting the GPU accelerated <code>nvidia</code> runtimeClass.</p>
+<h3 id="how-does-the-nvidia-runtimeclass-expose-gpus">How does the <code>nvidia</code> runtimeClass expose GPU(s)?<a hidden="" class="anchor" aria-hidden="true" href="#how-does-the-nvidia-runtimeclass-expose-gpus">#</a></h3>
+<p>A package named NVIDIA Container Toolkit (<a href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#configuring-containerd-for-nerdctl">docs</a>) provides most of the configuration and binaries.</p>
+<p>On the GPU node, the <strong>container runtime</strong> (containerd) is configured with a wrapper around <code>runc</code> called <code>nvidia-container-runtime</code> (<a href="https://github.com/NVIDIA/nvidia-container-toolkit/tree/main/cmd/nvidia-container-runtime">docs</a>).</p>
+<p><img loading="lazy" src="A%20Practical%20Guide%20to%20Running%20NVIDIA%20GPUs%20on%20Kubernetes%20_%20jimangel.io_files/gpu-stack-containerd.jpg" alt="">
+</p>
+<p>The wrapper (<code>nvidia-container-runtime</code>) uses a pre-start hook into <code>containerd</code> to add host GPUs via mounts, environment variables, etc.</p>
+<p>Think of this like injecting the GPU hardware config into a container but you still need to bring the software (like CUDA)</p>
+<p>Below is an example configuration for <code>containerd</code> to use the NVIDIA runtimeClass:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># /etc/containerd/config.toml</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">[</span><span class="l">plugins."io.containerd.grpc.v1.cri".containerd.runtimes]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="p">[</span><span class="l">plugins."io.containerd.grpc.v1.cri".containerd.runtimes.nvidia]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">privileged_without_host_devices = false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">runtime_engine = ""</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">runtime_root = ""</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">runtime_type = "io.containerd.runc.v2"</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">[</span><span class="l">plugins."io.containerd.grpc.v1.cri".containerd.runtimes.nvidia.options]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="l">BinaryName = "/usr/bin/nvidia-container-runtime"</span><span class="w">
+</span></span></span></code></pre><button class="copy-code">copy</button></div><p>The above config is used anytime a container is using the <code>nvidia</code> runtimeClass.</p>
+<p>Configuring <code>/etc/containerd/config.toml</code> is automated via <code>nvidia-ctk</code> (a poorly named subset utility of the <code>nvidia-container-toolkit</code>), covered later.</p>
+<p>The <code>nvidia-container-toolkit</code> and utilities are 
+responsible for configuring the container runtime, but that process 
+assumes we already have a configured GPU on the host.</p>
+<h3 id="how-does-ubuntu-know-it-has-a-gpu">How does Ubuntu know it has a GPU?<a hidden="" class="anchor" aria-hidden="true" href="#how-does-ubuntu-know-it-has-a-gpu">#</a></h3>
+<p>The short answer is <strong>drivers</strong>.  A driver is the essential software needed for your operating system to communicate with the NVIDIA graphics card.</p>
+<p>The NVIDIA drivers are installed on Ubuntu using package managers.</p>
+<p>There are 2 parts to the NVIDIA driver, how the hardware knows how to talk to the GPU (<strong>hardware/kernel</strong> modules) and how the <strong>software</strong> knows how to talk to the GPU.</p>
+<p><img loading="lazy" src="A%20Practical%20Guide%20to%20Running%20NVIDIA%20GPUs%20on%20Kubernetes%20_%20jimangel.io_files/gpu-stack-driver.jpg" alt="">
+</p>
+<p>I included “CUDA stuff” in the picture because it could be installed 
+on the host, but it depends on the exact use case. It is not required 
+for this walkthrough and discussed later.</p>
+<h3 id="how-does-the-motherboard-know-a-gpu-is-connected">How does the motherboard know a GPU is connected?<a hidden="" class="anchor" aria-hidden="true" href="#how-does-the-motherboard-know-a-gpu-is-connected">#</a></h3>
+<p>This is a bit of a trick question. Most, if not all, consumer GPUs are connected via PCIe.</p>
+<p><img loading="lazy" src="A%20Practical%20Guide%20to%20Running%20NVIDIA%20GPUs%20on%20Kubernetes%20_%20jimangel.io_files/gpu-stack-pci.jpg" alt="">
+</p>
+<p>When I thought more about it, PCIe supports GPUs, NVMe, NICs, and many other peripherals. It’s <strong>just a way to transmit data</strong>.</p>
+<p>The motherboard doesn’t need to know it’s a GPU, but it does need to know <em>something</em> is plugged into it via PCIe.</p>
+<style type="text/css">.notice,body.dark .notice{--root-background:#eff;--title-color:#fff;--title-background:#7bd}.notice{--root-color:#444;--warning-title:#c33;--warning-content:#fee;--info-title:#fb7;--info-content:#fec;--note-title:#6be;--note-content:#e7f2fa;--tip-title:#5a5;--tip-content:#efe;padding:18px;line-height:24px;margin-bottom:24px;border-radius:4px;color:var(--root-color);background:var(--root-background)}body.dark .notice{--root-color:#ddd;--warning-title:#800;--warning-content:#400;--info-title:#a50;--info-content:#420;--note-title:#069;--note-content:#023;--tip-title:#363;--tip-content:#121}.notice p:last-child{margin-bottom:0}.notice-title{margin:-18px -18px 12px;padding:4px 18px;border-radius:4px 4px 0 0;font-weight:700;color:var(--title-color);background:var(--title-background)}.notice.warning .notice-title{background:var(--warning-title)}.notice.warning{background:var(--warning-content)}.notice.info .notice-title{background:var(--info-title)}.notice.info{background:var(--info-content)}.notice.note .notice-title{background:var(--note-title)}.notice.note{background:var(--note-content)}.notice.tip .notice-title{background:var(--tip-title)}.notice.tip{background:var(--tip-content)}.icon-notice{display:inline-flex;align-self:center;margin-right:8px}.icon-notice img,.icon-notice svg{height:1em;width:1em;fill:currentColor}.icon-notice img,.icon-notice.baseline svg{top:.125em;position:relative}</style>
+<div><svg width="0" height="0" display="none" xmlns="http://www.w3.org/2000/svg"><symbol id="tip-notice" viewBox="0 0 512 512" preserveAspectRatio="xMidYMid meet"><path d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.249 16.379 6.249 22.628.001z"></path></symbol><symbol id="note-notice" viewBox="0 0 512 512" preserveAspectRatio="xMidYMid meet"><path d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"></path></symbol><symbol id="warning-notice" viewBox="0 0 576 512" preserveAspectRatio="xMidYMid meet"><path d="M569.517 440.013C587.975 472.007 564.806 512 527.94 512H48.054c-36.937 0-59.999-40.055-41.577-71.987L246.423 23.985c18.467-32.009 64.72-31.951 83.154 0l239.94 416.028zM288 354c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"></path></symbol><symbol id="info-notice" viewBox="0 0 512 512" preserveAspectRatio="xMidYMid meet"><path d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"></path></symbol></svg></div><div class="notice note">
+<p class="first notice-title"><span class="icon-notice baseline"><svg><use href="#note-notice"></use></svg></span>Note</p><p>If
+ using a Thunderbolt external GPU (eGPU), it’s still considered PCI. 
+“Thunderbolt combines PCIe and DisplayPort into two serial signals, and 
+additionally provides DC power via a single cable.” (<a href="https://en.wikipedia.org/wiki/Thunderbolt_(interface)">source</a>)</p></div>
+<p>Now that we’re at the bottom of the components, we can follow the 
+reverse order to install &amp; validate a GPU on a local Kubernetes 
+cluster.</p>
+<h2 id="configuring-a-nvidia-rtx-gpu-on-kubernetes">Configuring a NVIDIA RTX GPU on Kubernetes<a hidden="" class="anchor" aria-hidden="true" href="#configuring-a-nvidia-rtx-gpu-on-kubernetes">#</a></h2>
+<p>Starting where we left off, let’s check the physical hardware connection.</p>
+<h3 id="validate-hardware-connection">Validate hardware connection<a hidden="" class="anchor" aria-hidden="true" href="#validate-hardware-connection">#</a></h3>
+<p>Use <code>lspci</code>, a utility for displaying information about 
+PCI buses in the system and devices connected to them, to look for known
+ NVIDIA device.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># list all PCI devices with the text NVIDIA</span>
+</span></span><span class="line"><span class="cl">sudo lspci <span class="p">|</span> grep NVIDIA
+</span></span></code></pre><button class="copy-code">copy</button></div><p>All good! ✅ Output:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">2f:00.0 VGA compatible controller: NVIDIA Corporation GA106 <span class="o">[</span>GeForce RTX <span class="m">3060</span> Lite Hash Rate<span class="o">]</span> <span class="o">(</span>rev a1<span class="o">)</span>
+</span></span></code></pre><button class="copy-code">copy</button></div><h3 id="nvidia-gpu-driver-considerations">NVIDIA GPU driver considerations<a hidden="" class="anchor" aria-hidden="true" href="#nvidia-gpu-driver-considerations">#</a></h3>
+<p>Not only are there many competing ways to install the same GPU driver, but how do you know which version to use?</p>
+<h4 id="finding-the-correct-driver-version">Finding the correct driver version<a hidden="" class="anchor" aria-hidden="true" href="#finding-the-correct-driver-version">#</a></h4>
+<p>Use the search menu on NVIDIA’s <mark><a href="https://www.nvidia.com/download/index.aspx">driver download site</a></mark> to find the latest recommended version to install.</p>
+<p>For example, searching for an RTX 3060 returns:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Version</td>
+<td>535.154.05</td>
+</tr>
+<tr>
+<td>Release Date</td>
+<td>2024.1.16</td>
+</tr>
+<tr>
+<td>Operating System</td>
+<td>Linux 64-bit</td>
+</tr>
+<tr>
+<td>Language</td>
+<td>English (US)</td>
+</tr>
+<tr>
+<td>File Size</td>
+<td>325.86 MB</td>
+</tr>
+</tbody>
+</table>
+<p>That means I’m looking for the <code>535+</code> nvidia driver version.</p>
+<h3 id="a-side-note-about-cuda-versions">(a side note about CUDA versions)<a hidden="" class="anchor" aria-hidden="true" href="#a-side-note-about-cuda-versions">#</a></h3>
+<p>CUDA is additional software that helps applications run on NVIDIA GPUs. Consider it like an API for your host’s GPU.</p>
+<p>While CUDA packages aren’t required for <em>this</em> setup, there’s a semi-delicate relationship between CUDA and driver version used in a container. <mark>If there’s a mismatch between CUDA and your driver, things may not work as expected!</mark></p>
+<div class="notice tip">
+<p class="first notice-title"><span class="icon-notice baseline"><svg><use href="#tip-notice"></use></svg></span>Tip</p><p>After a driver is installed, <code>nvidia-smi</code> can be ran to check the recommended CUDA version, for example nvidia-driver-535 outputs CUDA <code>12.2</code> even though I haven’t installed CUDA.</p>
+<p>Most of my problems went away once I had alignment with the CUDA version <strong>in the container</strong> alongside the matching host drivers. (<a href="https://developer.nvidia.com/cuda-downloads">CUDA download</a>)</p></div>
+<p>Also, fair warning, CUDA adds a significant amount of resources to your container images.</p>
+<p>If you are determined to reduce the size of your image, you can 
+selectively rm -rf the parts of the Toolkit that you don’t need, but be 
+careful about not deleting libraries and tools that may be used by 
+applications in the container!</p>
+<h3 id="install-the-nvidia-gpu-driver">Install the NVIDIA GPU driver<a hidden="" class="anchor" aria-hidden="true" href="#install-the-nvidia-gpu-driver">#</a></h3>
+<p>There are a few popular ways to install the NVIDIA GPU driver on Ubuntu 22.04 LTS:</p>
+<ul>
+<li>Official Ubuntu managed NVIDIA drivers via <code>ubuntu-drivers install</code> (<a href="https://ubuntu.com/server/docs/nvidia-drivers-installation">docs</a>)</li>
+<li>Official NVIDIA managed NVIDIA drivers via <code>.run file</code> (<a href="https://www.nvidia.com/download/index.aspx">download</a>)</li>
+<li><mark>Unofficial PPA managed NVIDIA drivers</mark> via <code>ppa:graphics-drivers/ppa</code> (<a href="https://launchpad.net/~graphics-drivers/+archive/ubuntu/ppa">docs</a>)</li>
+</ul>
+<p>For this walkthrough, I use the last option (ppa) but feel free to 
+substitute in your preferred method. I chose PPA because it seemed to 
+work the easiest.</p>
+<p>Add the PPA repo and install the driver found above.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># add ppa:graphics-driver repo to apt</span>
+</span></span><span class="line"><span class="cl">sudo add-apt-repository ppa:graphics-drivers/ppa --yes
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># update apt content list</span>
+</span></span><span class="line"><span class="cl">sudo apt update
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># install driver</span>
+</span></span><span class="line"><span class="cl">sudo apt install nvidia-driver-535
+</span></span></code></pre><button class="copy-code">copy</button></div><div class="notice warning">
+<p class="first notice-title"><span class="icon-notice baseline"><svg><use href="#warning-notice"></use></svg></span>Warning</p><p>I ran into an issue where Ubuntu’s <code>unattended-upgrades</code> automatically updated some of the GPU driver dependencies and broke my GPU configuration.</p>
+<p>Fixed with <code>sudo apt remove unattended-upgrades</code> but there are other, less forceful, solutions.</p></div>
+<p>Now that we have the drivers installed, let’s validate they’re working. A quick test would be running <code>nvidia-smi</code>, a utility that provides monitoring and management capabilities for NVIDIA GPUs.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># get the driver version</span>
+</span></span><span class="line"><span class="cl">nvidia-smi --query-gpu<span class="o">=</span>driver_version --format<span class="o">=</span>csv,noheader
+</span></span></code></pre><button class="copy-code">copy</button></div><h3 id="validate-the-nvidia-gpu-driver">Validate the NVIDIA GPU driver<a hidden="" class="anchor" aria-hidden="true" href="#validate-the-nvidia-gpu-driver">#</a></h3>
+<p>Validate installation by listing all packages (<code>dpkg -l</code>) installed with “nvidia” or “535” in the name.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">dpkg -l <span class="p">|</span> grep nvidia
+</span></span><span class="line"><span class="cl"><span class="c1"># or</span>
+</span></span><span class="line"><span class="cl">dpkg -l <span class="p">|</span> grep <span class="m">535</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># expected output: non-empty list of packages</span>
+</span></span></code></pre><button class="copy-code">copy</button></div><p>All good! ✅</p>
+<div class="notice tip">
+<p class="first notice-title"><span class="icon-notice baseline"><svg><use href="#tip-notice"></use></svg></span>Tip</p><p>To prevent unplanned package changes, <code>hold</code> them to prevent auto-upgrading.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># any package with nvidia in the name should be held</span>
+</span></span><span class="line"><span class="cl">dpkg-query -W --showformat<span class="o">=</span><span class="s1">'${Package} ${Status}\n'</span> <span class="p">|</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>grep -v deinstall <span class="p">|</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>awk <span class="s1">'{ print $1 }'</span> <span class="p">|</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>grep -E <span class="s1">'nvidia.*-[0-9]+$'</span> <span class="p">|</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>xargs -r -L <span class="m">1</span> sudo apt-mark hold
+</span></span></code></pre><button class="copy-code">copy</button></div><p>Output:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#...</span>
+</span></span><span class="line"><span class="cl">libnvidia-fbc1-535 <span class="nb">set</span> on hold.
+</span></span><span class="line"><span class="cl">libnvidia-gl-535 <span class="nb">set</span> on hold.
+</span></span><span class="line"><span class="cl">nvidia-compute-utils-535 <span class="nb">set</span> on hold.
+</span></span><span class="line"><span class="cl">nvidia-dkms-535 <span class="nb">set</span> on hold.
+</span></span></code></pre><button class="copy-code">copy</button></div><p>This also means <code>sudo apt-mark unhold [package_name]</code> must be ran before upgrading.</p></div>
+<h4 id="are-the-kernel-modules-installed-is-the-driver-working">Are the kernel modules installed? Is the driver working?<a hidden="" class="anchor" aria-hidden="true" href="#are-the-kernel-modules-installed-is-the-driver-working">#</a></h4>
+<p>Modules instruct the kernel how to interact with the device attached 
+to it. Without any NVIDIA modules, the OS doesn’t know how to 
+communicate with the hardware.</p>
+<p>Use <code>lsmod</code>, a program which lists the contents of the <code>/proc/modules</code>, showing what kernel modules are currently loaded.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Show the status of driver modules in the Linux Kernel</span>
+</span></span><span class="line"><span class="cl">lsmod <span class="p">|</span> grep nvidia
+</span></span></code></pre><button class="copy-code">copy</button></div><p>If you have modules installed it might look like ✅:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nvidia_uvm           <span class="m">1511424</span>  <span class="m">12</span>
+</span></span><span class="line"><span class="cl">nvidia_drm             <span class="m">77824</span>  <span class="m">0</span>
+</span></span><span class="line"><span class="cl">nvidia_modeset       <span class="m">1306624</span>  <span class="m">1</span> nvidia_drm
+</span></span><span class="line"><span class="cl">nvidia              <span class="m">56692736</span>  <span class="m">200</span> nvidia_uvm,nvidia_modeset
+</span></span><span class="line"><span class="cl">drm_kms_helper        <span class="m">311296</span>  <span class="m">1</span> nvidia_drm
+</span></span><span class="line"><span class="cl">drm                   <span class="m">622592</span>  <span class="m">4</span> drm_kms_helper,nvidia,nvidia_drm
+</span></span></code></pre><button class="copy-code">copy</button></div><div class="notice note">
+<p class="first notice-title"><span class="icon-notice baseline"><svg><use href="#note-notice"></use></svg></span>Note</p><p>I
+ was testing the above output with an eGPU and the modules weren’t 
+showing up. I thought my understanding was wrong, but it turned out I 
+didn’t plug in the cable.</p>
+<p>Connecting the eGPU fixed my issue and the modules appeared.</p></div>
+<p>Check the kernel driver version file:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat /proc/driver/nvidia/version
+</span></span></code></pre><button class="copy-code">copy</button></div><p>All good! ✅ Output:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">NVRM version: NVIDIA UNIX x86_64 Kernel Module  535.154.05  Thu Dec <span class="m">28</span> 15:37:48 UTC <span class="m">2023</span>
+</span></span><span class="line"><span class="cl">GCC version:  gcc version 11.4.0 <span class="o">(</span>Ubuntu 11.4.0-1ubuntu1~22.04<span class="o">)</span> 
+</span></span></code></pre><button class="copy-code">copy</button></div><p>Check the device file for a found nvidia device:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># any device files (I/O sys calls)</span>
+</span></span><span class="line"><span class="cl">ls /dev/ <span class="p">|</span> grep <span class="s1">'nvidia[0-9]\+'</span>
+</span></span></code></pre><button class="copy-code">copy</button></div><p>All good! ✅ Output:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nvidia0
+</span></span></code></pre><button class="copy-code">copy</button></div><p>It appears that we have a host with a working GPU setup, next let’s configure <code>containerd</code> to support a GPU runtime.</p>
+<h3 id="install-nvidia-container-toolkit">Install NVIDIA Container Toolkit<a hidden="" class="anchor" aria-hidden="true" href="#install-nvidia-container-toolkit">#</a></h3>
+<p>My homelab is running Kubernetes v1.28.4 with <code>containerd</code>. As mentioned earlier, we need the NVIDIA Container Toolkit (a set of utilities) to configure <code>containerd</code> to leverage NVIDIA GPU(s).</p>
+<p><mark>As far as I know, this installs tools on your host but does not configure, or change, anything by default.</mark></p>
+<p>From the “<a href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html">Installing the NVIDIA Container Toolkit</a>” guide.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># add nvidia-container-toolkit repo to apt sources</span>
+</span></span><span class="line"><span class="cl">curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey <span class="p">|</span> sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span><span class="o">&amp;&amp;</span> curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list <span class="p">|</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>sed <span class="s1">'s#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g'</span> <span class="p">|</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># update apt content</span>
+</span></span><span class="line"><span class="cl">sudo apt update
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># install container toolkit</span>
+</span></span><span class="line"><span class="cl">sudo apt install -y nvidia-container-toolkit
+</span></span></code></pre><button class="copy-code">copy</button></div><div class="notice note">
+<p class="first notice-title"><span class="icon-notice baseline"><svg><use href="#note-notice"></use></svg></span>Note</p><p>As
+ of the v1.12.0 release the NVIDIA Container Toolkit includes support 
+for generating Container Device Interface (CDI) specifications - an 
+alternative approach to this blog for adding GPUs to a container 
+runtime.</p>
+<p><a href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/cdi-support.html">https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/cdi-support.html</a></p></div>
+<h3 id="configure-containerd">Configure <code>containerd</code><a hidden="" class="anchor" aria-hidden="true" href="#configure-containerd">#</a></h3>
+<p>Now that the tools are installed, we need to update the <code>containerd</code> config runtime classes. Luckily one of the tools, <code>nvidia-ctk</code> can automate that process.</p>
+<p>From the “<a href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#configuration">Installing the NVIDIA Container Toolkit</a>” guide.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># options: --dry-run</span>
+</span></span><span class="line"><span class="cl">sudo nvidia-ctk runtime configure --runtime<span class="o">=</span>containerd
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># restart containerd</span>
+</span></span><span class="line"><span class="cl">sudo systemctl restart containerd
+</span></span></code></pre><button class="copy-code">copy</button></div><p>Verify that <code>containerd</code> is running with <code>sudo systemctl status containerd</code></p>
+<div class="notice note">
+<p class="first notice-title"><span class="icon-notice baseline"><svg><use href="#note-notice"></use></svg></span>Note</p><p>You can customize the NVIDIA runtime configuration by specifying the runtime name (<code>--nvidia-runtime-name</code>), the path to the NVIDIA runtime executable (<code>--nvidia-runtime-path</code>), and the path to the NVIDIA Container Runtime hook executable (<code>--nvidia-runtime-hook-path</code>).</p>
+<p>There’s also an option to set the NVIDIA runtime as the default runtime using <code>--nvidia-set-as-default</code>. (<a href="https://github.com/NVIDIA/nvidia-container-toolkit/blob/main/cmd/nvidia-ctk/runtime/configure/configure.go">source</a>)</p></div>
+<p>If you want to dig more into what <code>nvidia-container-runtime</code> does on the host to expose a GPU, I highly recommend reading their low level example in <a href="https://github.com/NVIDIA/nvidia-container-toolkit/tree/main/cmd/nvidia-container-runtime#usage-example">the docs</a>.</p>
+<p>If you’re still not tired of this topic, the blog titled “<a href="https://developer.nvidia.com/blog/gpu-containers-runtime/">Enabling GPUs in the Container Runtime Ecosystem</a>” from NVIDIA is excellent.</p>
+<h3 id="validate-containerd">Validate <code>containerd</code><a hidden="" class="anchor" aria-hidden="true" href="#validate-containerd">#</a></h3>
+<p>Check that the nvidia runtime exists in the config.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo cat /etc/containerd/config.toml <span class="p">|</span> grep <span class="s2">"containerd.runtimes.nvidia."</span>
+</span></span></code></pre><button class="copy-code">copy</button></div><p>All good! ✅ Output:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>plugins.<span class="s2">"io.containerd.grpc.v1.cri"</span>.containerd.runtimes.nvidia<span class="o">]</span> 
+</span></span><span class="line"><span class="cl">  <span class="o">[</span>plugins.<span class="s2">"io.containerd.grpc.v1.cri"</span>.containerd.runtimes.nvidia.options<span class="o">]</span>
+</span></span></code></pre><button class="copy-code">copy</button></div><p>Let’s try to run a container directly on the host (skipping Kubernetes). First we need to Install <code>nerdctl</code>, a drop-in replacement for <code>docker</code>, that allows for us to use the <code>--gpus all</code> argument.</p>
+<p>Install <code>nerdctl</code> using a precompiled <a href="ttps://github.com/containerd/nerdctl/releases">release</a>.</p>
+<p>Note the version of CUDA I’m selecting, check out the repo website for the latest tag options: <a href="https://hub.docker.com/r/nvidia/cuda/tags">docker.com/r/nvidia/cuda/tags</a></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># `nvidia-smi` command ran with cuda 12.3</span>
+</span></span><span class="line"><span class="cl">sudo nerdctl run -it --rm --gpus all nvidia/cuda:12.3.1-base-ubuntu20.04 nvidia-smi
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># `nvcc -V` command ran with cuda 12.3 (the "12.3.1-base" image doesn't include nvcc)</span>
+</span></span><span class="line"><span class="cl">sudo nerdctl run -it --rm --gpus all nvidia/cuda:12.3.1-devel-ubuntu20.04 nvcc -V
+</span></span></code></pre><button class="copy-code">copy</button></div><p>All good! ✅</p>
+<div class="notice note">
+<p class="first notice-title"><span class="icon-notice baseline"><svg><use href="#note-notice"></use></svg></span>Note</p><p>If you are on a machine with multiple GPUs, you can substitute <code>--gpus all</code> with something like <code>--gpus '"device=0,1"'</code> to test sharing individual GPUs.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># only use device 0 and 1 out of a possible [0,1,2,3] setup</span>
+</span></span><span class="line"><span class="cl">sudo nerdctl run -it --rm --gpus <span class="s1">'"device=0,1"'</span> nvidia/cuda:12.2.2-base-ubuntu22.04 nvidia-smi
+</span></span></code></pre><button class="copy-code">copy</button></div></div>
+<p>At this spot, we have a GPU node that works up to the container runtime.</p>
+<h3 id="install-the-nvidia-gpu-operator-using-helm">Install the NVIDIA GPU Operator using <code>helm</code><a hidden="" class="anchor" aria-hidden="true" href="#install-the-nvidia-gpu-operator-using-helm">#</a></h3>
+<p>The last piece of the puzzle, we need to let Kubernetes know that we have nodes with GPU’s on ’em.</p>
+<p>The <a href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html">NVIIDA GPU Operator</a> creates/configures/manages GPUs atop Kubernetes and is installed with via helm chart.</p>
+<p>Install helm following the <a href="https://helm.sh/docs/intro/install/">official instructions</a>. If you’re interested in looking at the helm chart and values <a href="https://github.com/NVIDIA/gpu-operator/tree/master/deployments/gpu-operator">here’s the Github repo</a>.</p>
+<p>Add the helm repo:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">helm repo add nvidia https://helm.ngc.nvidia.com/nvidia <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>   <span class="o">&amp;&amp;</span> helm repo update
+</span></span></code></pre><button class="copy-code">copy</button></div><p>Install the release on your Kubernetes cluster.</p>
+<p>By default, the Operator deploys the NVIDIA Container Toolkit and 
+NVIDIA drivers as a container on the system. We’ll set these values to <code>false</code> since we already installed both components.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">helm install --wait gpu-operator <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>     -n gpu-operator --create-namespace <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>      nvidia/gpu-operator <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>      --set driver.enabled<span class="o">=</span><span class="nb">false</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>      --set toolkit.enabled<span class="o">=</span><span class="nb">false</span>
+</span></span></code></pre><button class="copy-code">copy</button></div><p>Ensure all the pods came up healthy:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># ensure nothing on kubernetes is wonky</span>
+</span></span><span class="line"><span class="cl">kubectl get pods -n gpu-operator <span class="p">|</span> grep -i nvidia
+</span></span></code></pre><button class="copy-code">copy</button></div><p>All good! ✅ Output:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nvidia-cuda-validator-4hh2v                                  0/1     Completed   <span class="m">0</span>               3d20h
+</span></span><span class="line"><span class="cl">nvidia-dcgm-exporter-86wcv                                   1/1     Running     <span class="m">5</span> <span class="o">(</span>7d10h ago<span class="o">)</span>   7d20h
+</span></span><span class="line"><span class="cl">nvidia-device-plugin-daemonset-cxfnc                         1/1     Running     <span class="m">0</span>               26h
+</span></span><span class="line"><span class="cl">nvidia-operator-validator-jhz6j                              1/1     Running     <span class="m">0</span>               3d20h
+</span></span></code></pre><button class="copy-code">copy</button></div><h3 id="validate-the-gpu-operator">Validate the GPU Operator<a hidden="" class="anchor" aria-hidden="true" href="#validate-the-gpu-operator">#</a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl -n gpu-operator logs deployment/gpu-operator <span class="p">|</span> grep GPU
+</span></span></code></pre><button class="copy-code">copy</button></div><p>This isn’t a foolproof test, but you should see <code>Number of nodes with GPU label","NodeCount": NUMBER_OF_EXPECTED_GPU_NODES</code> with an actual value. If it says 0, there’s probably an issue that requires debugging.</p>
+<p>Helpful debugging command: <code>kubectl get events -n gpu-operator --sort-by='.lastTimestamp'</code></p>
+<div class="notice tip">
+<p class="first notice-title"><span class="icon-notice baseline"><svg><use href="#tip-notice"></use></svg></span>Tip</p><p>When
+ in doubt (or when the GPU operator pods are stuck in init / terminating
+ on a single node but the underlying setup is sound): reboot the node.</p></div>
+<h2 id="putting-it-all-together">Putting it all together<a hidden="" class="anchor" aria-hidden="true" href="#putting-it-all-together">#</a></h2>
+<p>Finally, let’s run a Kubernetes workload to test that our integration works end to end.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># EXPORT NODE NAME!</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">NODE_NAME</span><span class="o">=</span>node3
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">cat <span class="s">&lt;&lt;EOF | kubectl create -f -     
+</span></span></span><span class="line"><span class="cl"><span class="s">apiVersion: batch/v1
+</span></span></span><span class="line"><span class="cl"><span class="s">kind: Job
+</span></span></span><span class="line"><span class="cl"><span class="s">metadata:
+</span></span></span><span class="line"><span class="cl"><span class="s">  name: test-job-gpu
+</span></span></span><span class="line"><span class="cl"><span class="s">spec:
+</span></span></span><span class="line"><span class="cl"><span class="s">  template:
+</span></span></span><span class="line"><span class="cl"><span class="s">    spec:
+</span></span></span><span class="line"><span class="cl"><span class="s">      runtimeClassName: nvidia
+</span></span></span><span class="line"><span class="cl"><span class="s">      containers:
+</span></span></span><span class="line"><span class="cl"><span class="s">      - name: nvidia-test
+</span></span></span><span class="line"><span class="cl"><span class="s">        image: nvidia/cuda:12.0.0-base-ubuntu22.04
+</span></span></span><span class="line"><span class="cl"><span class="s">        command: ["nvidia-smi"]
+</span></span></span><span class="line"><span class="cl"><span class="s">        resources:
+</span></span></span><span class="line"><span class="cl"><span class="s">          limits:
+</span></span></span><span class="line"><span class="cl"><span class="s">            nvidia.com/gpu: 1
+</span></span></span><span class="line"><span class="cl"><span class="s">      nodeSelector:
+</span></span></span><span class="line"><span class="cl"><span class="s">        kubernetes.io/hostname: ${NODE_NAME}
+</span></span></span><span class="line"><span class="cl"><span class="s">      restartPolicy: Never
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span></code></pre><button class="copy-code">copy</button></div><p>Check the output via <code>logs</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl logs job/test-job-gpu
+</span></span></code></pre><button class="copy-code">copy</button></div><p>Expected output similar to:</p>
+<p><img loading="lazy" src="A%20Practical%20Guide%20to%20Running%20NVIDIA%20GPUs%20on%20Kubernetes%20_%20jimangel.io_files/gpu-smi.jpeg" alt="">
+</p>
+<p>Congrats! 🎉🎉🎉 We officially have a local GPU accelerated Kubernetes cluster!</p>
+<h2 id="conclusion">Conclusion<a hidden="" class="anchor" aria-hidden="true" href="#conclusion">#</a></h2>
+<p>Integrating GPUs into Kubernetes might seem daunting due to the 
+involved technical layers. I hope this guide demystifies the process of 
+integrating NVIDIA GPUs with Kubernetes for you.</p>
+<p>In summary, exposing a GPU on k8s includes:</p>
+<ol>
+<li>Install NVIDIA GPU drivers (<code>apt install nvidia-driver-535</code>)</li>
+<li>Configure container runtime (<code>apt install -y nvidia-container-toolkit</code> &amp; <code>nvidia-ctk runtime configure</code>)</li>
+<li>Configure kubernetes (<code>helm install nvidia/gpu-operator</code>)</li>
+<li>Update deployment YAML to include GPU requests</li>
+</ol>
+<p>In the future, I’d consider using the <code>ubuntu-driver</code> installer and/or having the Kubernetes GPU Operator manage the driver and container toolkit.</p>
+<p>If you have any questions, insights, or feedback, feel free to share!</p>
+<h2 id="clean-up">Clean up<a hidden="" class="anchor" aria-hidden="true" href="#clean-up">#</a></h2>
+<p>Want to start over? Install a different driver? Delete everything:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># drain node / remove from cluster</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># remove gpu-operator deployment</span>
+</span></span><span class="line"><span class="cl">helm -n gpu-operator list
+</span></span><span class="line"><span class="cl">helm -n gpu-operator delete HELM_RELEASE_NAME
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># delete driver packages</span>
+</span></span><span class="line"><span class="cl">sudo apt remove --purge <span class="s1">'^nvidia-.*'</span>
+</span></span><span class="line"><span class="cl">sudo apt remove --purge <span class="s1">'^libnvidia-.*'</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># clean up the uninstall</span>
+</span></span><span class="line"><span class="cl">sudo apt autoremove
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># restart containerd</span>
+</span></span></code></pre><button class="copy-code">copy</button></div><h2 id="bonus-lazy-gke-a100-exploration">Bonus: Lazy GKE A100 exploration<a hidden="" class="anchor" aria-hidden="true" href="#bonus-lazy-gke-a100-exploration">#</a></h2>
+<p>I was curious how my current understanding of local NVIDIA GPUs 
+compared to GPU acceleration in the cloud, so I spun up an A100 node on 
+GKE.</p>
+<p>I had to deploy the node twice because I made a mistake on my first deployment. I omitted <code>gpu-driver-version=default</code>; so a driver and tools weren’t found (as intended) but I could see the connected PCI device.</p>
+<p>There are instructions on manually <a href="https://github.com/GoogleCloudPlatform/container-engine-accelerators/blob/master/cmd/nvidia_gpu/README.md">installing the driver on COS here</a>, but I consider it out of scope.</p>
+<p>Here is the command I used to (re)create the node pool:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># create command</span>
+</span></span><span class="line"><span class="cl">gcloud container node-pools create gpu-pool-2 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --cluster cluster-2 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --region us-central1 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --machine-type a2-highgpu-1g <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --num-nodes <span class="m">1</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --accelerator <span class="nv">type</span><span class="o">=</span>nvidia-tesla-a100,count<span class="o">=</span>1,gpu-driver-version<span class="o">=</span>default
+</span></span></code></pre><button class="copy-code">copy</button></div><p>Let’s see what we can find!</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># gcloud compute ssh NODE_NAME</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># PCI connection?</span>
+</span></span><span class="line"><span class="cl">sudo lspci <span class="p">|</span> grep NVIDIA
+</span></span><span class="line"><span class="cl">00:04.0 3D controller: NVIDIA Corporation GA100 <span class="o">[</span>A100 SXM4 40GB<span class="o">]</span> <span class="o">(</span>rev a1<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Driver installed?</span>
+</span></span><span class="line"><span class="cl">cat /proc/driver/nvidia/version
+</span></span><span class="line"><span class="cl"><span class="c1">#NVRM version: NVIDIA UNIX x86_64 Kernel Module  470.223.02  Sat Oct  7 15:39:11 UTC 2023</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#GCC version:  Selected multilib: .;@m64</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># tab complete `nvidia-c*`</span>
+</span></span><span class="line"><span class="cl">nvidia-container-runtime       nvidia-container-runtime.cdi   
+</span></span><span class="line"><span class="cl">nvidia-container-runtime-hook  nvidia-ctk
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Where is nvidia-smi?</span>
+</span></span><span class="line"><span class="cl">sudo find / -type f -name <span class="s2">"nvidia-smi"</span> 2&gt;/dev/null
+</span></span><span class="line"><span class="cl"><span class="c1"># /home/kubernetes/bin/nvidia/bin/nvidia-smi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Runtime?</span>
+</span></span><span class="line"><span class="cl">sudo cat /etc/containerd/config.toml <span class="p">|</span> grep <span class="s2">"containerd.runtimes.nvidia."</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># NO!</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># But, a quick look around:</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># bin k8s container runtime is in the default + device plugin</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># it looks like some things mounted via default runc runtime here, but idk</span>
+</span></span><span class="line"><span class="cl">sudo cat /etc/containerd/config.toml  <span class="p">|</span> grep bin
+</span></span><span class="line"><span class="cl"><span class="c1"># OUTPUT</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#  bin_dir = "/home/kubernetes/bin"</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># ls /home/kubernetes/bin/nvidia/bin/</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#nvidia-bug-report.sh     nvidia-debugdump  nvidia-ngx-updater   nvidia-sleep.sh   nvidia-xconfig</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#nvidia-cuda-mps-control  nvidia-installer  nvidia-persistenced  nvidia-smi</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#nvidia-cuda-mps-server   nvidia-modprobe   nvidia-settings      nvidia-uninstall</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># check nvidia containers running</span>
+</span></span><span class="line"><span class="cl">crictl ps <span class="p">|</span> grep nvidia-gpu
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># OUTPUT</span>
+</span></span><span class="line"><span class="cl">25eec6551f9e5       2f78042af231d       <span class="m">7</span> hours ago         Running             nvidia-gpu-device-plugin   <span class="m">0</span>                   ca9dd0d8e2822       nvidia-gpu-device-plugin-small-cos-674fk
+</span></span></code></pre><button class="copy-code">copy</button></div><p>Cool! Some things are what I assumed and others I have some more digging to do!</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://www.jimangel.io/tags/kubernetes/">kubernetes</a></li>
+      <li><a href="https://www.jimangel.io/tags/nvidia/">nvidia</a></li>
+      <li><a href="https://www.jimangel.io/tags/gpu/">gpu</a></li>
+      <li><a href="https://www.jimangel.io/tags/ubuntu/">ubuntu</a></li>
+      <li><a href="https://www.jimangel.io/tags/cuda/">cuda</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://www.jimangel.io/posts/free-wildcard-ssl-certificates-lets-encrypt/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>Wildcard SSL certificates for free with Let's Encrypt</span>
+  </a>
+  <a class="next" href="https://www.jimangel.io/posts/home-assistant-air-monitors/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Monitoring air quality: Awair vs. Airthings vs. Aranet vs. AirGradient in Home Assistant</span>
+  </a>
+</nav>
+
+  </footer><div id="disqus_thread"><iframe id="dsq-app6149" name="dsq-app6149" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" title="Disqus" style="width: 1px !important; min-width: 100% !important; border: medium !important; overflow: hidden !important; height: 620px !important;" width="100%" src="A%20Practical%20Guide%20to%20Running%20NVIDIA%20GPUs%20on%20Kubernetes%20_%20jimangel.io_files/a_002.html" horizontalscrolling="no" verticalscrolling="no"></iframe></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "jimangel" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>© 2024 <a href="https://www.jimangel.io/">jimangel.io</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &amp;
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+
+
+
+<iframe style="display: none;"></iframe></body></html>

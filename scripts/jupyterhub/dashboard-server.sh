@@ -7,6 +7,7 @@ source config.sh
 DOCKER_IMAGE_NAME="jupyterhub-dashboard"
 DOCKER_REGISTRY="${API_SERVER_ADDRESS}:30000"
 WORKING_DIR="jupyterhub/dashboard"
+TEMPLATE_FILE="${WORKING_DIR}/deployment-template.yaml"
 K8S_DEPLOYMENT="${WORKING_DIR}/deployment.yaml"
 K8S_SERVICE="${WORKING_DIR}/service.yaml"
 
@@ -24,6 +25,11 @@ echo "Pushing Docker image to registry..."
 docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:latest
 
 cd -
+
+# Step 4: Generate deployment.yaml from the template
+echo "Generating deployment.yaml from deployment-template.yaml..."
+export DOCKER_REGISTRY
+envsubst < ${TEMPLATE_FILE} > ${K8S_DEPLOYMENT}
 
 # Step 4: Apply the Kubernetes deployment, service, and port-forward YAMLs
 echo "Applying Kubernetes deployment..."

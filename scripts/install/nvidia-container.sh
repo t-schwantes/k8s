@@ -14,7 +14,7 @@ if ! dpkg -l | grep -q nvidia-container-toolkit; then
     # Install NVIDIA container toolkit with a specific version
     NVIDIA_TOOLKIT_VERSION="1.17.0-1"
     echo "Installing NVIDIA container toolkit version ${NVIDIA_TOOLKIT_VERSION}..."
-    sudo apt-get install -y nvidia-container-toolkit=${NVIDIA_TOOLKIT_VERSION}
+    sudo apt-get install -y nvidia-container-toolkit=${NVIDIA_TOOLKIT_VERSION} --allow-downgrades
 else
     echo "NVIDIA container toolkit is already installed."
 fi

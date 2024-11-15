@@ -1,4 +1,6 @@
 #!/bin/bash
+source config.sh
+
 
 # Check if username and password are provided
 if [ "$#" -ne 2 ]; then
@@ -14,7 +16,8 @@ USERNAME_ENCODED=$(echo -n ${USERNAME} | base64)
 PASSWORD_ENCODED=$(echo -n ${PASSWORD} | base64)
 
 # SSH details
-SYN_HOST="192.168.0.102" # Replace with your Synology IP
+#SYN_HOST="192.168.0.102" # Replace with your Synology IP
+SYN_HOST=$SYNOLOGY_IP
 SYN_USER="qb" # Replace with your Synology admin username
 
 ssh ${SYN_USER}@${SYN_HOST} <<EOF
@@ -47,10 +50,11 @@ fi
 TEMPLATE_FILE="jupyterhub/storage/user-template.yaml"
 OUTPUT_FILE="jupyterhub/storage/user-yamls/synology-storage-${USERNAME}.yaml"
 
-sed -e "s/{username}/${USERNAME}/g" \
-    -e "s/{username_encoded}/${USERNAME_ENCODED}/g" \
-    -e "s/{password_encoded}/${PASSWORD_ENCODED}/g" \
-    ${TEMPLATE_FILE} > ${OUTPUT_FILE}
+# Generate YAML file using envsubst
+echo "Generating YAML for user ${USERNAME}..."
+# Export variables for envsubst
+export USERNAME USERNAME_ENCODED PASSWORD_ENCODED SYNOLOGY_IP
+envsubst < "$TEMPLATE_FILE" > "$OUTPUT_FILE"
 
 # Apply the generated YAML file to Kubernetes
 kubectl apply -f ${OUTPUT_FILE}

@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en-US"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>JupyterHub + K8s + Nvidia GPUs + On-premise – BATR</title>
+<meta name="robots" content="max-image-preview:large">
+<link rel="dns-prefetch" href="http://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="BATR » Feed" href="http://44.240.77.17/feed/">
+<link rel="alternate" type="application/rss+xml" title="BATR » Comments Feed" href="http://44.240.77.17/comments/feed/">
+		<script>
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.1.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.1.0\/svg\/","svgExt":".svg","source":{"concatemoji":"http:\/\/44.240.77.17\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.8.10"}};
+			!function(e,a,t){var n,r,o,i=a.createElement("canvas"),p=i.getContext&&i.getContext("2d");function s(e,t){var a=String.fromCharCode;p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,e),0,0);e=i.toDataURL();return p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,t),0,0),e===i.toDataURL()}function c(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(o=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},r=0;r<o.length;r++)t.supports[o[r]]=function(e){if(!p||!p.fillText)return!1;switch(p.textBaseline="top",p.font="600 32px Arial",e){case"flag":return s([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])?!1:!s([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!s([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]);case"emoji":return!s([10084,65039,8205,55357,56613],[10084,65039,8203,55357,56613])}return!1}(o[r]),t.supports.everything=t.supports.everything&&t.supports[o[r]],"flag"!==o[r]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[o[r]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(n=t.source||{}).concatemoji?c(n.concatemoji):n.wpemoji&&n.twemoji&&(c(n.twemoji),c(n.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="JupyterHub%20+%20K8s%20+%20Nvidia%20GPUs%20+%20On-premise%20%E2%80%93%20BATR_files/wp-emoji-release.min.js" type="text/javascript" defer="defer"></script>
+		<style>
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel="stylesheet" id="wp-block-library-css" href="JupyterHub%20+%20K8s%20+%20Nvidia%20GPUs%20+%20On-premise%20%E2%80%93%20BATR_files/style.min.css" media="all">
+<style id="wp-block-library-theme-inline-css">
+#start-resizable-editor-section{display:none}.wp-block-audio figcaption{color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-audio figcaption{color:hsla(0,0%,100%,.65)}.wp-block-code{font-family:Menlo,Consolas,monaco,monospace;color:#1e1e1e;padding:.8em 1em;border:1px solid #ddd;border-radius:4px}.wp-block-embed figcaption{color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-embed figcaption{color:hsla(0,0%,100%,.65)}.blocks-gallery-caption{color:#555;font-size:13px;text-align:center}.is-dark-theme .blocks-gallery-caption{color:hsla(0,0%,100%,.65)}.wp-block-image figcaption{color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-image figcaption{color:hsla(0,0%,100%,.65)}.wp-block-pullquote{border-top:4px solid;border-bottom:4px solid;margin-bottom:1.75em;color:currentColor}.wp-block-pullquote__citation,.wp-block-pullquote cite,.wp-block-pullquote footer{color:currentColor;text-transform:uppercase;font-size:.8125em;font-style:normal}.wp-block-quote{border-left:.25em solid;margin:0 0 1.75em;padding-left:1em}.wp-block-quote cite,.wp-block-quote footer{color:currentColor;font-size:.8125em;position:relative;font-style:normal}.wp-block-quote.has-text-align-right{border-left:none;border-right:.25em solid;padding-left:0;padding-right:1em}.wp-block-quote.has-text-align-center{border:none;padding-left:0}.wp-block-quote.is-large,.wp-block-quote.is-style-large{border:none}.wp-block-search .wp-block-search__label{font-weight:700}.wp-block-group.has-background{padding:1.25em 2.375em;margin-top:0;margin-bottom:0}.wp-block-separator{border:none;border-bottom:2px solid;margin-left:auto;margin-right:auto;opacity:.4}.wp-block-separator:not(.is-style-wide):not(.is-style-dots){width:100px}.wp-block-separator.has-background:not(.is-style-dots){border-bottom:none;height:1px}.wp-block-separator.has-background:not(.is-style-wide):not(.is-style-dots){height:2px}.wp-block-table thead{border-bottom:3px solid}.wp-block-table tfoot{border-top:3px solid}.wp-block-table td,.wp-block-table th{padding:.5em;border:1px solid;word-break:normal}.wp-block-table figcaption{color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-table figcaption{color:hsla(0,0%,100%,.65)}.wp-block-video figcaption{color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-video figcaption{color:hsla(0,0%,100%,.65)}.wp-block-template-part.has-background{padding:1.25em 2.375em;margin-top:0;margin-bottom:0}#end-resizable-editor-section{display:none}
+</style>
+<link rel="stylesheet" id="copy-the-code-css" href="JupyterHub%20+%20K8s%20+%20Nvidia%20GPUs%20+%20On-premise%20%E2%80%93%20BATR_files/copy-the-code.css" media="all">
+<link rel="stylesheet" id="twenty-twenty-one-style-css" href="JupyterHub%20+%20K8s%20+%20Nvidia%20GPUs%20+%20On-premise%20%E2%80%93%20BATR_files/style.css" media="all">
+<style id="twenty-twenty-one-style-inline-css">
+:root{--global--color-background: #28303d;--global--color-primary: #fff;--global--color-secondary: #fff;--button--color-background: #fff;--button--color-text-hover: #fff;--table--stripes-border-color: rgba(240, 240, 240, 0.15);--table--stripes-background-color: rgba(240, 240, 240, 0.15);}
+</style>
+<link rel="stylesheet" id="twenty-twenty-one-print-style-css" href="JupyterHub%20+%20K8s%20+%20Nvidia%20GPUs%20+%20On-premise%20%E2%80%93%20BATR_files/print.css" media="print">
+<script src="JupyterHub%20+%20K8s%20+%20Nvidia%20GPUs%20+%20On-premise%20%E2%80%93%20BATR_files/jquery.min.js" id="jquery-core-js"></script>
+<script src="JupyterHub%20+%20K8s%20+%20Nvidia%20GPUs%20+%20On-premise%20%E2%80%93%20BATR_files/jquery-migrate.min.js" id="jquery-migrate-js"></script>
+<link rel="https://api.w.org/" href="http://44.240.77.17/wp-json/"><link rel="alternate" type="application/json" href="http://44.240.77.17/wp-json/wp/v2/posts/17"><link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://44.240.77.17/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://44.240.77.17/wp-includes/wlwmanifest.xml"> 
+<meta name="generator" content="WordPress 5.8.10">
+<link rel="canonical" href="http://44.240.77.17/2021/10/23/jupyterhub-k8s/">
+<link rel="shortlink" href="http://44.240.77.17/?p=17">
+<link rel="alternate" type="application/json+oembed" href="http://44.240.77.17/wp-json/oembed/1.0/embed?url=http%3A%2F%2F44.240.77.17%2F2021%2F10%2F23%2Fjupyterhub-k8s%2F">
+<link rel="alternate" type="text/xml+oembed" href="http://44.240.77.17/wp-json/oembed/1.0/embed?url=http%3A%2F%2F44.240.77.17%2F2021%2F10%2F23%2Fjupyterhub-k8s%2F&amp;format=xml">
+<style id="custom-background-css">
+body.custom-background { background-color: #28303d; }
+</style>
+	</head>
+
+<body class="post-template-default single single-post postid-17 single-format-standard custom-background wp-embed-responsive is-dark-theme singular has-main-navigation">
+<div id="page" class="site">
+	<a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+
+	
+<header id="masthead" class="site-header has-title-and-tagline has-menu" role="banner">
+
+	
+
+<div class="site-branding">
+
+	
+						<p class="site-title"><a href="http://44.240.77.17/">BATR</a></p>
+			
+			<p class="site-description">
+			My Technical Reference		</p>
+	</div><!-- .site-branding -->
+	
+	<nav id="site-navigation" class="primary-navigation" role="navigation" aria-label="Primary menu">
+		<div class="menu-button-container">
+			<button id="primary-mobile-menu" class="button" aria-controls="primary-menu-list" aria-expanded="false">
+				<span class="dropdown-icon open">Menu					<svg class="svg-icon" width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M4.5 6H19.5V7.5H4.5V6ZM4.5 12H19.5V13.5H4.5V12ZM19.5 18H4.5V19.5H19.5V18Z" fill="currentColor"></path></svg>				</span>
+				<span class="dropdown-icon close">Close					<svg class="svg-icon" width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 10.9394L5.53033 4.46973L4.46967 5.53039L10.9393 12.0001L4.46967 18.4697L5.53033 19.5304L12 13.0607L18.4697 19.5304L19.5303 18.4697L13.0607 12.0001L19.5303 5.53039L18.4697 4.46973L12 10.9394Z" fill="currentColor"></path></svg>				</span>
+			</button><!-- #primary-mobile-menu -->
+		</div><!-- .menu-button-container -->
+		<div class="primary-menu-container"><ul id="primary-menu-list" class="menu-wrapper"><li id="menu-item-14" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-14"><a href="http://44.240.77.17/">Home</a></li>
+<li id="menu-item-15" class="menu-item menu-item-type-post_type menu-item-object-page current_page_parent menu-item-15"><a href="http://44.240.77.17/blog/">Blog</a></li>
+</ul></div>	</nav><!-- #site-navigation -->
+
+</header><!-- #masthead -->
+
+	<div id="content" class="site-content">
+		<div id="primary" class="content-area">
+			<main id="main" class="site-main" role="main">
+
+<article id="post-17" class="post-17 post type-post status-publish format-standard hentry category-uncategorized entry">
+
+	<header class="entry-header alignwide">
+		<h1 class="entry-title">JupyterHub + K8s + Nvidia GPUs + On-premise</h1>			</header><!-- .entry-header -->
+
+	<div class="entry-content">
+		
+<h2>Description</h2>
+
+
+
+<p>This post is a detailed set of instructions for setting up a 
+Kubernetes cluster to an on-premise group of servers or workstations. 
+JupyterHub is then deployed to the k8s cluster and customized to the 
+application of machine learning training.</p>
+
+
+
+<h2>Requirements</h2>
+
+
+
+<ul><li>Each node (computer) should have Ubuntu installed. I used Ubuntu 20.04</li><li>Root access (sudo)</li><li>Nvidia GPU drivers</li></ul>
+
+
+
+<h2 id="table-of-contents">Contents</h2>
+
+
+
+<h4>All nodes</h4>
+
+
+
+<ul><li><a href="#install-docker">Install Docker</a></li><li><a href="#install-k8s">Install Kubernetes</a></li></ul>
+
+
+
+<h4>Primary node</h4>
+
+
+
+<ul><li><a href="#create-k8s-cluster">Create k8s cluster</a></li><li><a href="#calico-network-policy">Calico network policy</a></li><li><a href="#install-helm">Install helm</a></li><li><a href="#install-nvidia-device-plugin">Install Nvidia device plugin</a></li><li><a href="#docker-image-for-jupyterhub" data-type="internal" data-id="#docker-image-for-jupyterhub">Docker image for JupyterHub</a></li><li><a href="#install-jupyterhub" data-type="internal" data-id="#install-jupyterhub">Install JupyterHub</a></li></ul>
+
+
+
+<h4>Secondary nodes</h4>
+
+
+
+<ul><li><a href="#join-nodes-to-the-k8s-cluster" data-type="internal" data-id="#join-nodes-to-the-k8s-cluster">Join nodes to the k8s cluster</a></li></ul>
+
+
+
+<h4>Shared file system</h4>
+
+
+
+<ul><li><a href="#create-glusterfs-storage" data-type="internal" data-id="#create-glusterfs-storage">Create GlusterFS storage</a></li><li><a href="#add-glusterfs-storage-to-k8s-cluster" data-type="internal" data-id="#add-glusterfs-storage-to-k8s-cluster">Add GlusterFS storage to k8s cluster</a></li></ul>
+
+
+
+<h4>Appendix</h4>
+
+
+
+<ul><li>Reset server</li><li>Reference</li></ul>
+
+
+
+<hr class="wp-block-separator">
+
+
+
+<div style="height:30px" aria-hidden="true" id="install-docker" class="wp-block-spacer"></div>
+
+
+
+<h2>Install Docker <a href="#table-of-contents">↟</a></h2>
+
+
+
+<p>First, follow the instructions found in the Docker <a rel="noreferrer noopener" href="https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository" target="_blank">documentation</a>. I prefer the <em>install using the repository</em> approach. The remaining instructions for a GPU and non-GPU environment are provided below.</p>
+
+
+
+<h4 class="has-large-font-size">Non-GPU Environment</h4>
+
+
+
+<p>Replace the contents of <code>/etc/docker/daemon.json</code> file with the following code block. This associates Docker with the correct cgroup driver. Skip to final steps.</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-1" data-shcb-language-name="JSON / JSON with Comments" data-shcb-language-slug="json"><link rel="stylesheet" id="syntax-highlighting-code-block-css" href="JupyterHub%20+%20K8s%20+%20Nvidia%20GPUs%20+%20On-premise%20%E2%80%93%20BATR_files/a11y-dark.css" media="all"><style>.wp-block-code {
+	border: 0;
+	padding: 0;
+}
+
+.wp-block-code > div {
+	overflow: auto;
+}
+
+.shcb-language {
+	border: 0;
+	clip: rect(1px, 1px, 1px, 1px);
+	-webkit-clip-path: inset(50%);
+	clip-path: inset(50%);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+	word-wrap: normal;
+	word-break: normal;
+}
+
+.hljs {
+	box-sizing: border-box;
+}
+
+.hljs.shcb-code-table {
+	display: table;
+	width: 100%;
+}
+
+.hljs.shcb-code-table > .shcb-loc {
+	color: inherit;
+	display: table-row;
+	width: 100%;
+}
+
+.hljs.shcb-code-table .shcb-loc > span {
+	display: table-cell;
+}
+
+.wp-block-code code.hljs:not(.shcb-wrap-lines) {
+	white-space: pre;
+}
+
+.wp-block-code code.hljs.shcb-wrap-lines {
+	white-space: pre-wrap;
+}
+
+.hljs.shcb-line-numbers {
+	border-spacing: 0;
+	counter-reset: line;
+}
+
+.hljs.shcb-line-numbers > .shcb-loc {
+	counter-increment: line;
+}
+
+.hljs.shcb-line-numbers .shcb-loc > span {
+	padding-left: 0.75em;
+}
+
+.hljs.shcb-line-numbers .shcb-loc::before {
+	border-right: 1px solid #ddd;
+	content: counter(line);
+	display: table-cell;
+	padding: 0 0.75em;
+	text-align: right;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	white-space: nowrap;
+	width: 1%;
+}
+</style><div><code class="hljs language-json">{
+  <span class="hljs-attr">"exec-opts"</span>: [<span class="hljs-string">"native.cgroupdriver=systemd"</span>],
+  <span class="hljs-attr">"log-driver"</span>: <span class="hljs-string">"json-file"</span>,
+  <span class="hljs-attr">"log-opts"</span>: {
+    <span class="hljs-attr">"max-size"</span>: <span class="hljs-string">"100m"</span>
+  },
+  <span class="hljs-attr">"storage-driver"</span>: <span class="hljs-string">"overlay2"</span>
+}</code></div><small class="shcb-language" id="shcb-language-1"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">JSON / JSON with Comments</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">json</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<h4>GPU Environment</h4>
+
+
+
+<p>Run the following commands to install the Nvidia Docker package.</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-2" data-shcb-language-name="Bash" data-shcb-language-slug="bash"><div><code class="hljs language-bash">distribution=$(. /etc/os-release;<span class="hljs-built_in">echo</span> <span class="hljs-variable">$ID</span><span class="hljs-variable">$VERSION_ID</span>) \
+   &amp;&amp; curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add - \
+   &amp;&amp; curl -s -L https://nvidia.github.io/nvidia-docker/<span class="hljs-variable">$distribution</span>/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+
+sudo apt update
+sudo apt install -y nvidia-docker2</code></div><small class="shcb-language" id="shcb-language-2"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">Bash</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">bash</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<p>Replace the contents of <code>/etc/docker/daemon.json</code> file with the following code block. This associates Docker with the correct cgroup driver and the Nivida container runtime.</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-3" data-shcb-language-name="JSON / JSON with Comments" data-shcb-language-slug="json"><div><code class="hljs language-json">{
+  <span class="hljs-attr">"exec-opts"</span>: [<span class="hljs-string">"native.cgroupdriver=systemd"</span>],
+  <span class="hljs-attr">"log-driver"</span>: <span class="hljs-string">"json-file"</span>,
+  <span class="hljs-attr">"log-opts"</span>: {
+    <span class="hljs-attr">"max-size"</span>: <span class="hljs-string">"100m"</span>
+  },
+  <span class="hljs-attr">"storage-driver"</span>: <span class="hljs-string">"overlay2"</span>,
+  <span class="hljs-attr">"default-runtime"</span>: <span class="hljs-string">"nvidia"</span>,
+  <span class="hljs-attr">"runtimes"</span>: {
+    <span class="hljs-attr">"nvidia"</span>: {
+      <span class="hljs-attr">"path"</span>: <span class="hljs-string">"/usr/bin/nvidia-container-runtime"</span>,
+      <span class="hljs-attr">"runtimeArgs"</span>: []
+    }
+  }
+}</code></div><small class="shcb-language" id="shcb-language-3"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">JSON / JSON with Comments</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">json</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<h4>Final steps</h4>
+
+
+
+<p>After updating the daemon.json file run the following commands to apply the changes.</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-4" data-shcb-language-name="Bash" data-shcb-language-slug="bash"><div><code class="hljs language-bash">sudo systemctl <span class="hljs-built_in">enable</span> docker
+sudo systemctl daemon-reload
+sudo systemctl restart docker</code></div><small class="shcb-language" id="shcb-language-4"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">Bash</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">bash</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<div style="height:30px" aria-hidden="true" id="install-k8s" class="wp-block-spacer"></div>
+
+
+
+<h2>Install Kubernetes <a href="#table-of-contents">↟</a></h2>
+
+
+
+<p>In the Kubernetes installation <a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/" target="_blank" rel="noreferrer noopener">instructions</a> complete the following sections:</p>
+
+
+
+<ul><li><a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#letting-iptables-see-bridged-traffic" target="_blank" rel="noreferrer noopener">Letting iptables see bridged traffic</a></li><li><a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#installing-kubeadm-kubelet-and-kubectl" target="_blank" rel="noreferrer noopener">Installing, kubeadm, kubelet, and kubectl</a></li></ul>
+
+
+
+<p>Note: You have already configured the cgroup driver.</p>
+
+
+
+<p>Next, disable swap by commenting out (add # to beginning of line) the swap line in the <code>/etc/fstab</code> file. Finally, restart the server or run the command</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-5" data-shcb-language-name="Bash" data-shcb-language-slug="bash"><div><code class="hljs language-bash">swapoff -a</code></div><small class="shcb-language" id="shcb-language-5"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">Bash</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">bash</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<div style="height:30px" aria-hidden="true" id="create-k8s-cluster" class="wp-block-spacer"></div>
+
+
+
+<h2>Create Kubernetes Cluster <a href="#table-of-contents">↟</a></h2>
+
+
+
+<p>Create and initialize a k8s cluster by running</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target"><div><code class="hljs">sudo kubeadm init --pod-network-cidr=[your cidr]</code></div><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<p>I used 192.168.0.0/16 as my cidr. You will see a join command printed
+ to the console. Save this for a later step to join secondary nodes to 
+the cluster. Next, run the following commands to point kubectl to the 
+newly created cluster.</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-6" data-shcb-language-name="Bash" data-shcb-language-slug="bash"><div><code class="hljs language-bash">mkdir -p <span class="hljs-variable">$HOME</span>/.kube
+sudo cp -i /etc/kubernetes/admin.conf \
+    <span class="hljs-variable">$HOME</span>/.kube/config
+sudo chown $(id -u):$(id -g) <span class="hljs-variable">$HOME</span>/.kube/config</code></div><small class="shcb-language" id="shcb-language-6"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">Bash</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">bash</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<p>Lastly, create a namespace called <code>jhub</code> in the cluster by running</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-7" data-shcb-language-name="Bash" data-shcb-language-slug="bash"><div><code class="hljs language-bash">kubectl create namespace jhub</code></div><small class="shcb-language" id="shcb-language-7"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">Bash</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">bash</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<div style="height:30px" aria-hidden="true" id="calico-network-policy" class="wp-block-spacer"></div>
+
+
+
+<h2>Calico network policy <a href="#table-of-contents">↟</a></h2>
+
+
+
+<p>To apply the Calico network policy to your cluster run the following commands</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-8" data-shcb-language-name="Bash" data-shcb-language-slug="bash"><div><code class="hljs language-bash">kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
+kubectl create -f https://docs.projectcalico.org/manifests/custom-resources.yaml</code></div><small class="shcb-language" id="shcb-language-8"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">Bash</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">bash</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<p>Next, wait until all of the pods are running with a STATUS of Running verified with the command</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-9" data-shcb-language-name="Bash" data-shcb-language-slug="bash"><div><code class="hljs language-bash">watch kubectl get pods -n calico-system</code></div><small class="shcb-language" id="shcb-language-9"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">Bash</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">bash</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<p>Lastly, to allow scheduling pods to the primary node run the command</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-10" data-shcb-language-name="Bash" data-shcb-language-slug="bash"><div><code class="hljs language-bash">kubectl taint nodes --all node-role.kubernetes.io/master-</code></div><small class="shcb-language" id="shcb-language-10"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">Bash</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">bash</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<p>See calico <a rel="noreferrer noopener" href="https://docs.projectcalico.org/getting-started/kubernetes/quickstart" target="_blank">quickstart</a> for more information.</p>
+
+
+
+<div style="height:30px" aria-hidden="true" id="install-helm" class="wp-block-spacer"></div>
+
+
+
+<h2>Install Helm <a href="#table-of-contents">↟</a></h2>
+
+
+
+<p>Run the following command to install helm</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-11" data-shcb-language-name="Bash" data-shcb-language-slug="bash"><div><code class="hljs language-bash">curl https://raw.githubusercontent.com/helm/helm/HEAD/scripts/get-helm-3 | bash</code></div><small class="shcb-language" id="shcb-language-11"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">Bash</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">bash</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<p>Add relevant repositories to helm by running</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-12" data-shcb-language-name="Bash" data-shcb-language-slug="bash"><div><code class="hljs language-bash">helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
+helm repo add nvdp https://nvidia.github.io/k8s-device-plugin
+helm repo update</code></div><small class="shcb-language" id="shcb-language-12"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">Bash</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">bash</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<div style="height:30px" aria-hidden="true" id="install-nvidia-device-plugin" class="wp-block-spacer"></div>
+
+
+
+<h2>Install Nvidia Device Plugin <a href="#table-of-contents">↟</a></h2>
+
+
+
+<p>The following commands install the Nvidia device plugin. This is only needed in a GPU environment.</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-13" data-shcb-language-name="Bash" data-shcb-language-slug="bash"><div><code class="hljs language-bash">kubectl create -f https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/v0.9.0/nvidia-device-plugin.yml
+helm install --version=0.9.0 --generate-name nvdp/nvidia-device-plugin</code></div><small class="shcb-language" id="shcb-language-13"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">Bash</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">bash</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<div style="height:30px" aria-hidden="true" id="docker-image-for-jupyterhub" class="wp-block-spacer"></div>
+
+
+
+<h2>Docker Image for JupyterHub <a href="#table-of-contents">↟</a></h2>
+
+
+
+<p>These instructions create a Docker image based on Jupyter Docker 
+Stacks. Nvidia CUDA support is added through a modified base container. A
+ final custom layer is added at the end to modify Ubuntu and Python 
+packages.</p>
+
+
+
+<p>First, build the foundation images by running the following (replacing [repo] with your own custom name):</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-14" data-shcb-language-name="Bash" data-shcb-language-slug="bash"><div><code class="hljs language-bash">docker build -t [repo]/base-notebook-cuda --build-arg BASE_CONTAINER=nvidia/cuda:11.2.2-cudnn8-runtime-ubuntu20.04 --build-arg PYTHON_VERSION=3.8.10 https://github.com/jupyter/docker-stacks.git<span class="hljs-comment">#:/base-notebook</span>
+docker build -t [repo]/minimal-notebook-cuda --build-arg BASE_CONTAINER=[repo]/base-notebook-cuda https://github.com/jupyter/docker-stacks.git<span class="hljs-comment">#:/minimal-notebook</span>
+docker build -t [repo]/scipy-notebook-cuda --build-arg BASE_CONTAINER=[repo]/minimal-notebook-cuda https://github.com/jupyter/docker-stacks.git<span class="hljs-comment">#:/scipy-notebook</span>
+
+</code></div><small class="shcb-language" id="shcb-language-14"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">Bash</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">bash</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<p>In the above commands you can specify the version of CUDA / CUDnn as 
+well as the version of Python by modifying the corresponding arguments.</p>
+
+
+
+<p>Next, copy the following into a file named Dockerfile. This is the 
+final layer that allows you to add Ubuntu and Python packages. </p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-15" data-shcb-language-name="Dockerfile" data-shcb-language-slug="dockerfile"><div><code class="hljs language-dockerfile"><span class="hljs-comment"># ----------------------------------------------</span>
+<span class="hljs-comment"># Define base container</span>
+
+<span class="hljs-keyword">ARG</span> BASE_CONTAINER=[repo]/scipy-notebook-cuda
+<span class="hljs-keyword">FROM</span> $BASE_CONTAINER
+
+<span class="hljs-keyword">LABEL</span><span class="bash"> maintainer=<span class="hljs-string">"Your Name &lt;your@name.com&gt;"</span></span>
+
+<span class="hljs-keyword">USER</span> root
+
+<span class="hljs-comment"># ----------------------------------------------</span>
+<span class="hljs-comment"># Install apt packages (root user)</span>
+
+<span class="hljs-keyword">RUN</span><span class="bash"> apt-get update &amp;&amp; \
+    apt-get install --yes --no-install-recommends htop nmon strace npm nodejs build-essential &amp;&amp; \
+    rm -rf /var/lib/apt/lists/*</span>
+
+<span class="hljs-comment"># ----------------------------------------------</span>
+<span class="hljs-comment"># Required setup for adding Tensorboard support</span>
+<span class="hljs-comment"># (root user)</span>
+
+<span class="hljs-keyword">RUN</span><span class="bash"> mkdir -p /etc/tb/</span>
+<span class="hljs-keyword">RUN</span><span class="bash"> fix-permissions /etc/tb/</span>
+
+<span class="hljs-keyword">COPY</span><span class="bash"> tensorboard-proxy /usr/<span class="hljs-built_in">local</span>/bin/</span>
+<span class="hljs-keyword">RUN</span><span class="bash"> chmod 755 /usr/<span class="hljs-built_in">local</span>/bin/tensorboard-proxy</span>
+
+<span class="hljs-keyword">USER</span> ${NB_UID}
+
+<span class="hljs-comment"># ----------------------------------------------</span>
+<span class="hljs-comment"># Install necessary pip packages (regular user)</span>
+
+<span class="hljs-keyword">ARG</span> TF_VERSION=<span class="hljs-number">2.5</span>
+
+<span class="hljs-comment"># Install pip packages</span>
+<span class="hljs-keyword">RUN</span><span class="bash"> pip install tensorflow==<span class="hljs-variable">${TF_VERSION}</span> \
+      tensorflow-probability \
+      tensorflow-io \
+      tensorflow-hub \
+      tensorflow-addons \
+      imageio-ffmpeg \
+      pycocotools \
+      opencv-contrib-python-headless</span>
+
+<span class="hljs-comment"># ----------------------------------------------</span>
+<span class="hljs-comment"># Additional setup for Tensorboard support</span>
+<span class="hljs-comment"># (regular user)</span>
+
+<span class="hljs-keyword">WORKDIR</span><span class="bash"> /etc/tb/</span>
+<span class="hljs-keyword">RUN</span><span class="bash"> npm install http-proxy --save</span>
+<span class="hljs-keyword">COPY</span><span class="bash"> tensorboard-proxy.js /etc/tb/</span>
+
+<span class="hljs-keyword">WORKDIR</span><span class="bash"> <span class="hljs-string">"<span class="hljs-variable">${HOME}</span></span></span></code></div><small class="shcb-language" id="shcb-language-15"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">Dockerfile</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">dockerfile</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<p>Finally, build the Docker image and optionally push it to your Docker Hub respository.</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-16" data-shcb-language-name="Bash" data-shcb-language-slug="bash"><div><code class="hljs language-bash">docker build -t [repo]/tensorflow-notebook-cuda:1.0.x .
+docker push [repo]/tensorflow-notebook-cuda:1.0.x</code></div><small class="shcb-language" id="shcb-language-16"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">Bash</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">bash</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<div style="height:30px" aria-hidden="true" id="install-jupyterhub" class="wp-block-spacer"></div>
+
+
+
+<h2>Install JupyterHub <a href="#table-of-contents">↟</a></h2>
+
+
+
+<p>Now we deploy JupterHub to the k8s cluster. First, create a file named <code>config.yaml</code> with the following contents.</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-17" data-shcb-language-name="YAML" data-shcb-language-slug="yaml"><div><code class="hljs language-yaml"><span class="hljs-attr">hub:</span>
+  <span class="hljs-attr">db:</span>
+    <span class="hljs-attr">type:</span> <span class="hljs-string">sqlite-memory</span>
+  <span class="hljs-attr">config:</span>
+    <span class="hljs-attr">Authenticator:</span>
+      <span class="hljs-attr">admin_users:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-string">admin</span>
+    <span class="hljs-attr">DummyAuthenticator:</span>
+      <span class="hljs-attr">password:</span> <span class="hljs-string">admin_password</span>
+    <span class="hljs-attr">JupyterHub:</span>
+      <span class="hljs-attr">authenticator_class:</span> <span class="hljs-string">dummy</span>
+  <span class="hljs-attr">authenticatePrometheus:</span> <span class="hljs-literal">false</span>
+
+<span class="hljs-attr">proxy:</span>
+  <span class="hljs-attr">chp:</span>
+    <span class="hljs-attr">networkPolicy:</span>
+      <span class="hljs-attr">egress:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">ports:</span>
+          <span class="hljs-bullet">-</span> <span class="hljs-attr">port:</span> <span class="hljs-number">6116</span>
+          <span class="hljs-bullet">-</span> <span class="hljs-attr">port:</span> <span class="hljs-number">6117</span>
+          <span class="hljs-bullet">-</span> <span class="hljs-attr">port:</span> <span class="hljs-number">6118</span>
+
+<span class="hljs-attr">singleuser:</span>
+  <span class="hljs-attr">networkPolicy:</span>
+    <span class="hljs-attr">allowedIngressPorts:</span> <span class="hljs-string">[6116,6117,6118]</span>
+  <span class="hljs-attr">storage:</span>
+    <span class="hljs-attr">type:</span> <span class="hljs-string">none</span>
+    <span class="hljs-attr">extraVolumes:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">vol-gv0</span>
+        <span class="hljs-attr">persistentVolumeClaim:</span>
+          <span class="hljs-attr">claimName:</span> <span class="hljs-string">pvc-gv0</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">vol-gv1</span>
+        <span class="hljs-attr">persistentVolumeClaim:</span>
+          <span class="hljs-attr">claimName:</span> <span class="hljs-string">pvc-gb1</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">shm-volume</span>
+        <span class="hljs-attr">emptyDir:</span>
+          <span class="hljs-attr">medium:</span> <span class="hljs-string">Memory</span>
+    <span class="hljs-attr">extraVolumeMounts:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">vol-gv0</span>
+        <span class="hljs-attr">mountPath:</span> <span class="hljs-string">"/home/jovyan/gv0"</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">vol-gv1</span>
+        <span class="hljs-attr">mountPath:</span> <span class="hljs-string">"/home/jovyan/gv1"</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">shm-volume</span>
+        <span class="hljs-attr">mountPath:</span> <span class="hljs-string">/dev/shm</span>
+  <span class="hljs-attr">defaultUrl:</span> <span class="hljs-string">"/lab"</span>
+  <span class="hljs-attr">profileList:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">display_name:</span> <span class="hljs-string">"TF 2.5 - 0 GPUs"</span>
+      <span class="hljs-attr">kubespawner_override:</span>
+        <span class="hljs-attr">image:</span> <span class="hljs-string">[repo]/tensorflow-notebook-cuda:1.0.x</span>
+        <span class="hljs-attr">extra_resource_limits:</span>
+          <span class="hljs-attr">nvidia.com/gpu:</span> <span class="hljs-string">"0"</span>
+      <span class="hljs-attr">default:</span> <span class="hljs-literal">true</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">display_name:</span> <span class="hljs-string">"TF 2.5 - 1 GPUs"</span>
+      <span class="hljs-attr">kubespawner_override:</span>
+        <span class="hljs-attr">image:</span> <span class="hljs-string">[repo]/tensorflow-notebook-cuda:1.0.x</span>
+        <span class="hljs-attr">extra_resource_limits:</span>
+          <span class="hljs-attr">nvidia.com/gpu:</span> <span class="hljs-string">"1"</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">display_name:</span> <span class="hljs-string">"TF 2.5 - 4 GPUs"</span>
+      <span class="hljs-attr">kubespawner_override:</span>
+        <span class="hljs-attr">image:</span> <span class="hljs-string">[repo]/tensorflow-notebook-cuda:1.0.x</span>
+        <span class="hljs-attr">extra_resource_limits:</span>
+          <span class="hljs-attr">nvidia.com/gpu:</span> <span class="hljs-string">"4"</span></code></div><small class="shcb-language" id="shcb-language-17"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">YAML</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">yaml</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<p>Some of the contents of this file will be explained more in the 
+appendix sections and are related to Gluster storage and adding 
+Tensorboard support. Next, apply the values in <code>config.yaml</code> to the cluster using helm with the following command.</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target"><div><code class="hljs">helm upgrade --install [release-name] jupyterhub/jupyterhub --namespace jhub --version=1.0.0 --values config.yaml</code></div><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<p>Finally, make the service visible outside the cluster by running the following command.</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-18" data-shcb-language-name="PHP" data-shcb-language-slug="php"><div><code class="hljs language-php">kubectl patch svc proxy-<span class="hljs-keyword">public</span> -n jhub -p <span class="hljs-string">'{"spec": {"type": "LoadBalancer", "externalIPs":["ip address here"]}}'</span></code></div><small class="shcb-language" id="shcb-language-18"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">PHP</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">php</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<div style="height:30px" aria-hidden="true" id="join-nodes-to-the-k8s-cluster" class="wp-block-spacer"></div>
+
+
+
+<h2>Join nodes to the k8s cluster <a href="#table-of-contents">↟</a></h2>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-19" data-shcb-language-name="PHP" data-shcb-language-slug="php"><div><code class="hljs language-php">kubeadm join <span class="hljs-number">192.168</span><span class="hljs-number">.1</span><span class="hljs-number">.102</span>:<span class="hljs-number">6443</span> --token <span class="hljs-number">5</span>ytfgr.oc4pyr54vrgj5b7g --discovery-token-ca-cert-hash sha256:d6f0fd687b14b8506a1fbc63c3ee63ec8f4e81a5c93015245135d3707f433a23
+<span class="hljs-comment"># https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/#join-nodes</span></code></div><small class="shcb-language" id="shcb-language-19"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">PHP</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">php</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<div style="height:30px" aria-hidden="true" id="create-glusterfs-storage" class="wp-block-spacer"></div>
+
+
+
+<h2>Create GlusterFS Storage <a href="#table-of-contents">↟</a></h2>
+
+
+
+<p>First, create or modify your hard drive partitions to match the desired configuration. I find this <a rel="noreferrer noopener" href="https://help.ubuntu.com/community/InstallingANewHardDrive" target="_blank">link</a> to be particularly useful.</p>
+
+
+
+<p>You’ll also want to make the partitions mount the same after a 
+computer reboot. This can be accomplished by adding entries to the <code>/etc/fstab</code> file. First, find the UUID of the drive with the following commands:</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-20" data-shcb-language-name="PHP" data-shcb-language-slug="php"><div><code class="hljs language-php">sudo lsblk -f <span class="hljs-comment"># show UUID for each partition</span>
+sudo lshw -C disk <span class="hljs-comment"># show additional info about partition</span>
+df -h <span class="hljs-comment"># show info about mounted filesystems</span></code></div><small class="shcb-language" id="shcb-language-20"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">PHP</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">php</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<p>An updated /etc/fstab file will look something like this:</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-21" data-shcb-language-name="HTML, XML" data-shcb-language-slug="xml"><div><code class="hljs language-xml"># <span class="hljs-tag">&lt;<span class="hljs-name">file</span> <span class="hljs-attr">system</span>&gt;</span>                           <span class="hljs-tag">&lt;<span class="hljs-name">mount</span> <span class="hljs-attr">point</span>&gt;</span>              <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>    <span class="hljs-tag">&lt;<span class="hljs-name">options</span>&gt;</span>         <span class="hljs-tag">&lt;<span class="hljs-name">dump</span>&gt;</span> <span class="hljs-tag">&lt;<span class="hljs-name">pass</span>&gt;</span>
+UUID=cc30d1ac-5c3a-41cd-8f97-0bfd648ebb07 /                          ext4      errors=remount-ro 0      1
+UUID=52A3-2923                            /boot/efi                  vfat      umask=0077        0      1
+# /swapfile                               none                       swap      sw                0      0
+UUID=28b63ddb-75c3-4f18-91d7-b15944ac07a1 /data/glusterfs/gv0/brick1 ext4      defaults          1      2
+UUID=7099fa95-068d-4ad2-adb0-8aa8bd39017a /data/glusterfs/gv1/brick1 ext4      defaults          1      2
+localhost:/mb1gv1                         /mnt/mb1gv1                glusterfs defaults,_netdev  0      0
+localhost:/mb2gv1                         /mnt/mb2gv1                glusterfs defaults,_netdev  0      0</code></div><small class="shcb-language" id="shcb-language-21"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">HTML, XML</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">xml</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<p>Next, create relevant Gluster volumes. The following commands are the most helpful:</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-22" data-shcb-language-name="Bash" data-shcb-language-slug="bash"><div><code class="hljs language-bash">gluster peer probe hostname/ipaddress
+gluster peer status
+gluster volume create [vol name] hostname1:/brick1 hostname2:/brick2
+gluster volume status
+gluster volume info</code></div><small class="shcb-language" id="shcb-language-22"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">Bash</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">bash</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<p>Before adding peers to the gluster cluster, modify the /etc/hosts 
+file to map hostnames to DHCP reserved ip addresses of all nodes in the 
+cluster. I’ve found that this helps reduce unexplained issues when the 
+servers restart and attempt to rejoin. Then when adding nodes to the 
+gluster cluster using peer probe use the hostname instead of the 
+computer ip address.</p>
+
+
+
+<div style="height:30px" aria-hidden="true" id="add-glusterfs-storage-to-k8s-cluster" class="wp-block-spacer"></div>
+
+
+
+<h2>Add GlusterFS Storage to k8s cluster <a href="#table-of-contents">↟</a></h2>
+
+
+
+<p>First, create endpoints and service yaml files that describe the gluster storage.</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-23" data-shcb-language-name="YAML" data-shcb-language-slug="yaml"><div><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Endpoints</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">glusterfs-cluster</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">jhub</span>
+<span class="hljs-attr">subsets:</span>
+<span class="hljs-bullet">-</span> <span class="hljs-attr">addresses:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">ip:</span> <span class="hljs-string">[ip</span> <span class="hljs-string">address</span> <span class="hljs-string">of</span> <span class="hljs-string">gluster</span> <span class="hljs-string">peer]</span>
+  <span class="hljs-attr">ports:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">port:</span> <span class="hljs-number">1</span></code></div><small class="shcb-language" id="shcb-language-23"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">YAML</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">yaml</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-24" data-shcb-language-name="YAML" data-shcb-language-slug="yaml"><div><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Service</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">glusterfs-cluster</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">jhub</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">ports:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">port:</span> <span class="hljs-number">1</span></code></div><small class="shcb-language" id="shcb-language-24"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">YAML</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">yaml</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<p>Add changes to the k8s cluster by running the following command for each of the above files.</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-25" data-shcb-language-name="Bash" data-shcb-language-slug="bash"><div><code class="hljs language-bash">kubectl create -f file_name.yaml</code></div><small class="shcb-language" id="shcb-language-25"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">Bash</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">bash</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<p>Next, you will create a persistent volume and a persistent volume 
+claim for each of your gluster volumes. These files look something like 
+this.</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-26" data-shcb-language-name="YAML" data-shcb-language-slug="yaml"><div><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">PersistentVolumeClaim</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">pvc-name</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">jhub</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">accessModes:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">ReadWriteMany</span>
+  <span class="hljs-attr">resources:</span>
+    <span class="hljs-attr">requests:</span>
+      <span class="hljs-attr">storage:</span> <span class="hljs-string">10Gi</span></code></div><small class="shcb-language" id="shcb-language-26"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">YAML</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">yaml</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-27" data-shcb-language-name="YAML" data-shcb-language-slug="yaml"><div><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">PersistentVolume</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">pv-name</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">jhub</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">capacity:</span>
+    <span class="hljs-attr">storage:</span> <span class="hljs-string">100Gi</span>
+  <span class="hljs-attr">accessModes:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">ReadWriteMany</span>
+  <span class="hljs-attr">claimRef:</span>
+    <span class="hljs-attr">namespace:</span> <span class="hljs-string">jhub</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">pvc-name</span>
+  <span class="hljs-attr">glusterfs:</span>
+    <span class="hljs-attr">endpoints:</span> <span class="hljs-string">glusterfs-cluster</span>
+    <span class="hljs-attr">path:</span> <span class="hljs-string">gv0</span>
+    <span class="hljs-attr">readOnly:</span> <span class="hljs-literal">false</span></code></div><small class="shcb-language" id="shcb-language-27"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">YAML</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">yaml</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<p>Each of these files are applied in the same way as before.</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-28" data-shcb-language-name="Bash" data-shcb-language-slug="bash"><div><code class="hljs language-bash">kubectl create -f file_name.yaml</code></div><small class="shcb-language" id="shcb-language-28"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">Bash</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">bash</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<h2>Misc</h2>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-29" data-shcb-language-name="JavaScript" data-shcb-language-slug="javascript"><div><code class="hljs language-javascript">----------------------------------------------------------------------------------
+<span class="hljs-number">13.</span> Create JupyterHub usage dashboard
+
+a. Request the jupyterhub-dashboard web app <span class="hljs-keyword">from</span> Ben
+b. Create a python virtual environment that has Flask installed (pip install Flask)
+c. Execute <span class="hljs-string">'python dashboard-app.py'</span> <span class="hljs-keyword">from</span> the virtual environment
+d. Potentially launch dashboard on reboot using crontab
+
+
+----------------------------------------------------------------------------------
+<span class="hljs-number">14.</span> Create service to update proxy table <span class="hljs-keyword">for</span> enabling Tensorboard
+
+kubectl <span class="hljs-keyword">get</span> secret hub -n jhub -o=json | jq -r '.["data"] | .["hub.config.ConfigurableHTTPProxy.auth_token"]' | base64 --decode
+
+
+----------------------------------------------------------------------------------
+Appendix: reset server
+
+sudo kubeadm reset
+
+!it gets more complicated after you've added more nodes to the cluster!
+https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/#tear-down
+
+
+----------------------------------------------------------------------------------
+Reference:
+
+https://zero-to-jupyterhub.readthedocs.io/en/latest/</code></div><small class="shcb-language" id="shcb-language-29"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">JavaScript</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">javascript</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>	</div><!-- .entry-content -->
+
+	<footer class="entry-footer default-max-width">
+		<div class="posted-by"><span class="posted-on">Published <time class="entry-date published updated" datetime="2021-10-23T21:36:24+00:00">October 23, 2021</time></span><span class="byline">By <a href="http://44.240.77.17/author/bentarnold/" rel="author">Ben Arnold</a></span></div><div class="post-taxonomies"><span class="cat-links">Categorized as <a href="http://44.240.77.17/category/uncategorized/" rel="category tag">Uncategorized</a> </span></div>	</footer><!-- .entry-footer -->
+
+				
+</article><!-- #post-17 -->
+
+	<nav class="navigation post-navigation" role="navigation" aria-label="Posts">
+		<h2 class="screen-reader-text">Post navigation</h2>
+		<div class="nav-links"><div class="nav-next"><a href="http://44.240.77.17/2021/10/26/update-proxy-routing-table/" rel="next"><p class="meta-nav">Next post<svg class="svg-icon" width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="m4 13v-2h12l-4-4 1-2 7 7-7 7-1-2 4-4z" fill="currentColor"></path></svg></p><p class="post-title">Tensorboard Support</p></a></div></div>
+	</nav>			</main><!-- #main -->
+		</div><!-- #primary -->
+	</div><!-- #content -->
+
+	
+	<aside class="widget-area">
+		<section id="block-2" class="widget widget_block widget_search"><form role="search" method="get" action="http://44.240.77.17/" class="wp-block-search__button-outside wp-block-search__text-button wp-block-search"><label for="wp-block-search__input-1" class="wp-block-search__label">Search</label><div class="wp-block-search__inside-wrapper"><input type="search" id="wp-block-search__input-1" class="wp-block-search__input" name="s" placeholder="" required=""><button type="submit" class="wp-block-search__button ">Search</button></div></form></section><section id="block-4" class="widget widget_block"><div class="wp-block-group"><div class="wp-block-group__inner-container"><h2>Recent Comments</h2><div class="no-comments wp-block-latest-comments">No comments to show.</div></div></div></section>	</aside><!-- .widget-area -->
+
+
+	<footer id="colophon" class="site-footer" role="contentinfo">
+
+				<div class="site-info">
+			<div class="site-name">
+																						<a href="http://44.240.77.17/">BATR</a>
+																		</div><!-- .site-name -->
+			<div class="powered-by">
+				Proudly powered by <a href="https://wordpress.org/">WordPress</a>.			</div><!-- .powered-by -->
+
+		</div><!-- .site-info -->
+	</footer><!-- #colophon -->
+
+</div><!-- #page -->
+
+<script>document.body.classList.remove("no-js");</script>	<script>
+	if ( -1 !== navigator.userAgent.indexOf( 'MSIE' ) || -1 !== navigator.appVersion.indexOf( 'Trident/' ) ) {
+		document.body.classList.add( 'is-IE' );
+	}
+	</script>
+	<script id="copy-the-code-js-extra">
+var copyTheCode = {"copy_content_as":"","previewMarkup":"<h2>Hello World<\/h2>","buttonMarkup":"<button class=\"copy-the-code-button\" title=\"\"><\/button>","buttonSvg":"<svg viewBox=\"-21 0 512 512\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\"><path d=\"m186.667969 416c-49.984375 0-90.667969-40.683594-90.667969-90.667969v-218.664062h-37.332031c-32.363281 0-58.667969 26.300781-58.667969 58.664062v288c0 32.363281 26.304688 58.667969 58.667969 58.667969h266.664062c32.363281 0 58.667969-26.304688 58.667969-58.667969v-37.332031zm0 0\"><\/path><path d=\"m469.332031 58.667969c0-32.40625-26.261719-58.667969-58.664062-58.667969h-224c-32.40625 0-58.667969 26.261719-58.667969 58.667969v266.664062c0 32.40625 26.261719 58.667969 58.667969 58.667969h224c32.402343 0 58.664062-26.261719 58.664062-58.667969zm0 0\"><\/path><\/svg>","selectors":[{"selector":"pre","style":"button","button_text":"Copy","button_title":"Copy to Clipboard","button_copy_text":"Copied!","button_position":"inside"}],"selector":"pre","settings":{"selector":"pre","button-text":"Copy","button-title":"Copy to Clipboard","button-copy-text":"Copied!","button-position":"inside"},"string":{"title":"Copy to Clipboard","copy":"Copy","copied":"Copied!"},"image-url":"http:\/\/44.240.77.17\/wp-content\/plugins\/copy-the-code\/\/assets\/images\/copy-1.svg"};
+</script>
+<script src="JupyterHub%20+%20K8s%20+%20Nvidia%20GPUs%20+%20On-premise%20%E2%80%93%20BATR_files/copy-the-code.js" id="copy-the-code-js"></script>
+<script id="twenty-twenty-one-ie11-polyfills-js-after">
+( Element.prototype.matches && Element.prototype.closest && window.NodeList && NodeList.prototype.forEach ) || document.write( '<script src="http://44.240.77.17/wp-content/themes/twentytwentyone/assets/js/polyfills.js?ver=1.4"></scr' + 'ipt>' );
+</script>
+<script src="JupyterHub%20+%20K8s%20+%20Nvidia%20GPUs%20+%20On-premise%20%E2%80%93%20BATR_files/primary-navigation.js" id="twenty-twenty-one-primary-navigation-script-js"></script>
+<script src="JupyterHub%20+%20K8s%20+%20Nvidia%20GPUs%20+%20On-premise%20%E2%80%93%20BATR_files/responsive-embeds.js" id="twenty-twenty-one-responsive-embeds-script-js"></script>
+<script src="JupyterHub%20+%20K8s%20+%20Nvidia%20GPUs%20+%20On-premise%20%E2%80%93%20BATR_files/wp-embed.min.js" id="wp-embed-js"></script>
+	<script>
+	/(trident|msie)/i.test(navigator.userAgent)&&document.getElementById&&window.addEventListener&&window.addEventListener("hashchange",(function(){var t,e=location.hash.substring(1);/^[A-z0-9_-]+$/.test(e)&&(t=document.getElementById(e))&&(/^(?:a|select|input|button|textarea)$/i.test(t.tagName)||(t.tabIndex=-1),t.focus())}),!1);
+	</script>
+	
+
+
+</body></html>

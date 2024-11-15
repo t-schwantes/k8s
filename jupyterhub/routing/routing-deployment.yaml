@@ -18,7 +18,7 @@ spec:
       serviceAccountName: routing-sa
       containers:
       - name: routing
-        image: "192.168.0.125:30000/jupyterhub-routing:latest"
+        image: "172.16.49.54:30000/jupyterhub-routing:latest"
         ports:
         - containerPort: 8001
         env:

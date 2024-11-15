@@ -13,7 +13,7 @@ sudo apt update
 set -e
 
 echo "Installing containerd..."
-sudo apt install -y containerd.io=1.7.22-1
+sudo apt install -y containerd.io=1.7.22-1 --allow-downgrades
 
 # Stop containerd service to modify configuration
 echo "Stopping containerd service..."

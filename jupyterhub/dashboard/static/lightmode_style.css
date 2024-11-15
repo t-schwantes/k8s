@@ -1,0 +1,27 @@
+h1 {
+    padding: 20px;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+div.table {
+    padding-left: 20px;
+}
+
+td, th {
+    text-align: left;
+    padding: 15px 10px 15px 10px;
+    border: 0px;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #444;
+    color: white;
+}
+
+tr:hover {
+    background-color: #eee;
+}

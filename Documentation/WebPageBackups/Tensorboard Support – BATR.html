@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en-US"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Tensorboard Support – BATR</title>
+<meta name="robots" content="max-image-preview:large">
+<link rel="dns-prefetch" href="http://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="BATR » Feed" href="http://44.240.77.17/feed/">
+<link rel="alternate" type="application/rss+xml" title="BATR » Comments Feed" href="http://44.240.77.17/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="BATR » Tensorboard Support Comments Feed" href="http://44.240.77.17/2021/10/26/update-proxy-routing-table/feed/">
+		<script>
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.1.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.1.0\/svg\/","svgExt":".svg","source":{"concatemoji":"http:\/\/44.240.77.17\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.8.10"}};
+			!function(e,a,t){var n,r,o,i=a.createElement("canvas"),p=i.getContext&&i.getContext("2d");function s(e,t){var a=String.fromCharCode;p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,e),0,0);e=i.toDataURL();return p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,t),0,0),e===i.toDataURL()}function c(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(o=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},r=0;r<o.length;r++)t.supports[o[r]]=function(e){if(!p||!p.fillText)return!1;switch(p.textBaseline="top",p.font="600 32px Arial",e){case"flag":return s([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])?!1:!s([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!s([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]);case"emoji":return!s([10084,65039,8205,55357,56613],[10084,65039,8203,55357,56613])}return!1}(o[r]),t.supports.everything=t.supports.everything&&t.supports[o[r]],"flag"!==o[r]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[o[r]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(n=t.source||{}).concatemoji?c(n.concatemoji):n.wpemoji&&n.twemoji&&(c(n.twemoji),c(n.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="Tensorboard%20Support%20%E2%80%93%20BATR_files/wp-emoji-release.min.js" type="text/javascript" defer="defer"></script>
+		<style>
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel="stylesheet" id="wp-block-library-css" href="Tensorboard%20Support%20%E2%80%93%20BATR_files/style.min.css" media="all">
+<style id="wp-block-library-theme-inline-css">
+#start-resizable-editor-section{display:none}.wp-block-audio figcaption{color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-audio figcaption{color:hsla(0,0%,100%,.65)}.wp-block-code{font-family:Menlo,Consolas,monaco,monospace;color:#1e1e1e;padding:.8em 1em;border:1px solid #ddd;border-radius:4px}.wp-block-embed figcaption{color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-embed figcaption{color:hsla(0,0%,100%,.65)}.blocks-gallery-caption{color:#555;font-size:13px;text-align:center}.is-dark-theme .blocks-gallery-caption{color:hsla(0,0%,100%,.65)}.wp-block-image figcaption{color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-image figcaption{color:hsla(0,0%,100%,.65)}.wp-block-pullquote{border-top:4px solid;border-bottom:4px solid;margin-bottom:1.75em;color:currentColor}.wp-block-pullquote__citation,.wp-block-pullquote cite,.wp-block-pullquote footer{color:currentColor;text-transform:uppercase;font-size:.8125em;font-style:normal}.wp-block-quote{border-left:.25em solid;margin:0 0 1.75em;padding-left:1em}.wp-block-quote cite,.wp-block-quote footer{color:currentColor;font-size:.8125em;position:relative;font-style:normal}.wp-block-quote.has-text-align-right{border-left:none;border-right:.25em solid;padding-left:0;padding-right:1em}.wp-block-quote.has-text-align-center{border:none;padding-left:0}.wp-block-quote.is-large,.wp-block-quote.is-style-large{border:none}.wp-block-search .wp-block-search__label{font-weight:700}.wp-block-group.has-background{padding:1.25em 2.375em;margin-top:0;margin-bottom:0}.wp-block-separator{border:none;border-bottom:2px solid;margin-left:auto;margin-right:auto;opacity:.4}.wp-block-separator:not(.is-style-wide):not(.is-style-dots){width:100px}.wp-block-separator.has-background:not(.is-style-dots){border-bottom:none;height:1px}.wp-block-separator.has-background:not(.is-style-wide):not(.is-style-dots){height:2px}.wp-block-table thead{border-bottom:3px solid}.wp-block-table tfoot{border-top:3px solid}.wp-block-table td,.wp-block-table th{padding:.5em;border:1px solid;word-break:normal}.wp-block-table figcaption{color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-table figcaption{color:hsla(0,0%,100%,.65)}.wp-block-video figcaption{color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-video figcaption{color:hsla(0,0%,100%,.65)}.wp-block-template-part.has-background{padding:1.25em 2.375em;margin-top:0;margin-bottom:0}#end-resizable-editor-section{display:none}
+</style>
+<link rel="stylesheet" id="copy-the-code-css" href="Tensorboard%20Support%20%E2%80%93%20BATR_files/copy-the-code.css" media="all">
+<link rel="stylesheet" id="twenty-twenty-one-style-css" href="Tensorboard%20Support%20%E2%80%93%20BATR_files/style.css" media="all">
+<style id="twenty-twenty-one-style-inline-css">
+:root{--global--color-background: #28303d;--global--color-primary: #fff;--global--color-secondary: #fff;--button--color-background: #fff;--button--color-text-hover: #fff;--table--stripes-border-color: rgba(240, 240, 240, 0.15);--table--stripes-background-color: rgba(240, 240, 240, 0.15);}
+</style>
+<link rel="stylesheet" id="twenty-twenty-one-print-style-css" href="Tensorboard%20Support%20%E2%80%93%20BATR_files/print.css" media="print">
+<script src="Tensorboard%20Support%20%E2%80%93%20BATR_files/jquery.min.js" id="jquery-core-js"></script>
+<script src="Tensorboard%20Support%20%E2%80%93%20BATR_files/jquery-migrate.min.js" id="jquery-migrate-js"></script>
+<link rel="https://api.w.org/" href="http://44.240.77.17/wp-json/"><link rel="alternate" type="application/json" href="http://44.240.77.17/wp-json/wp/v2/posts/38"><link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://44.240.77.17/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://44.240.77.17/wp-includes/wlwmanifest.xml"> 
+<meta name="generator" content="WordPress 5.8.10">
+<link rel="canonical" href="http://44.240.77.17/2021/10/26/update-proxy-routing-table/">
+<link rel="shortlink" href="http://44.240.77.17/?p=38">
+<link rel="alternate" type="application/json+oembed" href="http://44.240.77.17/wp-json/oembed/1.0/embed?url=http%3A%2F%2F44.240.77.17%2F2021%2F10%2F26%2Fupdate-proxy-routing-table%2F">
+<link rel="alternate" type="text/xml+oembed" href="http://44.240.77.17/wp-json/oembed/1.0/embed?url=http%3A%2F%2F44.240.77.17%2F2021%2F10%2F26%2Fupdate-proxy-routing-table%2F&amp;format=xml">
+<link rel="pingback" href="http://44.240.77.17/xmlrpc.php"><style id="custom-background-css">
+body.custom-background { background-color: #28303d; }
+</style>
+	</head>
+
+<body class="post-template-default single single-post postid-38 single-format-standard custom-background wp-embed-responsive is-dark-theme singular has-main-navigation">
+<div id="page" class="site">
+	<a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+
+	
+<header id="masthead" class="site-header has-title-and-tagline has-menu" role="banner">
+
+	
+
+<div class="site-branding">
+
+	
+						<p class="site-title"><a href="http://44.240.77.17/">BATR</a></p>
+			
+			<p class="site-description">
+			My Technical Reference		</p>
+	</div><!-- .site-branding -->
+	
+	<nav id="site-navigation" class="primary-navigation" role="navigation" aria-label="Primary menu">
+		<div class="menu-button-container">
+			<button id="primary-mobile-menu" class="button" aria-controls="primary-menu-list" aria-expanded="false">
+				<span class="dropdown-icon open">Menu					<svg class="svg-icon" width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M4.5 6H19.5V7.5H4.5V6ZM4.5 12H19.5V13.5H4.5V12ZM19.5 18H4.5V19.5H19.5V18Z" fill="currentColor"></path></svg>				</span>
+				<span class="dropdown-icon close">Close					<svg class="svg-icon" width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 10.9394L5.53033 4.46973L4.46967 5.53039L10.9393 12.0001L4.46967 18.4697L5.53033 19.5304L12 13.0607L18.4697 19.5304L19.5303 18.4697L13.0607 12.0001L19.5303 5.53039L18.4697 4.46973L12 10.9394Z" fill="currentColor"></path></svg>				</span>
+			</button><!-- #primary-mobile-menu -->
+		</div><!-- .menu-button-container -->
+		<div class="primary-menu-container"><ul id="primary-menu-list" class="menu-wrapper"><li id="menu-item-14" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-14"><a href="http://44.240.77.17/">Home</a></li>
+<li id="menu-item-15" class="menu-item menu-item-type-post_type menu-item-object-page current_page_parent menu-item-15"><a href="http://44.240.77.17/blog/">Blog</a></li>
+</ul></div>	</nav><!-- #site-navigation -->
+
+</header><!-- #masthead -->
+
+	<div id="content" class="site-content">
+		<div id="primary" class="content-area">
+			<main id="main" class="site-main" role="main">
+
+<article id="post-38" class="post-38 post type-post status-publish format-standard hentry category-uncategorized entry">
+
+	<header class="entry-header alignwide">
+		<h1 class="entry-title">Tensorboard Support</h1>			</header><!-- .entry-header -->
+
+	<div class="entry-content">
+		
+<p>This post enables using Tensorboard within the JupyterHub + K8s 
+ecosystem. First, access to the proxy pod is gained on the primary node 
+by setting up a NodePort. Next, a python script is setup to run as a 
+service that reads and updates the proxy routing table on a timed 
+interval. The routing table gets updated with new routes such as  <code>/user/xxx/tb/</code>
+ that point to standard Tensorboard ports on each of the JupyterHub 
+single user servers. In addition, a proxy is setup on the single user 
+server that corrects the incoming path requests to work with 
+Tensorboard. Lastly, Tensorboard is run on the single user server and is
+ bound to the incoming traffic.</p>
+
+
+
+<h4>Setup NodePort</h4>
+
+
+
+<p>In order for an update script to access the routing table a NodePort 
+is setup. This points traffic directed at our specified port to the 
+proxy api (configurable-http-proxy). </p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-1" data-shcb-language-name="YAML" data-shcb-language-slug="yaml"><link rel="stylesheet" id="syntax-highlighting-code-block-css" href="Tensorboard%20Support%20%E2%80%93%20BATR_files/a11y-dark.css" media="all"><style>.wp-block-code {
+	border: 0;
+	padding: 0;
+}
+
+.wp-block-code > div {
+	overflow: auto;
+}
+
+.shcb-language {
+	border: 0;
+	clip: rect(1px, 1px, 1px, 1px);
+	-webkit-clip-path: inset(50%);
+	clip-path: inset(50%);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+	word-wrap: normal;
+	word-break: normal;
+}
+
+.hljs {
+	box-sizing: border-box;
+}
+
+.hljs.shcb-code-table {
+	display: table;
+	width: 100%;
+}
+
+.hljs.shcb-code-table > .shcb-loc {
+	color: inherit;
+	display: table-row;
+	width: 100%;
+}
+
+.hljs.shcb-code-table .shcb-loc > span {
+	display: table-cell;
+}
+
+.wp-block-code code.hljs:not(.shcb-wrap-lines) {
+	white-space: pre;
+}
+
+.wp-block-code code.hljs.shcb-wrap-lines {
+	white-space: pre-wrap;
+}
+
+.hljs.shcb-line-numbers {
+	border-spacing: 0;
+	counter-reset: line;
+}
+
+.hljs.shcb-line-numbers > .shcb-loc {
+	counter-increment: line;
+}
+
+.hljs.shcb-line-numbers .shcb-loc > span {
+	padding-left: 0.75em;
+}
+
+.hljs.shcb-line-numbers .shcb-loc::before {
+	border-right: 1px solid #ddd;
+	content: counter(line);
+	display: table-cell;
+	padding: 0 0.75em;
+	text-align: right;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	white-space: nowrap;
+	width: 1%;
+}
+</style><div><code class="hljs language-yaml shcb-code-table shcb-line-numbers"><span class="shcb-loc"><span><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+</span></span><span class="shcb-loc"><span><span class="hljs-attr">kind:</span> <span class="hljs-string">Service</span>
+</span></span><span class="shcb-loc"><span><span class="hljs-attr">metadata:</span>
+</span></span><span class="shcb-loc"><span>  <span class="hljs-attr">namespace:</span> <span class="hljs-string">jhub</span>
+</span></span><span class="shcb-loc"><span>  <span class="hljs-attr">name:</span> <span class="hljs-string">proxy-api-nodeport</span>
+</span></span><span class="shcb-loc"><span><span class="hljs-attr">spec:</span>
+</span></span><span class="shcb-loc"><span>  <span class="hljs-attr">type:</span> <span class="hljs-string">NodePort</span>
+</span></span><span class="shcb-loc"><span>  <span class="hljs-attr">ports:</span>
+</span></span><span class="shcb-loc"><span>  <span class="hljs-bullet">-</span> <span class="hljs-attr">port:</span> <span class="hljs-number">8001</span>
+</span></span><span class="shcb-loc"><span>    <span class="hljs-attr">nodePort:</span> <span class="hljs-number">31477</span>
+</span></span><span class="shcb-loc"><span>    <span class="hljs-attr">targetPort:</span> <span class="hljs-number">8001</span>
+</span></span><span class="shcb-loc"><span>  <span class="hljs-attr">selector:</span>
+</span></span><span class="shcb-loc"><span>    <span class="hljs-attr">app:</span> <span class="hljs-string">jupyterhub</span>
+</span></span><span class="shcb-loc"><span>    <span class="hljs-attr">component:</span> <span class="hljs-string">proxy</span>
+</span></span><span class="shcb-loc"><span>    <span class="hljs-attr">release:</span> <span class="hljs-string">[release</span> <span class="hljs-string">name]</span>
+</span></span></code></div><small class="shcb-language" id="shcb-language-1"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">YAML</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">yaml</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<p>Apply the Nodeport changes to the cluster with the following command.</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-2" data-shcb-language-name="CSS" data-shcb-language-slug="css"><div><code class="hljs language-css"><span class="hljs-selector-tag">kubectl</span> <span class="hljs-selector-tag">create</span> <span class="hljs-selector-tag">-f</span> <span class="hljs-selector-tag">file_name</span><span class="hljs-selector-class">.yaml</span></code></div><small class="shcb-language" id="shcb-language-2"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">CSS</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">css</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<h4>Routing Table Update Script (tensorboard-routing.py)</h4>
+
+
+
+<p>Setup a python virtual environment that has the <code>requests</code>
+ library installed. The following script can then get an authorization 
+token to communicate with the proxy RESTful api over the previously 
+setup NodePort. Every 30 seconds the routing table is read and updated. 
+This creates a new <code>/user/xxx/tb600x/</code> path for each active single user server. The path points to ports 6006, 6007, and 6008. </p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-3" data-shcb-language-name="Python" data-shcb-language-slug="python"><div><code class="hljs language-python shcb-code-table shcb-line-numbers"><span class="shcb-loc"><span><span class="hljs-keyword">import</span> requests
+</span></span><span class="shcb-loc"><span><span class="hljs-keyword">import</span> subprocess
+</span></span><span class="shcb-loc"><span><span class="hljs-keyword">import</span> time
+</span></span><span class="shcb-loc"><span>
+</span></span><span class="shcb-loc"><span>node_port = <span class="hljs-number">31477</span>
+</span></span><span class="shcb-loc"><span>api_url = <span class="hljs-string">'http://localhost:'</span> + \
+</span></span><span class="shcb-loc"><span>    str(node_port) + <span class="hljs-string">'/api/routes'</span>
+</span></span><span class="shcb-loc"><span>token_descriptor = <span class="hljs-string">"hub.config."</span> + \
+</span></span><span class="shcb-loc"><span>    <span class="hljs-string">"ConfigurableHTTPProxy.auth_token"</span>
+</span></span><span class="shcb-loc"><span>
+</span></span><span class="shcb-loc"><span><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_token</span><span class="hljs-params">()</span>:</span>
+</span></span><span class="shcb-loc"><span>    cmd = [<span class="hljs-string">"kubectl"</span>, <span class="hljs-string">"get"</span>, <span class="hljs-string">"secret"</span>, <span class="hljs-string">"hub"</span>,
+</span></span><span class="shcb-loc"><span>        <span class="hljs-string">"-n"</span>, <span class="hljs-string">"jhub"</span>, <span class="hljs-string">"-o=json"</span>]
+</span></span><span class="shcb-loc"><span>    p1 = subprocess.run(cmd, stdout=subprocess.PIPE)
+</span></span><span class="shcb-loc"><span>    cmd = [<span class="hljs-string">"jq"</span>, <span class="hljs-string">"-r"</span>, <span class="hljs-string">".[\"data\"] | "</span> +
+</span></span><span class="shcb-loc"><span>        <span class="hljs-string">".[\""</span> + token_descriptor + <span class="hljs-string">"\"]"</span>]
+</span></span><span class="shcb-loc"><span>    p2 = subprocess.run(cmd, stdout=subprocess.PIPE,
+</span></span><span class="shcb-loc"><span>        input=p1.stdout)
+</span></span><span class="shcb-loc"><span>    cmd = [<span class="hljs-string">"base64"</span>, <span class="hljs-string">"--decode"</span>]
+</span></span><span class="shcb-loc"><span>    p3 = subprocess.run(cmd, stdout=subprocess.PIPE,
+</span></span><span class="shcb-loc"><span>        input=p2.stdout)
+</span></span><span class="shcb-loc"><span>    <span class="hljs-keyword">return</span> p3.stdout.decode()
+</span></span><span class="shcb-loc"><span>
+</span></span><span class="shcb-loc"><span>token = <span class="hljs-string">""</span>
+</span></span><span class="shcb-loc"><span><span class="hljs-keyword">while</span> len(token) == <span class="hljs-number">0</span>:
+</span></span><span class="shcb-loc"><span>    token = get_token()
+</span></span><span class="shcb-loc"><span>    time.sleep(<span class="hljs-number">10</span>)
+</span></span><span class="shcb-loc"><span>print(<span class="hljs-string">'token:'</span>, token)
+</span></span><span class="shcb-loc"><span>
+</span></span><span class="shcb-loc"><span><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_routes</span><span class="hljs-params">()</span>:</span>
+</span></span><span class="shcb-loc"><span>    r = requests.get(api_url,
+</span></span><span class="shcb-loc"><span>        headers={
+</span></span><span class="shcb-loc"><span>            <span class="hljs-string">'Authorization'</span>: <span class="hljs-string">'token %s'</span> % token,
+</span></span><span class="shcb-loc"><span>            }
+</span></span><span class="shcb-loc"><span>        )
+</span></span><span class="shcb-loc"><span>    r.raise_for_status()
+</span></span><span class="shcb-loc"><span>    routes = r.json()
+</span></span><span class="shcb-loc"><span>    <span class="hljs-keyword">return</span> routes
+</span></span><span class="shcb-loc"><span>
+</span></span><span class="shcb-loc"><span><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">post_route</span><span class="hljs-params">(token=None, user=None, target=None, path=None)</span>:</span>
+</span></span><span class="shcb-loc"><span>    res = requests.post(
+</span></span><span class="shcb-loc"><span>        api_url + <span class="hljs-string">'/user/'</span> + user + <span class="hljs-string">'/'</span> + path + <span class="hljs-string">'/'</span>,
+</span></span><span class="shcb-loc"><span>        headers={
+</span></span><span class="shcb-loc"><span>            <span class="hljs-string">'Authorization'</span>: <span class="hljs-string">'token %s'</span> % token
+</span></span><span class="shcb-loc"><span>        },
+</span></span><span class="shcb-loc"><span>        json={
+</span></span><span class="shcb-loc"><span>            <span class="hljs-string">'user'</span>: user,
+</span></span><span class="shcb-loc"><span>            <span class="hljs-string">'target'</span>: target,
+</span></span><span class="shcb-loc"><span>            <span class="hljs-string">'jupyterHub'</span>: <span class="hljs-literal">True</span>
+</span></span><span class="shcb-loc"><span>        }
+</span></span><span class="shcb-loc"><span>    )
+</span></span><span class="shcb-loc"><span>    print(<span class="hljs-string">'route post:'</span>, res)
+</span></span><span class="shcb-loc"><span>
+</span></span><span class="shcb-loc"><span><span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+</span></span><span class="shcb-loc"><span>    <span class="hljs-keyword">try</span>:
+</span></span><span class="shcb-loc"><span>        routes = get_routes()
+</span></span><span class="shcb-loc"><span>    <span class="hljs-keyword">except</span>:
+</span></span><span class="shcb-loc"><span>        print(<span class="hljs-string">'failed to get routes'</span>)
+</span></span><span class="shcb-loc"><span>        <span class="hljs-keyword">continue</span>
+</span></span><span class="shcb-loc"><span>
+</span></span><span class="shcb-loc"><span>    <span class="hljs-keyword">try</span>:
+</span></span><span class="shcb-loc"><span>        <span class="hljs-keyword">for</span> key <span class="hljs-keyword">in</span> routes.keys():
+</span></span><span class="shcb-loc"><span>            items = key.split(<span class="hljs-string">'/'</span>)
+</span></span><span class="shcb-loc"><span>            tb_path = len(items) &gt; <span class="hljs-number">3</span> <span class="hljs-keyword">and</span> <span class="hljs-string">'tb'</span> <span class="hljs-keyword">in</span> items[<span class="hljs-number">3</span>]
+</span></span><span class="shcb-loc"><span>            <span class="hljs-keyword">if</span> items[<span class="hljs-number">1</span>] == <span class="hljs-string">'user'</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> tb_path:
+</span></span><span class="shcb-loc"><span>                user = routes[key][<span class="hljs-string">'user'</span>]
+</span></span><span class="shcb-loc"><span>                target = <span class="hljs-string">'http:'</span> + \
+</span></span><span class="shcb-loc"><span>                    routes[key][<span class="hljs-string">'target'</span>].split(<span class="hljs-string">':'</span>)[<span class="hljs-number">1</span>] + <span class="hljs-string">':'</span>
+</span></span><span class="shcb-loc"><span>                post_route(token, user, target + <span class="hljs-string">'6116'</span>, <span class="hljs-string">'tb'</span>)
+</span></span><span class="shcb-loc"><span>                post_route(token, user, target + <span class="hljs-string">'6117'</span>, <span class="hljs-string">'tb6007'</span>)
+</span></span><span class="shcb-loc"><span>                post_route(token, user, target + <span class="hljs-string">'6118'</span>, <span class="hljs-string">'tb6008'</span>)
+</span></span><span class="shcb-loc"><span>    <span class="hljs-keyword">except</span>:
+</span></span><span class="shcb-loc"><span>        print(<span class="hljs-string">'failed to update routes'</span>)
+</span></span><span class="shcb-loc"><span>
+</span></span><span class="shcb-loc"><span>    time.sleep(<span class="hljs-number">30</span>)
+</span></span></code></div><small class="shcb-language" id="shcb-language-3"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">Python</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">python</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<p>This script can be executed manually with the following call.</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-4" data-shcb-language-name="Bash" data-shcb-language-slug="bash"><div><code class="hljs language-bash">python tensorboard-routing.py</code></div><small class="shcb-language" id="shcb-language-4"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">Bash</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">bash</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<p>Alternatively, the script can automatically run after reboot using a 
+Linux service. The following contents should be placed in a file named <code>/etc/systemd/system/tensorboard-routing.service</code>.</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-5" data-shcb-language-name="Bash" data-shcb-language-slug="bash"><div><code class="hljs language-bash">[Unit]
+Description=Service to run a routing table updater <span class="hljs-keyword">for</span> Tensorboard support <span class="hljs-keyword">in</span> JupyterHub
+
+[Service]
+User=[username]
+ExecStart=/usr/bin/python3 /path/to/tensorboard-routing.py
+
+[Install]
+WantedBy=multi-user.target</code></div><small class="shcb-language" id="shcb-language-5"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">Bash</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">bash</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<p>The service can be enabled with the following commands.</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-6" data-shcb-language-name="Bash" data-shcb-language-slug="bash"><div><code class="hljs language-bash">sudo systemctl <span class="hljs-built_in">enable</span> tensorboard-routing.service
+service tensorboard-routing start
+service tensorboard-routing status</code></div><small class="shcb-language" id="shcb-language-6"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">Bash</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">bash</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<h4>Singleuser Server Proxy (tensorboard-proxy.js)</h4>
+
+
+
+<p>To correct incoming paths a proxy needs to be run on the single user server. Copy the following contents into a file named <code>tensorboard-proxy.js</code>. </p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-7" data-shcb-language-name="JavaScript" data-shcb-language-slug="javascript"><div><code class="hljs language-javascript shcb-code-table shcb-line-numbers"><span class="shcb-loc"><span><span class="hljs-keyword">var</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">'http'</span>),
+</span></span><span class="shcb-loc"><span>    httpProxy = <span class="hljs-built_in">require</span>(<span class="hljs-string">'http-proxy'</span>);
+</span></span><span class="shcb-loc"><span>
+</span></span><span class="shcb-loc"><span><span class="hljs-keyword">var</span> proxy6006 = httpProxy.createProxyServer({});
+</span></span><span class="shcb-loc"><span><span class="hljs-keyword">var</span> proxy6007 = httpProxy.createProxyServer({});
+</span></span><span class="shcb-loc"><span><span class="hljs-keyword">var</span> proxy6008 = httpProxy.createProxyServer({});
+</span></span><span class="shcb-loc"><span>
+</span></span><span class="shcb-loc"><span><span class="hljs-keyword">var</span> server6006 = http.createServer(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req, res</span>) </span>{
+</span></span><span class="shcb-loc"><span>    items = req.url.split(<span class="hljs-string">'/'</span>);
+</span></span><span class="shcb-loc"><span>    req.url = <span class="hljs-string">'/'</span> + items.splice(<span class="hljs-number">4</span>).join(<span class="hljs-string">'/'</span>);
+</span></span><span class="shcb-loc"><span>    proxy6006.web(req, res, { <span class="hljs-attr">target</span>: <span class="hljs-string">'http://localhost:6006'</span> }, 
+</span></span><span class="shcb-loc"><span>        <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>{ <span class="hljs-built_in">console</span>.log(e) });
+</span></span><span class="shcb-loc"><span>});
+</span></span><span class="shcb-loc"><span><span class="hljs-keyword">var</span> server6007 = http.createServer(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req, res</span>) </span>{
+</span></span><span class="shcb-loc"><span>    items = req.url.split(<span class="hljs-string">'/'</span>);
+</span></span><span class="shcb-loc"><span>    req.url = <span class="hljs-string">'/'</span> + items.splice(<span class="hljs-number">4</span>).join(<span class="hljs-string">'/'</span>);
+</span></span><span class="shcb-loc"><span>    proxy6007.web(req, res, { <span class="hljs-attr">target</span>: <span class="hljs-string">'http://localhost:6007'</span> }, 
+</span></span><span class="shcb-loc"><span>        <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>{ <span class="hljs-built_in">console</span>.log(e) });
+</span></span><span class="shcb-loc"><span>});
+</span></span><span class="shcb-loc"><span><span class="hljs-keyword">var</span> server6008 = http.createServer(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req, res</span>) </span>{
+</span></span><span class="shcb-loc"><span>    items = req.url.split(<span class="hljs-string">'/'</span>);
+</span></span><span class="shcb-loc"><span>    req.url = <span class="hljs-string">'/'</span> + items.splice(<span class="hljs-number">4</span>).join(<span class="hljs-string">'/'</span>);
+</span></span><span class="shcb-loc"><span>    proxy6008.web(req, res, { <span class="hljs-attr">target</span>: <span class="hljs-string">'http://localhost:6008'</span> }, 
+</span></span><span class="shcb-loc"><span>        <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>{ <span class="hljs-built_in">console</span>.log(e) });
+</span></span><span class="shcb-loc"><span>});
+</span></span><span class="shcb-loc"><span>
+</span></span><span class="shcb-loc"><span>server6006.listen(<span class="hljs-number">6116</span>);
+</span></span><span class="shcb-loc"><span>server6007.listen(<span class="hljs-number">6117</span>);
+</span></span><span class="shcb-loc"><span>server6008.listen(<span class="hljs-number">6118</span>);
+</span></span></code></div><small class="shcb-language" id="shcb-language-7"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">JavaScript</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">javascript</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<p>This file will need to be run on the single user server using node. 
+This can be accomplished using a shell script as follows. This will need
+ to be run anytime the single user server restarts.</p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-8" data-shcb-language-name="JavaScript" data-shcb-language-slug="javascript"><div><code class="hljs language-javascript"><span class="hljs-meta">#!/bin/bash</span>
+node /etc/tb/tensorboard-proxy.js</code></div><small class="shcb-language" id="shcb-language-8"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">JavaScript</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">javascript</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<h4>Run Tensorboard</h4>
+
+
+
+<p>After creating a new single user server (Jupyter Lab) open a terminal from the launcher. Run the following the command. </p>
+
+
+<span data-button-text="Copy" data-button-position="inside" data-button-copy-text="Copied!" data-style="button" data-button-title="Copy to Clipboard" data-selector="pre" class="copy-the-code-wrap copy-the-code-style-button copy-the-code-inside-wrap"><pre class="wp-block-code copy-the-code-target" aria-describedby="shcb-language-9" data-shcb-language-name="Bash" data-shcb-language-slug="bash"><div><code class="hljs language-bash">tensorboard --logdir=/path --bind_all --port=600X</code></div><small class="shcb-language" id="shcb-language-9"><span class="shcb-language__label">Code language:</span> <span class="shcb-language__name">Bash</span> <span class="shcb-language__paren">(</span><span class="shcb-language__slug">bash</span><span class="shcb-language__paren">)</span></small><button class="copy-the-code-button" data-style="button" title="Copy to Clipboard">Copy</button></pre></span>
+
+
+<p>Use port 6006, 6007, or 6008 for the url paths <code>/user/xxx/tb/</code>, <code>/user/xxx/tb6007/</code>, and <code>/user/xxx/tb6008/</code> respectively. Don’t leave off the trailing <code>/</code>.</p>
+
+
+
+<h4>References</h4>
+
+
+
+<ul><li>https://github.com/http-party/node-http-proxy</li></ul>
+
+
+
+<p></p>
+	</div><!-- .entry-content -->
+
+	<footer class="entry-footer default-max-width">
+		<div class="posted-by"><span class="posted-on">Published <time class="entry-date published updated" datetime="2021-10-26T23:37:24+00:00">October 26, 2021</time></span><span class="byline">By <a href="http://44.240.77.17/author/bentarnold/" rel="author">Ben Arnold</a></span></div><div class="post-taxonomies"><span class="cat-links">Categorized as <a href="http://44.240.77.17/category/uncategorized/" rel="category tag">Uncategorized</a> </span></div>	</footer><!-- .entry-footer -->
+
+				
+</article><!-- #post-38 -->
+
+<div id="comments" class="comments-area default-max-width show-avatars">
+
+	
+		<div id="respond" class="comment-respond">
+		<h2 id="reply-title" class="comment-reply-title">Leave a comment <small><a rel="nofollow" id="cancel-comment-reply-link" href="http://44.240.77.17/2021/10/26/update-proxy-routing-table/#respond" style="display:none;">Cancel reply</a></small></h2><form action="http://44.240.77.17/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate=""><p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> Required fields are marked <span class="required">*</span></p><p class="comment-form-comment"><label for="comment">Comment</label> <textarea id="comment" name="comment" cols="45" rows="5" maxlength="65525" required="required"></textarea></p><p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" size="30" maxlength="245" required="required"></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="email" size="30" maxlength="100" aria-describedby="email-notes" required="required"></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="url" size="30" maxlength="200"></p>
+<p class="comment-form-cookies-consent"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes"> <label for="wp-comment-cookies-consent">Save my name, email, and website in this browser for the next time I comment.</label></p>
+<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Post Comment"> <input type="hidden" name="comment_post_ID" value="38" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p></form>	</div><!-- #respond -->
+	
+</div><!-- #comments -->
+
+	<nav class="navigation post-navigation" role="navigation" aria-label="Posts">
+		<h2 class="screen-reader-text">Post navigation</h2>
+		<div class="nav-links"><div class="nav-previous"><a href="http://44.240.77.17/2021/10/23/jupyterhub-k8s/" rel="prev"><p class="meta-nav"><svg class="svg-icon" width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M20 13v-2H8l4-4-1-2-7 7 7 7 1-2-4-4z" fill="currentColor"></path></svg>Previous post</p><p class="post-title">JupyterHub + K8s + Nvidia GPUs + On-premise</p></a></div><div class="nav-next"><a href="http://44.240.77.17/2021/12/29/jupyterhub-dashboard/" rel="next"><p class="meta-nav">Next post<svg class="svg-icon" width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="m4 13v-2h12l-4-4 1-2 7 7-7 7-1-2 4-4z" fill="currentColor"></path></svg></p><p class="post-title">JupyterHub Dashboard</p></a></div></div>
+	</nav>			</main><!-- #main -->
+		</div><!-- #primary -->
+	</div><!-- #content -->
+
+	
+	<aside class="widget-area">
+		<section id="block-2" class="widget widget_block widget_search"><form role="search" method="get" action="http://44.240.77.17/" class="wp-block-search__button-outside wp-block-search__text-button wp-block-search"><label for="wp-block-search__input-1" class="wp-block-search__label">Search</label><div class="wp-block-search__inside-wrapper"><input type="search" id="wp-block-search__input-1" class="wp-block-search__input" name="s" placeholder="" required=""><button type="submit" class="wp-block-search__button ">Search</button></div></form></section><section id="block-4" class="widget widget_block"><div class="wp-block-group"><div class="wp-block-group__inner-container"><h2>Recent Comments</h2><div class="no-comments wp-block-latest-comments">No comments to show.</div></div></div></section>	</aside><!-- .widget-area -->
+
+
+	<footer id="colophon" class="site-footer" role="contentinfo">
+
+				<div class="site-info">
+			<div class="site-name">
+																						<a href="http://44.240.77.17/">BATR</a>
+																		</div><!-- .site-name -->
+			<div class="powered-by">
+				Proudly powered by <a href="https://wordpress.org/">WordPress</a>.			</div><!-- .powered-by -->
+
+		</div><!-- .site-info -->
+	</footer><!-- #colophon -->
+
+</div><!-- #page -->
+
+<script>document.body.classList.remove("no-js");</script>	<script>
+	if ( -1 !== navigator.userAgent.indexOf( 'MSIE' ) || -1 !== navigator.appVersion.indexOf( 'Trident/' ) ) {
+		document.body.classList.add( 'is-IE' );
+	}
+	</script>
+	<script id="copy-the-code-js-extra">
+var copyTheCode = {"copy_content_as":"","previewMarkup":"<h2>Hello World<\/h2>","buttonMarkup":"<button class=\"copy-the-code-button\" title=\"\"><\/button>","buttonSvg":"<svg viewBox=\"-21 0 512 512\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\"><path d=\"m186.667969 416c-49.984375 0-90.667969-40.683594-90.667969-90.667969v-218.664062h-37.332031c-32.363281 0-58.667969 26.300781-58.667969 58.664062v288c0 32.363281 26.304688 58.667969 58.667969 58.667969h266.664062c32.363281 0 58.667969-26.304688 58.667969-58.667969v-37.332031zm0 0\"><\/path><path d=\"m469.332031 58.667969c0-32.40625-26.261719-58.667969-58.664062-58.667969h-224c-32.40625 0-58.667969 26.261719-58.667969 58.667969v266.664062c0 32.40625 26.261719 58.667969 58.667969 58.667969h224c32.402343 0 58.664062-26.261719 58.664062-58.667969zm0 0\"><\/path><\/svg>","selectors":[{"selector":"pre","style":"button","button_text":"Copy","button_title":"Copy to Clipboard","button_copy_text":"Copied!","button_position":"inside"}],"selector":"pre","settings":{"selector":"pre","button-text":"Copy","button-title":"Copy to Clipboard","button-copy-text":"Copied!","button-position":"inside"},"string":{"title":"Copy to Clipboard","copy":"Copy","copied":"Copied!"},"image-url":"http:\/\/44.240.77.17\/wp-content\/plugins\/copy-the-code\/\/assets\/images\/copy-1.svg"};
+</script>
+<script src="Tensorboard%20Support%20%E2%80%93%20BATR_files/copy-the-code.js" id="copy-the-code-js"></script>
+<script src="Tensorboard%20Support%20%E2%80%93%20BATR_files/comment-reply.min.js" id="comment-reply-js"></script>
+<script id="twenty-twenty-one-ie11-polyfills-js-after">
+( Element.prototype.matches && Element.prototype.closest && window.NodeList && NodeList.prototype.forEach ) || document.write( '<script src="http://44.240.77.17/wp-content/themes/twentytwentyone/assets/js/polyfills.js?ver=1.4"></scr' + 'ipt>' );
+</script>
+<script src="Tensorboard%20Support%20%E2%80%93%20BATR_files/primary-navigation.js" id="twenty-twenty-one-primary-navigation-script-js"></script>
+<script src="Tensorboard%20Support%20%E2%80%93%20BATR_files/responsive-embeds.js" id="twenty-twenty-one-responsive-embeds-script-js"></script>
+<script src="Tensorboard%20Support%20%E2%80%93%20BATR_files/wp-embed.min.js" id="wp-embed-js"></script>
+	<script>
+	/(trident|msie)/i.test(navigator.userAgent)&&document.getElementById&&window.addEventListener&&window.addEventListener("hashchange",(function(){var t,e=location.hash.substring(1);/^[A-z0-9_-]+$/.test(e)&&(t=document.getElementById(e))&&(/^(?:a|select|input|button|textarea)$/i.test(t.tagName)||(t.tabIndex=-1),t.focus())}),!1);
+	</script>
+	
+
+
+</body></html>
