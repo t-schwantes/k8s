@@ -2,8 +2,7 @@
 # FROM node:16 as node-stage
 
 # Use the Jupyter PyTorch notebook as the base image
-# FROM quay.io/jupyter/pytorch-notebook:latest
-FROM quay.io/jupyter/pytorch-notebook:cuda12-python-3.11
+FROM quay.io/jupyter/pytorch-notebook:latest
 
 SHELL ["/bin/bash", "-c"]
 
@@ -27,13 +26,8 @@ RUN chown -R root:root /etc/skel && \
 
 # Install Python packages and system-level dependencies, then clean up
 COPY requirements.txt /tmp/
-RUN pip install kubernetes
 RUN pip install -r /tmp/requirements.txt && rm /tmp/requirements.txt && \
-    apt-get update && apt-get install -y build-essential npm nodejs htop btop && \
-    apt-get install build-essential cmake git libavcodec-dev libavformat-dev -y && \
-    apt-get install libswscale-dev libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev -y && \
-    apt-get install libgtk-3-dev libpng-dev libjpeg-dev libopenexr-dev libtiff-dev libwebp-dev -y && \
-    apt-get install libopencv-dev x264 libx264-dev libssl-dev ffmpeg -y && \
+    apt-get update && apt-get install -y build-essential npm nodejs&& \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Copy Node.js and npm from the Node image stage
@@ -51,16 +45,10 @@ RUN npm install http-proxy --save
 COPY tensorboard-proxy.js /etc/tb/
 WORKDIR "${HOME}"
 
-# Copy init script to copy default bash configurations for users
-RUN mkdir -p /home/jovyan/.conda/pkgs && chmod 777 /home/jovyan/.conda/pkgs
-COPY init-user.sh /usr/local/bin/init-user.sh
-RUN chmod +x /usr/local/bin/init-user.sh
-
 # Set back to the default Jupyter user (jovyan)
 USER ${NB_UID}
 
-# Run the user initialization script on startup before the notebook starts
-ENTRYPOINT ["/bin/bash", "-c", "/usr/local/bin/init-user.sh && node /etc/tb/tensorboard-proxy.js & start-notebook.sh"]
+ENTRYPOINT ["/bin/bash", "-c", "node /etc/tb/tensorboard-proxy.js & start-notebook.sh"]
 
 # Optional: Add environment variables or other configurations if needed
 # ENV CUSTOM_ENV_VAR=custom_value

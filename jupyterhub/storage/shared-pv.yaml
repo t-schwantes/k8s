@@ -8,7 +8,22 @@ spec:
   accessModes:
     - ReadWriteMany  # Ensure RWX
   nfs:
-    path: /home/default/tmp_pv  # Placeholder for NFS storage path
+    path: /mnt/user-homes/  # Placeholder for NFS storage path
+    server: 172.16.49.54  # Placeholder for NFS server IP
+  storageClassName: jhub-storage-class  # Reference the new StorageClass
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: shared-pv-conda
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteMany  # Ensure RWX
+  nfs:
+    path: /mnt/user-homes//shared/conda_pkgs  # Placeholder for NFS storage path
     server: 172.16.49.54  # Placeholder for NFS server IP
   storageClassName: jhub-storage-class  # Reference the new StorageClass
   persistentVolumeReclaimPolicy: Retain

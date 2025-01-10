@@ -24,7 +24,7 @@ run_script "install/nvidia-container.sh" "$LOG_DIR/install/nvidia-container.log"
 
 run_script "k8s/init.sh" "$LOG_DIR/k8s/init.log"
 run_script "k8s/cni.sh" "$LOG_DIR/k8s/cni.log"
-#run_script "k8s/worker/setup-worker.sh" "$LOG_DIR/k8s/worker/setup-worker.log"
+run_script "k8s/worker/setup-worker.sh" "$LOG_DIR/k8s/worker/setup-worker.log"
 
 run_script "docker/registry.sh" "$LOG_DIR/docker/registry.log"
 
@@ -33,6 +33,7 @@ run_script "jupyterhub/init.sh" "$LOG_DIR/jupyterhub/init.log"
 run_script "jupyterhub/storage.sh" "$LOG_DIR/jupyterhub/storage.log"
 run_script "jupyterhub/dashboard-server.sh" "$LOG_DIR/jupyterhub/dashboard-server.log"
 run_script "jupyterhub/tensorboard.sh" "$LOG_DIR/jupyterhub/tensorboard.log"
+run_script "jupyterhub/default-users.sh" "$LOG_DIR/jupyterhub/default-users.log"
 
 # Add kubernetes api token if you want to add users via the script
 # go to jupyterhub, click on token, generate api token

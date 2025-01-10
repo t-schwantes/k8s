@@ -1,0 +1,21 @@
+apiVersion: kadalu-operator.storage/v1alpha1
+kind: KadaluStorage
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"kadalu-operator.storage/v1alpha1","kind":"KadaluStorage","metadata":{"annotations":{},"name":"replicated-storage","namespace":"default"},"spec":{"storage":[{"device":"/dev/nvme1n1","node":"beast5"},{"device":"/dev/nvme1n1","node":"beast6"}],"type":"Replica2"}}
+  creationTimestamp: "2024-12-06T17:02:56Z"
+  generation: 1
+  name: replicated-storage
+  namespace: default
+  resourceVersion: "1847"
+  uid: 59351d25-2958-4309-8882-28bcfef6bf00
+spec:
+  pvReclaimPolicy: delete
+  single_pv_per_pool: false
+  storage:
+  - device: /dev/nvme1n1
+    node: beast5
+  - device: /dev/nvme1n1
+    node: beast6
+  type: Replica2

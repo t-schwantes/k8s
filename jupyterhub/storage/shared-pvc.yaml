@@ -10,4 +10,16 @@ spec:
     requests:
       storage: 100Gi  # Must match the size of the PV
   volumeName: shared-pv  # Bind directly to the PV
-
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: shared-pvc-conda  # Unique name for the PVC related to Conda
+  namespace: jupyterhub
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi  # Must match the size of the PV
+  volumeName: shared-pv-conda  # Bind directly to the Conda PV

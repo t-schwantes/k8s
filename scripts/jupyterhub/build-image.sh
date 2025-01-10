@@ -14,7 +14,8 @@ cd ${IMAGE_PATH}
 
 # Build the Docker image
 echo "Building Docker image ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}..."
-docker build --no-cache --network=host -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} .
+# docker build --no-cache --network=host -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} .
+docker build --network=host -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} .
 
 # Tag the image for the registry
 echo "Tagging image as ${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}..."

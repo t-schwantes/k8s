@@ -56,5 +56,22 @@ helm repo update
 helm install csi-driver-smb csi-driver-smb/csi-driver-smb --namespace kube-system --version v1.16.0
 echo "csi smb driver installation complete"
 
+# # Kadalu storage
+# echo "Setting up kadalu storage"
+#
+# echo "installing kadalu"
+# curl -fsSL https://github.com/kadalu/kadalu/releases/latest/download/install.sh | sudo bash -x
+# kubectl-kadalu version
+# kubectl kadalu install --type=kubernetes
+
+echo  "applying local-data storage yaml and pvc yaml"
+#kubectl apply -f jupyterhub/storage/kadalu/kadalu-replicated-storage.yaml
+#kubectl apply -f jupyterhub/storage/kadalu/kadalu-pvc.yaml
+#kubectl apply -f jupyterhub/storage/kadalu/kadalu-storage.yaml
+#kubectl apply -f jupyterhub/storage/kadalu/kadalu-pv.yaml
+#kubectl apply -f jupyterhub/storage/kadalu/kadalu-pvc.yaml
+kubectl apply -f jupyterhub/storage/glusterfs/glusterfs-pv.yaml
+kubectl apply -f jupyterhub/storage/glusterfs/glusterfs-pvc.yaml
+
 
 echo "Kubernetes storage configuration applied successfully."

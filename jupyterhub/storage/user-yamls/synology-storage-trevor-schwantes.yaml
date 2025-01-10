@@ -2,10 +2,10 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: synology-default
+  name: synology-trevor-schwantes
   namespace: jupyterhub
   labels:
-    user: default
+    user: trevor-schwantes
   
 spec:
   capacity:
@@ -18,11 +18,11 @@ spec:
   csi:
     driver: smb.csi.k8s.io
     readOnly: false
-    volumeHandle: synology-default
+    volumeHandle: synology-trevor-schwantes
     volumeAttributes:
-      source: "//172.16.49.60/ml-storage"
+      source: "//172.16.49.55/Share"
     nodeStageSecretRef:
-      name: secret-synology-default
+      name: secret-synology-trevor-schwantes
       namespace: jupyterhub
       
 ---
@@ -30,7 +30,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: synology-default
+  name: synology-trevor-schwantes
   namespace: jupyterhub
 spec:
   storageClassName: ""
@@ -45,10 +45,10 @@ spec:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: secret-synology-default
+  name: secret-synology-trevor-schwantes
   namespace: jupyterhub
   
 type: Opaque
 data:
-  username: ZGVmYXVsdA==
-  password: QWJjZDEyMzQ=
+  username: dHJldm9yLXNjaHdhbnRlcw==
+  password: MUU5ZXg2Z2g=

@@ -1,0 +1,11 @@
+apiVersion: kadalu-operator.storage/v1alpha1
+kind: KadaluStorage
+metadata:
+  name: replicated-storage
+spec:
+  type: Replica2
+  storage:
+    - device: /dev/nvme1n1
+      node: beast5
+    - device: /dev/nvme1n1
+      node: beast6

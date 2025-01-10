@@ -6,3 +6,137 @@ improve reset script
 
 
 
+
+
+
+Change volumes on beast0-5 to be gluster + nfs
+add local-storage 1-4 to the cluster
+add home storage to the cluster
+create a way to copy and update user storage yamls 
+update add-user.sh
+
+
+
+
+
+
+git clone CascadeCore into the image everytime
+setup a default env that works for everyone as soon as they log in
+pv for the repo and for the env and just mount them?
+
+
+
+
+
+
+
+# Set up fresh storage
+kubectl apply -f jupyterhub/storage/kadalu/kadalu-replicated-storage.yaml
+kubectl apply -f jupyterhub/storage/kadalu/kadalu-pvc.yaml
+
+# wait for it to finish setting up
+
+# patch pv to be persistent
+kubectl patch pv $(kubectl get pv -o=jsonpath='{.items[?(@.spec.claimRef.name=="kadalu-replicated-pvc")].metadata.name}') -p '{"spec":{"persistentVolumeReclaimPolicy":"Retain"}}'
+
+# Backup k8s kadalu config
+kubectl get KadaluStorage replicated-storage -n default -o yaml > kadalu-storage-backup.yaml
+kubectl get pv $(kubectl get pv -o=jsonpath='{.items[?(@.spec.claimRef.name=="kadalu-replicated-pvc")].metadata.name}') -o yaml > pv-backup.yaml
+kubectl get pvc kadalu-replicated-pvc -n jupyterhub -o yaml > pvc-backup.yaml
+
+
+# backup the glusterfs files
+kubectl exec -n kadalu server-replicated-storage-0-0 -- bash -c "tar -czvf /tmp/glusterfs-metadata-backup.tar.gz /bricks/replicated-storage/data/brick/.glusterfs"
+kubectl cp kadalu/server-replicated-storage-0-0:/tmp/glusterfs-metadata-backup.tar.gz ./server-0-glusterfs-backup.tar.gz -n kadalu
+kubectl exec -n kadalu server-replicated-storage-1-0 -- bash -c "tar -czvf /tmp/glusterfs-metadata-backup.tar.gz /bricks/replicated-storage/data/brick/.glusterfs"
+kubectl cp kadalu/server-replicated-storage-1-0:/tmp/glusterfs-metadata-backup.tar.gz ./server-1-glusterfs-backup.tar.gz -n kadalu
+ls -lh ./server-*-glusterfs-backup.tar.gz
+
+# Do all the things to reset the cluster
+
+# appy th replicated storage backup and immediatly pause kadalu
+kubectl apply -f kadalu-storage-backup.yaml
+kubectl scale deployment operator --replicas=0 -n kadalu
+kubectl get deployments -n kadalu
+
+# Copy the glusterfs files back
+kubectl exec -n kadalu server-replicated-storage-0-0 -- rm -rf /bricks/replicated-storage/data/brick/.glusterfs
+kubectl cp ./server-0-glusterfs-backup.tar.gz kadalu/server-replicated-storage-0-0:/tmp
+kubectl exec -n kadalu server-replicated-storage-0-0 -- tar -xzvf /tmp/server-0-glusterfs-backup.tar.gz -C /bricks/replicated-storage/data/brick/
+kubectl exec -n kadalu server-replicated-storage-1-0 -- rm -rf /bricks/replicated-storage/data/brick/.glusterfs
+kubectl cp ./server-1-glusterfs-backup.tar.gz kadalu/server-replicated-storage-1-0:/tmp
+kubectl exec -n kadalu server-replicated-storage-1-0 -- tar -xzvf /tmp/server-1-glusterfs-backup.tar.gz -C /bricks/replicated-storage/data/brick/
+
+
+kubectl scale deployment operator --replicas=1 -n kadalu
+
+
+
+kubectl apply -f pv-backup.yaml
+kubectl apply -f pvc-backup.yaml
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------
+# Set up fresh storage
+kubectl apply -f jupyterhub/storage/kadalu/kadalu-replicated-storage.yaml
+
+kubectl patch pv $(kubectl get pv -o=jsonpath='{.items[?(@.spec.claimRef.name=="pvc-local-data")].metadata.name}') -p '{"spec":{"persistentVolumeReclaimPolicy":"Retain"}}'
+
+# backup 
+kubectl get pv $(kubectl get pv -o=jsonpath='{.items[?(@.spec.claimRef.name=="pvc-local-data")].metadata.name}') -o yaml > pv-backup.yaml
+kubectl get pvc kadalu-replicated-pvc -n jupyterhub -o yaml > pvc-backup.yaml
+
+# reset
+
+# apply backup
+kubectl apply -f pv-backup.yaml
+kubectl apply -f pvc-backup.yaml
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# I had to run this on both machines for some reason
+sudo chown -R gluster:gluster /mnt/glusterfs-bricks/local-data
+sudo chmod -R 755 /mnt/glusterfs-bricks/local-data
+sudo systemctl restart glusterd
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

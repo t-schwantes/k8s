@@ -1,0 +1,23 @@
+    extraVolumes:
+      - name: vol-synology-user
+        persistentVolumeClaim:
+          claimName: synology-{username}
+      - name: conda-cache-pvc
+        persistentVolumeClaim:
+          claimName: shared-pvc-conda 
+      - name: kadalu-storage
+        persistentVolumeClaim:
+          claimName: local-data-pvc  # New Kadalu PVC
+      - name: dshm
+        emptyDir:
+          medium: Memory
+          sizeLimit: 8Gi
+    extraVolumeMounts:
+      - name: conda-cache-pvc
+        mountPath: /home/jovyan/.conda/pkgs
+      - name: vol-synology-user
+        mountPath: "/home/jovyan/ml-storage"  # User data volume mount
+      - name: kadalu-storage
+        mountPath: "/home/jovyan/local-data"  # Updated Kadalu volume mount
+      - name: dshm
+        mountPath: /dev/shm

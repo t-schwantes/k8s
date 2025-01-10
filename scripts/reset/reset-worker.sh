@@ -3,7 +3,7 @@
 # Source config.sh if needed (e.g., for worker node IPs)
 source ./config.sh
 
-WORKER_NODE_IP="192.168.0.101"  # IP of the worker node (beast6)
+WORKER_NODE_IP="172.16.49.59"  # IP of the worker node (beast6)
 WORKER_NODE_NAME="beast6"       # Name of the worker node in Kubernetes
 WORKER_USER="default"           # User for SSH access
 

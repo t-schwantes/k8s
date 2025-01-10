@@ -1,0 +1,28 @@
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: pvc-local-data
+#  namespace: jupyterhub
+#spec:
+#  storageClassName: kadalu.local-data-storage
+#  accessModes:
+#    - ReadWriteMany
+#  resources:
+#    requests:
+#      storage: 6Ti
+
+
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: kadalu-pvc
+  namespace: jupyterhub
+spec:
+  storageClassName: kadalu.local-data-storage
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 6Ti
+  volumeName: kadalu-pv  # Explicitly bind to the shared PV

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: local-data-pvc
+  namespace: jupyterhub
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 6Ti
+  storageClassName: kadalu.local-data
+  volumeMode: Filesystem
+  volumeName: local-data-pv

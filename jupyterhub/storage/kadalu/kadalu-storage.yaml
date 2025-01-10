@@ -1,0 +1,26 @@
+apiVersion: kadalu-operator.storage/v1alpha1
+kind: KadaluStorage
+metadata:
+  name: local-data
+spec:
+  type: External
+  pvReclaimPolicy: retain
+  details:
+    gluster_hosts:
+      - 172.16.49.54
+      - 172.16.49.59
+    gluster_volname: local-data
+    gluster_options: log-level=DEBUG
+#---
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: pvc-local-data
+#  namespace: jupyterhub
+#spec:
+#  storageClassName: kadalu.local-data
+#  accessModes:
+#    - ReadWriteMany
+#  resources:
+#    requests:
+#      storage: 6Ti

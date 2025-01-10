@@ -1,0 +1,55 @@
+# Persistent Volume
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: synology-matthew-arnold
+  namespace: jupyterhub
+  labels:
+    user: matthew-arnold
+    
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteMany
+  mountOptions:
+    - dir_mode=0777
+    - file_mode=0777
+  csi:
+    driver: smb.csi.k8s.io
+    readOnly: false
+    volumeHandle: synology-matthew-arnold
+    volumeAttributes:
+      source: "//172.16.49.55/Share"
+    nodeStageSecretRef:
+      name: secret-synology-matthew-arnold
+      namespace: jupyterhub
+      
+---
+# Persistent Volume Claim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: synology-matthew-arnold
+  namespace: jupyterhub
+spec:
+  storageClassName: ""
+  
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+---
+# Secret
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secret-synology-matthew-arnold
+  namespace: jupyterhub
+  
+type: Opaque
+data:
+  username: bWF0dGhldy1hcm5vbGQ=
+  password: ZXMxTGN5XTU=
+---

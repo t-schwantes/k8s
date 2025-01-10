@@ -42,4 +42,7 @@ echo "Removing Docker registry path: $DOCKER_REGISTRY_PATH"
 sudo rm -rf "$DOCKER_REGISTRY_PATH"
 echo "Docker registry path removed."
 
+# Wipe kadalu drive
+# sudo wipefs -a /dev/nvme1n1
+
 echo "Kubernetes reset complete."

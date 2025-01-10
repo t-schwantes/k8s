@@ -4,7 +4,7 @@ metadata:
   name: pv-registry
 spec:
   capacity:
-    storage: 10Gi
+    storage: 100Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
@@ -20,5 +20,5 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 10Gi
+      storage: 100Gi
   storageClassName: ""  # Ensure no storage class is assigned
