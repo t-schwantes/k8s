@@ -1,7 +1,0 @@
-set up dockerimage select jupyterhub? At least shared memory size
-security: k8s container creating from jupyterhub, jupyterhub sudo, ufw
-security: passwordless sudo privleges if ssh from control node to pretty much anywhere
-
-Make reset better
-
-
