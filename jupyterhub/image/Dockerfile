@@ -27,7 +27,7 @@ RUN chown -R root:root /etc/skel && \
 
 # Install Python packages and system-level dependencies, then clean up
 COPY requirements.txt /tmp/
-RUN pip install kubernetes
+RUN pip install kubernetes ipyevents
 RUN pip install -r /tmp/requirements.txt && rm /tmp/requirements.txt && \
     apt-get update && apt-get install -y build-essential npm nodejs htop btop && \
     apt-get install build-essential cmake git libavcodec-dev libavformat-dev -y && \

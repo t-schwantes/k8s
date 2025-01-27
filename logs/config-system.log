@@ -2,16 +2,16 @@ Updating package lists...
 
 WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
 
-Get:1 https://nvidia.github.io/libnvidia-container/stable/deb/amd64  InRelease [1,477 B]
-Hit:2 http://us.archive.ubuntu.com/ubuntu jammy InRelease
-Hit:4 https://download.docker.com/linux/ubuntu jammy InRelease
-Hit:5 http://us.archive.ubuntu.com/ubuntu jammy-updates InRelease
-Hit:6 http://archive.lambdalabs.com/ubuntu jammy InRelease
-Hit:7 http://us.archive.ubuntu.com/ubuntu jammy-backports InRelease
-Hit:8 http://security.ubuntu.com/ubuntu jammy-security InRelease
-Ign:3 https://packages.cloud.google.com/apt kubernetes-xenial InRelease
+Hit:1 https://nvidia.github.io/libnvidia-container/stable/deb/amd64  InRelease
+Hit:3 https://download.docker.com/linux/ubuntu jammy InRelease
+Hit:4 http://archive.lambdalabs.com/ubuntu jammy InRelease
+Hit:5 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Hit:6 http://us.archive.ubuntu.com/ubuntu jammy InRelease
+Hit:7 http://us.archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:8 http://us.archive.ubuntu.com/ubuntu jammy-backports InRelease
+Ign:2 https://packages.cloud.google.com/apt kubernetes-xenial InRelease
 Err:9 https://packages.cloud.google.com/apt kubernetes-xenial Release
-  404  Not Found [IP: 142.250.72.238 443]
+  404  Not Found [IP: 142.250.217.78 443]
 Reading package lists...
 E: The repository 'https://apt.kubernetes.io kubernetes-xenial Release' does not have a Release file.
 Performing a distribution upgrade...
@@ -29,23 +29,22 @@ Get more security updates through Ubuntu Pro with 'esm-apps' enabled:
   libpmix2
 Learn more about Ubuntu Pro at https://ubuntu.com/pro
 The following packages have been kept back:
-  bind9-dnsutils bind9-host bind9-libs libnvidia-cfg1-550 libnvidia-common-550
-  libnvidia-compute-550 libnvidia-decode-550 libnvidia-encode-550
-  libnvidia-extra-550 libnvidia-fbc1-550 libnvidia-gl-550
-  nvidia-compute-utils-550 nvidia-dkms-550 nvidia-driver-550
-  nvidia-kernel-common-550 nvidia-kernel-source-550 nvidia-utils-550
-  xserver-xorg-video-nvidia-550
+  libnvidia-cfg1-550 libnvidia-common-550 libnvidia-compute-550
+  libnvidia-decode-550 libnvidia-encode-550 libnvidia-extra-550
+  libnvidia-fbc1-550 libnvidia-gl-550 nvidia-compute-utils-550 nvidia-dkms-550
+  nvidia-driver-550 nvidia-kernel-common-550 nvidia-kernel-source-550
+  nvidia-utils-550 xserver-xorg-video-nvidia-550
 The following packages will be upgraded:
   containerd.io
-1 upgraded, 0 newly installed, 0 to remove and 18 not upgraded.
-Need to get 29.5 MB of archives.
-After this operation, 225 kB of additional disk space will be used.
-Get:1 https://download.docker.com/linux/ubuntu jammy/stable amd64 containerd.io amd64 1.7.24-1 [29.5 MB]
-Fetched 29.5 MB in 1s (53.5 MB/s)
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 275860 files and directories currently installed.)
-Preparing to unpack .../containerd.io_1.7.24-1_amd64.deb ...
-Unpacking containerd.io (1.7.24-1) over (1.7.22-1) ...
-Setting up containerd.io (1.7.24-1) ...
+1 upgraded, 0 newly installed, 0 to remove and 15 not upgraded.
+Need to get 29.6 MB of archives.
+After this operation, 642 kB of additional disk space will be used.
+Get:1 https://download.docker.com/linux/ubuntu jammy/stable amd64 containerd.io amd64 1.7.25-1 [29.6 MB]
+Fetched 29.6 MB in 0s (63.4 MB/s)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 276696 files and directories currently installed.)
+Preparing to unpack .../containerd.io_1.7.25-1_amd64.deb ...
+Unpacking containerd.io (1.7.25-1) over (1.7.22-1) ...
+Setting up containerd.io (1.7.25-1) ...
 Processing triggers for man-db (2.10.2-1) ...
 Installing net-tools...
 
@@ -55,7 +54,7 @@ Reading package lists...
 Building dependency tree...
 Reading state information...
 net-tools is already the newest version (1.60+git20181103.0eebece-1ubuntu5).
-0 upgraded, 0 newly installed, 0 to remove and 18 not upgraded.
+0 upgraded, 0 newly installed, 0 to remove and 15 not upgraded.
 Turning off swap...
 Disabling swap in /etc/fstab if not already disabled...
 Swap has been disabled and removed from fstab.

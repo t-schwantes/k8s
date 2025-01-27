@@ -1,12 +1,12 @@
-# Persistent Volume
+# Persistent Volume Template
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: synology-matthew-arnold---1473d187
+  name: synology-zubair-ahmad
   namespace: jupyterhub
   labels:
-    user: synology-matthew-arnold---1473d187
-    
+    user: zubair-ahmad
+  
 spec:
   capacity:
     storage: 100Gi
@@ -18,38 +18,38 @@ spec:
   csi:
     driver: smb.csi.k8s.io
     readOnly: false
-    volumeHandle: synology-matthew-arnold---1473d187
+    volumeHandle: synology-zubair-ahmad
     volumeAttributes:
       source: "//172.16.49.55/Share"
     nodeStageSecretRef:
-      name: secret-synology-matthew-arnold---1473d187
+      name: secret-synology-zubair-ahmad
       namespace: jupyterhub
       
 ---
-# Persistent Volume Claim
+# Persistent Volume Claim Template
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: synology-matthew-arnold---1473d187
+  name: synology-zubair-ahmad
   namespace: jupyterhub
 spec:
   storageClassName: ""
-  
+
   accessModes:
-  - ReadWriteMany
+    - ReadWriteMany
   resources:
     requests:
       storage: 10Gi
 ---
-# Secret
+# Secret Template
 apiVersion: v1
 kind: Secret
 metadata:
-  name: secret-synology-matthew-arnold---1473d187
+  name: secret-synology-zubair-ahmad
   namespace: jupyterhub
   
 type: Opaque
 data:
-  username: bWF0dGhldy1hcm5vbGQ=
-  password: ZXMxTGN5XTU=
----
+  username: enViYWlyLWFobWFk
+  password: KTducVZTJzc=
+

@@ -2,11 +2,10 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: synology-trevor-schwantes
+  name: synology-trevor-schwantes---21096812
   namespace: jupyterhub
   labels:
-    user: trevor-schwantes
-  
+    user: trevor-schwantes---21096812
 spec:
   capacity:
     storage: 100Gi
@@ -18,19 +17,19 @@ spec:
   csi:
     driver: smb.csi.k8s.io
     readOnly: false
-    volumeHandle: synology-trevor-schwantes
+    volumeHandle: synology-trevor-schwantes---21096812
     volumeAttributes:
       source: "//172.16.49.55/Share"
     nodeStageSecretRef:
-      name: secret-synology-trevor-schwantes
+      name: secret-synology-trevor-schwantes---21096812
       namespace: jupyterhub
-      
+
 ---
 # Persistent Volume Claim Template
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: synology-trevor-schwantes
+  name: synology-trevor-schwantes---21096812
   namespace: jupyterhub
 spec:
   storageClassName: ""
@@ -40,14 +39,15 @@ spec:
   resources:
     requests:
       storage: 10Gi
+
 ---
 # Secret Template
 apiVersion: v1
 kind: Secret
 metadata:
-  name: secret-synology-trevor-schwantes
+  name: secret-synology-trevor-schwantes---21096812
   namespace: jupyterhub
-  
+
 type: Opaque
 data:
   username: dHJldm9yLXNjaHdhbnRlcw==
