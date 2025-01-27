@@ -3,3 +3,4 @@ jupyterhub/jupyterdev.csr
 jupyterhub/jupyterdev.key
 jupyterhub/jupyter-dev.wavetronix.com.pem
 jupyterhub/config-template.yaml
+jupyterhub/config.yaml

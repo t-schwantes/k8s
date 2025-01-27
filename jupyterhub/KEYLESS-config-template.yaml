@@ -1,0 +1,190 @@
+hub:
+  db:
+    type: sqlite-memory
+  config:
+    Authenticator:
+      admin_users:
+        - trevor schwantes
+        - matthew arnold
+    OAuthenticator:
+      http_timeout: 30
+    AzureAdOAuthenticator:
+      client_id: 1295d1ce-4c3f-4095-823d-fb36b9691198
+      client_secret: 
+      oauth_callback_url: https://jupyter-dev.wavetronix.com/hub/oauth_callback
+      tenant_id: 62c1fc95-7c21-46b1-b933-1f00de099f91
+    JupyterHub:
+      authenticator_class: azuread
+  allowNamedServers: true
+  namedServerLimitPerUser: 5
+
+proxy:
+  chp:
+    networkPolicy:
+      egress:
+        - ports:
+          - port: 6116
+          - port: 6117
+          - port: 6118
+  https:
+    enabled: true
+    type: manual
+    manual:
+      cert: |
+        -----BEGIN CERTIFICATE-----
+        MIIHAjCCBeqgAwIBAgIQBS6vam/pIWIGEI3oJrXjaTANBgkqhkiG9w0BAQsFADBZ
+        MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMTMwMQYDVQQDEypE
+        aWdpQ2VydCBHbG9iYWwgRzIgVExTIFJTQSBTSEEyNTYgMjAyMCBDQTEwHhcNMjUw
+        MTIxMDAwMDAwWhcNMjUxMDA2MjM1OTU5WjBmMQswCQYDVQQGEwJVUzENMAsGA1UE
+        CBMEVXRhaDEUMBIGA1UEBxMLU3ByaW5ndmlsbGUxFzAVBgNVBAoTDldhdmV0cm9u
+        aXggTExDMRkwFwYDVQQDDBAqLndhdmV0cm9uaXguY29tMIIBIjANBgkqhkiG9w0B
+        AQEFAAOCAQ8AMIIBCgKCAQEAq8LFSpJGg80XZUHGXglNstPq44FLKFbZhE3vMpNO
+        1j74EBLdKen9kxwhyEYt4XDpVBQA9ec5OMtUXxmICoVw5J6k3iCxXMLgw+Fcb7dZ
+        floX3vkY++p2JjSbjfR1voNAsYbp+W1nRTVBuKJ13P0km9heAS3I939/pP5sg7DW
+        /pUjjo1hA44W/zPANniNF3nnJlaI9O1XsSIyqcJsDODKwtBAyckWf3thvTvC2l30
+        lV/gO36PnRoMth2WxUKh0QVjpgRa0gANABvmYoupL7Xaa1954KxYoaJ1HyqHh1Aj
+        ywByN2ZLSBMs1dj/jsorghllbGs98L+91E5Uy4xVDPTgcQIDAQABo4IDtzCCA7Mw
+        HwYDVR0jBBgwFoAUdIWAwGbH3zfez70pN6oDHb7tzRcwHQYDVR0OBBYEFDlEgS9T
+        ahrxEhgyjTaBkry3vH7EMEcGA1UdEQRAMD6CECoud2F2ZXRyb25peC5jb22CGmp1
+        cHl0ZXItZGV2LndhdmV0cm9uaXguY29tgg53YXZldHJvbml4LmNvbTA+BgNVHSAE
+        NzA1MDMGBmeBDAECAjApMCcGCCsGAQUFBwIBFhtodHRwOi8vd3d3LmRpZ2ljZXJ0
+        LmNvbS9DUFMwDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggr
+        BgEFBQcDAjCBnwYDVR0fBIGXMIGUMEigRqBEhkJodHRwOi8vY3JsMy5kaWdpY2Vy
+        dC5jb20vRGlnaUNlcnRHbG9iYWxHMlRMU1JTQVNIQTI1NjIwMjBDQTEtMS5jcmww
+        SKBGoESGQmh0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEdsb2JhbEcy
+        VExTUlNBU0hBMjU2MjAyMENBMS0xLmNybDCBhwYIKwYBBQUHAQEEezB5MCQGCCsG
+        AQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wUQYIKwYBBQUHMAKGRWh0
+        dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEdsb2JhbEcyVExTUlNB
+        U0hBMjU2MjAyMENBMS0xLmNydDAMBgNVHRMBAf8EAjAAMIIBfQYKKwYBBAHWeQIE
+        AgSCAW0EggFpAWcAdQAS8U40vVNyTIQGGcOPP3oT+Oe1YoeInG0wBYTr5YYmOgAA
+        AZSKDwROAAAEAwBGMEQCIGS8fo+ydlSQUWOpAfI0Rkk6Rz7hsqS5CIxPmI9kKbBc
+        AiBNSRLC2K8un51GHd+Fu0d/UBMmgL4AjZ26JtgWVSEn5gB2AO08S9boBsKkogBX
+        28sk4jgB31Ev7cSGxXAPIN23Pj/gAAABlIoPBIIAAAQDAEcwRQIhAI/MhkdxiXvU
+        loHOifKdLHMdjaV+OFXVaGJk5rD7Cv3FAiAgZtG5PWt/nNGZpcDZj/o/5wMUOVUB
+        SuVZ8ETvKWLUmAB2AObSMWNAd4zBEEEG13G5zsHSQPaWhIb7uocyHf0eN45QAAAB
+        lIoPBJEAAAQDAEcwRQIhAL7uRnnFtwah0AYfGcJh5eOoe5OXYyCRHijsGJ/dGkCG
+        AiA3SoQg/udGOOPgBuU0KiRX4IdFaCMhz+DSpYhVcBJCDzANBgkqhkiG9w0BAQsF
+        AAOCAQEAWlLqjzWAw2WfrxsOzI1uNyzlyTZcx8OFnLAaRBzg5cPHwj5xt8OjmliY
+        NQ5WKmTWc3zael/L4BupOwMYu6Qj2BCTZNpP6pmGvrUQV8jOr5c4lMOnGZnjKcFB
+        1ip9jIeoawTeL0wuMVZ7fdpSUpptdPWx0C+W4juw5mcWrxntfElM7wXP8vrVdDQH
+        4k3C/QGOVaNysLth4T9SENZ23IsSO0HOYu8c6zyKyMOqH+oXQPsOjRx+XHn10gNL
+        GhLesxe7jeETwedYyL97buHcAGAWrtyUNyVzIaDQxt2JhGWy/+R3lNKcC1hcGJe7
+        Pr5/sR1Kv2nqQOepLJ60w/gLsKODUQ==
+        -----END CERTIFICATE-----
+        -----BEGIN CERTIFICATE-----
+        MIIEyDCCA7CgAwIBAgIQDPW9BitWAvR6uFAsI8zwZjANBgkqhkiG9w0BAQsFADBh
+        MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3
+        d3cuZGlnaWNlcnQuY29tMSAwHgYDVQQDExdEaWdpQ2VydCBHbG9iYWwgUm9vdCBH
+        MjAeFw0yMTAzMzAwMDAwMDBaFw0zMTAzMjkyMzU5NTlaMFkxCzAJBgNVBAYTAlVT
+        MRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxMzAxBgNVBAMTKkRpZ2lDZXJ0IEdsb2Jh
+        bCBHMiBUTFMgUlNBIFNIQTI1NiAyMDIwIENBMTCCASIwDQYJKoZIhvcNAQEBBQAD
+        ggEPADCCAQoCggEBAMz3EGJPprtjb+2QUlbFbSd7ehJWivH0+dbn4Y+9lavyYEEV
+        cNsSAPonCrVXOFt9slGTcZUOakGUWzUb+nv6u8W+JDD+Vu/E832X4xT1FE3LpxDy
+        FuqrIvAxIhFhaZAmunjZlx/jfWardUSVc8is/+9dCopZQ+GssjoP80j812s3wWPc
+        3kbW20X+fSP9kOhRBx5Ro1/tSUZUfyyIxfQTnJcVPAPooTncaQwywa8WV0yUR0J8
+        osicfebUTVSvQpmowQTCd5zWSOTOEeAqgJnwQ3DPP3Zr0UxJqyRewg2C/Uaoq2yT
+        zGJSQnWS+Jr6Xl6ysGHlHx+5fwmY6D36g39HaaECAwEAAaOCAYIwggF+MBIGA1Ud
+        EwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFHSFgMBmx9833s+9KTeqAx2+7c0XMB8G
+        A1UdIwQYMBaAFE4iVCAYlebjbuYP+vq5Eu0GF485MA4GA1UdDwEB/wQEAwIBhjAd
+        BgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwdgYIKwYBBQUHAQEEajBoMCQG
+        CCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQAYIKwYBBQUHMAKG
+        NGh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEdsb2JhbFJvb3RH
+        Mi5jcnQwQgYDVR0fBDswOTA3oDWgM4YxaHR0cDovL2NybDMuZGlnaWNlcnQuY29t
+        L0RpZ2lDZXJ0R2xvYmFsUm9vdEcyLmNybDA9BgNVHSAENjA0MAsGCWCGSAGG/WwC
+        ATAHBgVngQwBATAIBgZngQwBAgEwCAYGZ4EMAQICMAgGBmeBDAECAzANBgkqhkiG
+        9w0BAQsFAAOCAQEAkPFwyyiXaZd8dP3A+iZ7U6utzWX9upwGnIrXWkOH7U1MVl+t
+        wcW1BSAuWdH/SvWgKtiwla3JLko716f2b4gp/DA/JIS7w7d7kwcsr4drdjPtAFVS
+        slme5LnQ89/nD/7d+MS5EHKBCQRfz5eeLjJ1js+aWNJXMX43AYGyZm0pGrFmCW3R
+        bpD0ufovARTFXFZkAdl9h6g4U5+LXUZtXMYnhIHUfoyMo5tS58aI7Dd8KvvwVVo4
+        chDYABPPTHPbqjc1qCmBaZx2vN4Ye5DUys/vZwP9BFohFrH/6j/f3IL16/RZkiMN
+        JCqVJUzKoZHm1Lesh3Sz8W2jmdv51b2EQJ8HmA==
+        -----END CERTIFICATE-----
+        -----BEGIN CERTIFICATE-----
+        MIIDjjCCAnagAwIBAgIQAzrx5qcRqaC7KGSxHQn65TANBgkqhkiG9w0BAQsFADBh
+        MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3
+        d3cuZGlnaWNlcnQuY29tMSAwHgYDVQQDExdEaWdpQ2VydCBHbG9iYWwgUm9vdCBH
+        MjAeFw0xMzA4MDExMjAwMDBaFw0zODAxMTUxMjAwMDBaMGExCzAJBgNVBAYTAlVT
+        MRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5j
+        b20xIDAeBgNVBAMTF0RpZ2lDZXJ0IEdsb2JhbCBSb290IEcyMIIBIjANBgkqhkiG
+        9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuzfNNNx7a8myaJCtSnX/RrohCgiN9RlUyfuI
+        2/Ou8jqJkTx65qsGGmvPrC3oXgkkRLpimn7Wo6h+4FR1IAWsULecYxpsMNzaHxmx
+        1x7e/dfgy5SDN67sH0NO3Xss0r0upS/kqbitOtSZpLYl6ZtrAGCSYP9PIUkY92eQ
+        q2EGnI/yuum06ZIya7XzV+hdG82MHauVBJVJ8zUtluNJbd134/tJS7SsVQepj5Wz
+        tCO7TG1F8PapspUwtP1MVYwnSlcUfIKdzXOS0xZKBgyMUNGPHgm+F6HmIcr9g+UQ
+        vIOlCsRnKPZzFBQ9RnbDhxSJITRNrw9FDKZJobq7nMWxM4MphQIDAQABo0IwQDAP
+        BgNVHRMBAf8EBTADAQH/MA4GA1UdDwEB/wQEAwIBhjAdBgNVHQ4EFgQUTiJUIBiV
+        5uNu5g/6+rkS7QYXjzkwDQYJKoZIhvcNAQELBQADggEBAGBnKJRvDkhj6zHd6mcY
+        1Yl9PMWLSn/pvtsrF9+wX3N3KjITOYFnQoQj8kVnNeyIv/iPsGEMNKSuIEyExtv4
+        NeF22d+mQrvHRAiGfzZ0JFrabA0UWTW98kndth/Jsw1HKj2ZL7tcu7XUIOGZX1NG
+        Fdtom/DzMNU+MeKNhJ7jitralj41E6Vf8PlwUHBHQRFXGU7Aj64GxJUTFy8bJZ91
+        8rGOmaFvE7FBcf6IKshPECBV1/MUReXgRPTqh5Uykw7+U0b6LJ3/iyK5S9kJRaTe
+        pLiaWN0bfVKfjllDiIGknibVb63dDcY3fe0Dkhvld1927jyNxF1WW6LZZm6zNTfl
+        MrY=
+        -----END CERTIFICATE-----
+      key: |
+        -----BEGIN PRIVATE KEY-----
+        -----END PRIVATE KEY-----
+
+singleuser:
+  uid: 1000
+  serviceAccountName: default
+  storage:
+    type: static
+    static:
+      pvcName: "shared-pvc" 
+      subPath: "{username}"
+      
+    extraVolumes:
+      - name: vol-synology-user
+        persistentVolumeClaim:
+          claimName: synology-{username}
+      - name: conda-cache-pvc
+        persistentVolumeClaim:
+          claimName: shared-pvc-conda 
+      - name: glusterfs-storage
+        persistentVolumeClaim:
+          claimName: glusterfs-pvc  # New GlusterFS PVC
+    extraVolumeMounts:
+      - name: conda-cache-pvc
+        mountPath: /home/jovyan/.conda/pkgs
+      - name: vol-synology-user
+        mountPath: "/home/jovyan/ml-storage"  # User data volume mount
+      - name: glusterfs-storage
+        mountPath: "/home/jovyan/local-data"  # GlusterFS volume mount
+
+  profileList:
+    - display_name: "0 GPUs"
+      kubespawner_override:
+        image: ${API_SERVER_ADDRESS}:30000/base:latest   # image: quay.io/jupyter/pytorch-notebook:latest
+        image_pull_policy: Always
+        extra_resource_limits:
+          nvidia.com/gpu: "0"
+        runtime_class_name: nvidia
+        hostNetwork: true
+      default: true
+    - display_name: "1 GPU"
+      kubespawner_override:
+        image: ${API_SERVER_ADDRESS}:30000/base:latest
+        image_pull_policy: Always
+        extra_resource_limits:
+          nvidia.com/gpu: "1"
+        runtime_class_name: nvidia
+        hostNetwork: true
+    - display_name: "2 GPUs"
+      kubespawner_override:
+        image: ${API_SERVER_ADDRESS}:30000/base:latest
+        image_pull_policy: Always
+        extra_resource_limits:
+          nvidia.com/gpu: "2"
+        runtime_class_name: nvidia
+        hostNetwork: true
+
+  extraEnv:
+    CONDA_PKGS_DIRS: /home/jovyan/.conda/pkgs
+    CONDA_ENVS_PATH: /home/jovyan/.conda/envs
+    GRANT_SUDO: "yes"
+    NOTEBOOK_ARGS: "--allow-root"
+#  uid: 0
+#  cmd: start-singleuser.sh
+  allowPrivilegeEscalation: true
+
